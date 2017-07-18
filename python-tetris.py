@@ -79,34 +79,38 @@ class tetromino:
             self.three = square(250, 900, 50)
             self.four = square(250, 950, 50)
 
+
     def move_right(self):
-        self.one.move_right()
-        self.two.move_right()
-        self.three.move_right()
-        self.four.move_right()
+        if self.right.origin()[0] < 450:
+            self.left.move_right()
+            self.right.move_right()
+            self.top.move_right()
+            self.bottom.move_right()
 
     def move_left(self):
-        self.one.move_left()
-        self.two.move_left()
-        self.three.move_left()
-        self.four.move_left()
+        if self.left.origin()[0] > 0:
+            self.left.move_left()
+            self.right.move_left()
+            self.top.move_left()
+            self.bottom.move_left()
 
     def move_up(self):
-        self.one.move_up()
-        self.two.move_up()
-        self.three.move_up()
-        self.four.move_up()
+        if self.top.origin()[1] < 950:
+            self.left.move_up()
+            self.right.move_up()
+            self.top.move_up()
+            self.bottom.move_up()
 
     def move_down(self):
-        self.one.move_down()
-        self.two.move_down()
-        self.three.move_down()
-        self.four.move_down()
+        if self.bottom.origin()[1] > 0:
+            self.left.move_down()
+            self.right.move_down()
+            self.top.move_down()
+            self.bottom.move_down()
 
 
 @window.event
 def on_text_motion(motion):
-    global current_piece
     if(motion == pyglet.window.key.MOTION_LEFT):
         current_piece.move_left()
     if(motion == pyglet.window.key.MOTION_RIGHT):
@@ -117,7 +121,7 @@ def on_text_motion(motion):
         current_piece.move_down()
 
 
-global current_piece
+
 current_piece = tetromino("L")
 
 
