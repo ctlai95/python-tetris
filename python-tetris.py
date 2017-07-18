@@ -69,7 +69,7 @@ class tetromino:
 
 @window.event
 def on_text_motion(motion):
-    global t
+
     if(motion == pyglet.window.key.MOTION_LEFT):
         t.move_left()
     if(motion == pyglet.window.key.MOTION_RIGHT):
@@ -80,7 +80,6 @@ def on_text_motion(motion):
         t.move_down()
 
 
-global t
 t = tetromino(
     square(0, 0, 50),
     square(50, 0, 50),
