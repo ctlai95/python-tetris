@@ -38,47 +38,46 @@ class square:
 class tetromino:
     def __init__(self, type):
         if type == "I":
-            self.one = square(150, 900, 50)
-            self.two = square(200, 900, 50)
-            self.three = square(250, 900, 50)
-            self.four = square(300, 900, 50)
+            self.left = square(150, 900, 50)
+            self.right = square(200, 900, 50)
+            self.top = square(250, 900, 50)
+            self.bottom = square(300, 900, 50)
 
         if type == "O":
-            self.one = square(200, 900, 50)
-            self.two = square(250, 900, 50)
-            self.three = square(200, 950, 50)
-            self.four = square(250, 950, 50)
+            self.left = square(200, 900, 50)
+            self.right = square(250, 900, 50)
+            self.top = square(200, 950, 50)
+            self.bottom = square(250, 950, 50)
 
         if type == "T":
-            self.one = square(150, 900, 50)
-            self.two = square(200, 900, 50)
-            self.three = square(250, 900, 50)
-            self.four = square(200, 950, 50)
+            self.left = square(150, 900, 50)
+            self.right = square(200, 900, 50)
+            self.top = square(250, 900, 50)
+            self.bottom = square(200, 950, 50)
 
         if type == "S":
-            self.one = square(150, 900, 50)
-            self.two = square(200, 900, 50)
-            self.three = square(200, 950, 50)
-            self.four = square(250, 950, 50)
+            self.left = square(150, 900, 50)
+            self.right = square(200, 900, 50)
+            self.top = square(200, 950, 50)
+            self.bottom = square(250, 950, 50)
 
         if type == "Z":
-            self.one = square(200, 900, 50)
-            self.two = square(250, 900, 50)
-            self.three = square(150, 950, 50)
-            self.four = square(200, 950, 50)
+            self.left = square(200, 900, 50)
+            self.right = square(250, 900, 50)
+            self.top = square(150, 950, 50)
+            self.bottom = square(200, 950, 50)
 
         if type == "J":
-            self.one = square(150, 900, 50)
-            self.two = square(200, 900, 50)
-            self.three = square(250, 900, 50)
-            self.four = square(150, 950, 50)
+            self.left = square(150, 900, 50)
+            self.right = square(200, 900, 50)
+            self.top = square(250, 900, 50)
+            self.bottom = square(150, 950, 50)
 
         if type == "L":
-            self.one = square(150, 900, 50)
-            self.two = square(200, 900, 50)
-            self.three = square(250, 900, 50)
-            self.four = square(250, 950, 50)
-
+            self.left = square(150, 900, 50)
+            self.right = square(200, 900, 50)
+            self.top = square(250, 900, 50)
+            self.bottom = square(250, 950, 50)
 
     def move_right(self):
         if self.right.origin()[0] < 450:
@@ -121,8 +120,7 @@ def on_text_motion(motion):
         current_piece.move_down()
 
 
-
-current_piece = tetromino("L")
+current_piece = tetromino("T")
 
 
 @window.event
@@ -131,19 +129,19 @@ def on_draw():
 
     pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
                                  [0, 1, 2, 0, 2, 3],
-                                 ('v2i', current_piece.one.position()))
+                                 ('v2i', current_piece.left.position()))
 
     pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
                                  [0, 1, 2, 0, 2, 3],
-                                 ('v2i', current_piece.two.position()))
+                                 ('v2i', current_piece.right.position()))
 
     pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
                                  [0, 1, 2, 0, 2, 3],
-                                 ('v2i', current_piece.three.position()))
+                                 ('v2i', current_piece.top.position()))
 
     pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
                                  [0, 1, 2, 0, 2, 3],
-                                 ('v2i', current_piece.four.position()))
+                                 ('v2i', current_piece.bottom.position()))
 
 
 pyglet.app.run()
