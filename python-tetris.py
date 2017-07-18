@@ -4,7 +4,7 @@ window = pyglet.window.Window(500, 1000)
 # window.push_handlers(pyglet.window.event.WindowEventLogger())
 
 multiplier = 50
-global t
+global current_piece
 
 
 class square:
@@ -36,11 +36,49 @@ class square:
 
 
 class tetromino:
-    def __init__(self, left, right, top, bottom):
-        self.left = left
-        self.right = right
-        self.top = top
-        self.bottom = bottom
+    def __init__(self, type):
+        if type == "I":
+            self.one = square(150, 900, 50)
+            self.two = square(200, 900, 50)
+            self.three = square(250, 900, 50)
+            self.four = square(300, 900, 50)
+
+        if type == "O":
+            self.one = square(200, 900, 50)
+            self.two = square(250, 900, 50)
+            self.three = square(200, 950, 50)
+            self.four = square(250, 950, 50)
+
+        if type == "T":
+            self.one = square(150, 900, 50)
+            self.two = square(200, 900, 50)
+            self.three = square(250, 900, 50)
+            self.four = square(200, 950, 50)
+
+        if type == "S":
+            self.one = square(150, 900, 50)
+            self.two = square(200, 900, 50)
+            self.three = square(200, 950, 50)
+            self.four = square(250, 950, 50)
+
+        if type == "Z":
+            self.one = square(200, 900, 50)
+            self.two = square(250, 900, 50)
+            self.three = square(150, 950, 50)
+            self.four = square(200, 950, 50)
+
+        if type == "J":
+            self.one = square(150, 900, 50)
+            self.two = square(200, 900, 50)
+            self.three = square(250, 900, 50)
+            self.four = square(150, 950, 50)
+
+        if type == "L":
+            self.one = square(150, 900, 50)
+            self.two = square(200, 900, 50)
+            self.three = square(250, 900, 50)
+            self.four = square(250, 950, 50)
+
 
     def move_right(self):
         if self.right.origin()[0] < 450:
@@ -73,23 +111,18 @@ class tetromino:
 
 @window.event
 def on_text_motion(motion):
-
     if(motion == pyglet.window.key.MOTION_LEFT):
-        t.move_left()
+        current_piece.move_left()
     if(motion == pyglet.window.key.MOTION_RIGHT):
-        t.move_right()
+        current_piece.move_right()
     if(motion == pyglet.window.key.MOTION_UP):
-        t.move_up()
+        current_piece.move_up()
     if(motion == pyglet.window.key.MOTION_DOWN):
-        t.move_down()
+        current_piece.move_down()
 
 
-t = tetromino(
-    square(0, 0, 50),
-    square(100, 0, 50),
-    square(50, 50, 50),
-    square(50, 0, 50)
-    )
+
+current_piece = tetromino("L")
 
 
 @window.event
@@ -98,19 +131,19 @@ def on_draw():
 
     pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
                                  [0, 1, 2, 0, 2, 3],
-                                 ('v2i', t.left.position()))
+                                 ('v2i', current_piece.one.position()))
 
     pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
                                  [0, 1, 2, 0, 2, 3],
-                                 ('v2i', t.right.position()))
+                                 ('v2i', current_piece.two.position()))
 
     pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
                                  [0, 1, 2, 0, 2, 3],
-                                 ('v2i', t.top.position()))
+                                 ('v2i', current_piece.three.position()))
 
     pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
                                  [0, 1, 2, 0, 2, 3],
-                                 ('v2i', t.bottom.position()))
+                                 ('v2i', current_piece.four.position()))
 
 
 pyglet.app.run()
