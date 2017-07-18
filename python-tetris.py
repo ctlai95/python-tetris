@@ -36,35 +36,39 @@ class square:
 
 
 class tetromino:
-    def __init__(self, one, two, three, four):
-        self.one = one
-        self.two = two
-        self.three = three
-        self.four = four
+    def __init__(self, left, right, top, bottom):
+        self.left = left
+        self.right = right
+        self.top = top
+        self.bottom = bottom
 
     def move_right(self):
-        self.one.move_right()
-        self.two.move_right()
-        self.three.move_right()
-        self.four.move_right()
+        if self.right.origin()[0] < 450:
+            self.left.move_right()
+            self.right.move_right()
+            self.top.move_right()
+            self.bottom.move_right()
 
     def move_left(self):
-        self.one.move_left()
-        self.two.move_left()
-        self.three.move_left()
-        self.four.move_left()
+        if self.left.origin()[0] > 0:
+            self.left.move_left()
+            self.right.move_left()
+            self.top.move_left()
+            self.bottom.move_left()
 
     def move_up(self):
-        self.one.move_up()
-        self.two.move_up()
-        self.three.move_up()
-        self.four.move_up()
+        if self.top.origin()[1] < 950:
+            self.left.move_up()
+            self.right.move_up()
+            self.top.move_up()
+            self.bottom.move_up()
 
     def move_down(self):
-        self.one.move_down()
-        self.two.move_down()
-        self.three.move_down()
-        self.four.move_down()
+        if self.bottom.origin()[1] > 0:
+            self.left.move_down()
+            self.right.move_down()
+            self.top.move_down()
+            self.bottom.move_down()
 
 
 @window.event
@@ -83,9 +87,9 @@ def on_text_motion(motion):
 global t
 t = tetromino(
     square(0, 0, 50),
-    square(50, 0, 50),
     square(100, 0, 50),
-    square(50, 50, 50)
+    square(50, 50, 50),
+    square(50, 0, 50)
     )
 
 
@@ -95,19 +99,19 @@ def on_draw():
 
     pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
                                  [0, 1, 2, 0, 2, 3],
-                                 ('v2i', t.one.position()))
+                                 ('v2i', t.left.position()))
 
     pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
                                  [0, 1, 2, 0, 2, 3],
-                                 ('v2i', t.two.position()))
+                                 ('v2i', t.right.position()))
 
     pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
                                  [0, 1, 2, 0, 2, 3],
-                                 ('v2i', t.three.position()))
+                                 ('v2i', t.top.position()))
 
     pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
                                  [0, 1, 2, 0, 2, 3],
-                                 ('v2i', t.four.position()))
+                                 ('v2i', t.bottom.position()))
 
 
 pyglet.app.run()
