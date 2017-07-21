@@ -1,6 +1,6 @@
 import pyglet
 
-unit = 50
+unit = 40
 
 window = pyglet.window.Window(10*unit, 22*unit)
 # window.push_handlers(pyglet.window.event.WindowEventLogger())
@@ -44,70 +44,67 @@ class tetromino:
         if type == "I":
             for i in range(0, 4):
                 self.pieces.append(
-                    square(origin.x + (i * unit),
-                           origin.y,
-                           unit))
+                    square(
+                        point(origin.x + (i * unit), origin.y),
+                        unit))
 
         if type == "O":
             for i in range(0, 2):
                 for y in range(0, 2):
                     self.pieces.append(
-                        square(origin.x + (y * unit),
-                               origin.y + (i * unit),
-                               unit))
+                        square(
+                            point(origin.x + (y * unit),
+                                  origin.y + (i * unit)),
+                            unit))
 
         if type == "T":
             for i in range(0, 3):
                 self.pieces.append(
-                    square(origin.x + (i * unit),
-                           origin.y,
-                           unit))
+                    square(
+                        point(origin.x + (i * unit), origin.y),
+                        unit))
             self.pieces.append(
-                square(origin.x + unit,
-                       origin.y + unit,
-                       unit)
-            )
+                square(
+                    point(origin.x + unit, origin.y + unit),
+                    unit))
 
         if type == "S":
             for i in range(0, 2):
                 self.pieces.append(
-                    square(origin.x + (i * unit),
-                           origin.y,
-                           unit)
-                )
+                    square(
+                        point(origin.x + (i * unit), origin.y),
+                        unit))
+
             for i in range(1, 3):
                 self.pieces.append(
-                    square(origin.x + (i * unit),
-                           origin.y + unit,
-                           unit)
-                )
+                    square(
+                        point(origin.x + (i * unit), origin.y + unit),
+                        unit))
 
         if type == "Z":
             for i in range(1, 3):
                 self.pieces.append(
-                    square(origin.x + (i * unit),
-                           origin.y,
-                           unit)
-                )
+                    square(
+                        point(origin.x + (i * unit), origin.y),
+                        unit))
+
             for i in range(0, 2):
                 self.pieces.append(
-                    square(origin.x + (i * unit),
-                           origin.y + unit,
-                           unit)
-                )
+                    square(
+                        point(origin.x + (i * unit), origin.y + unit),
+                        unit))
 
         if type == "J":
             for i in range(0, 3):
                 self.pieces.append(
-                    square(origin.x + (i * unit),
-                           origin.y,
-                           unit)
-                )
+                    square(
+                        point(origin.x + (i * unit), origin.y),
+                        unit))
+
             self.pieces.append(
-                square(origin.x,
-                       origin.y + unit,
-                       unit)
-            )
+                square(
+                    point(origin.x, origin.y + unit),
+                    unit))
 
         if type == "L":
             for i in range(0, 3):
