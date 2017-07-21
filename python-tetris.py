@@ -1,111 +1,142 @@
 import pyglet
 
-window = pyglet.window.Window(500, 1000)
+unit = 50
+
+window = pyglet.window.Window(10*unit, 22*unit)
 # window.push_handlers(pyglet.window.event.WindowEventLogger())
 
-multiplier = 50
 global current_piece
 
 
+class point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+
 class square:
-    def __init__(self, x_orig, y_orig, side_length):
-        self.x_orig = x_orig
-        self.y_orig = y_orig
+    def __init__(self, origin, side_length):
+        self.origin = origin
         self.side_length = side_length
 
-    def origin(self):
-        return self.x_orig, self.y_orig
-
     def position(self):
-        return (self.x_orig, self.y_orig,
-                self.x_orig+50, self.y_orig,
-                self.x_orig+50, self.y_orig+50,
-                self.x_orig, self.y_orig+50)
+        return (self.origin.x, self.origin.y,
+                self.origin.x+self.side_length, self.origin.y,
+                self.origin.x+self.side_length, self.origin.y+self.side_length,
+                self.origin.x, self.origin.y+self.side_length)
 
     def move_right(self):
-        self.x_orig += 1*multiplier
+        self.origin.x += self.side_length
 
     def move_left(self):
-        self.x_orig -= 1*multiplier
+        self.origin.x -= self.side_length
 
     def move_up(self):
-        self.y_orig += 1*multiplier
+        self.origin.y += self.side_length
 
     def move_down(self):
-        self.y_orig -= 1*multiplier
+        self.origin.y -= self.side_length
 
 
 class tetromino:
-    def __init__(self, type):
+    def __init__(self, type, origin):
+        self.pieces = []
         if type == "I":
-            self.left = square(150, 900, 50)
-            self.right = square(200, 900, 50)
-            self.top = square(250, 900, 50)
-            self.bottom = square(300, 900, 50)
+            for i in range(0, 4):
+                self.pieces.append(
+                    square(origin.x + (i * unit),
+                           origin.y,
+                           unit))
 
         if type == "O":
-            self.left = square(200, 900, 50)
-            self.right = square(250, 900, 50)
-            self.top = square(200, 950, 50)
-            self.bottom = square(250, 950, 50)
+            for i in range(0, 2):
+                for y in range(0, 2):
+                    self.pieces.append(
+                        square(origin.x + (y * unit),
+                               origin.y + (i * unit),
+                               unit))
 
         if type == "T":
-            self.left = square(150, 900, 50)
-            self.right = square(200, 900, 50)
-            self.top = square(250, 900, 50)
-            self.bottom = square(200, 950, 50)
+            for i in range(0, 3):
+                self.pieces.append(
+                    square(origin.x + (i * unit),
+                           origin.y,
+                           unit))
+            self.pieces.append(
+                square(origin.x + unit,
+                       origin.y + unit,
+                       unit)
+            )
 
         if type == "S":
-            self.left = square(150, 900, 50)
-            self.right = square(200, 900, 50)
-            self.top = square(200, 950, 50)
-            self.bottom = square(250, 950, 50)
+            for i in range(0, 2):
+                self.pieces.append(
+                    square(origin.x + (i * unit),
+                           origin.y,
+                           unit)
+                )
+            for i in range(1, 3):
+                self.pieces.append(
+                    square(origin.x + (i * unit),
+                           origin.y + unit,
+                           unit)
+                )
 
         if type == "Z":
-            self.left = square(200, 900, 50)
-            self.right = square(250, 900, 50)
-            self.top = square(150, 950, 50)
-            self.bottom = square(200, 950, 50)
+            for i in range(1, 3):
+                self.pieces.append(
+                    square(origin.x + (i * unit),
+                           origin.y,
+                           unit)
+                )
+            for i in range(0, 2):
+                self.pieces.append(
+                    square(origin.x + (i * unit),
+                           origin.y + unit,
+                           unit)
+                )
 
         if type == "J":
-            self.left = square(150, 900, 50)
-            self.right = square(200, 900, 50)
-            self.top = square(250, 900, 50)
-            self.bottom = square(150, 950, 50)
+            for i in range(0, 3):
+                self.pieces.append(
+                    square(origin.x + (i * unit),
+                           origin.y,
+                           unit)
+                )
+            self.pieces.append(
+                square(origin.x,
+                       origin.y + unit,
+                       unit)
+            )
 
         if type == "L":
-            self.left = square(150, 900, 50)
-            self.right = square(200, 900, 50)
-            self.top = square(250, 900, 50)
-            self.bottom = square(250, 950, 50)
+            for i in range(0, 3):
+                self.pieces.append(
+                    square(
+                        point(origin.x + (i * unit), origin.y),
+                        unit)
+                )
+            self.pieces.append(
+                square(
+                    point(origin.x + (2 * unit), origin.y + unit),
+                    unit)
+            )
 
     def move_right(self):
-        if self.right.origin()[0] < 450:
-            self.left.move_right()
-            self.right.move_right()
-            self.top.move_right()
-            self.bottom.move_right()
+        for p in self.pieces:
+            p.move_right()
 
     def move_left(self):
-        if self.left.origin()[0] > 0:
-            self.left.move_left()
-            self.right.move_left()
-            self.top.move_left()
-            self.bottom.move_left()
+        for p in self.pieces:
+            p.move_left()
 
     def move_up(self):
-        if self.top.origin()[1] < 950:
-            self.left.move_up()
-            self.right.move_up()
-            self.top.move_up()
-            self.bottom.move_up()
+        for p in self.pieces:
+            p.move_up()
 
     def move_down(self):
-        if self.bottom.origin()[1] > 0:
-            self.left.move_down()
-            self.right.move_down()
-            self.top.move_down()
-            self.bottom.move_down()
+        for p in self.pieces:
+            p.move_down()
 
 
 @window.event
@@ -120,28 +151,17 @@ def on_text_motion(motion):
         current_piece.move_down()
 
 
-current_piece = tetromino("T")
+current_piece = tetromino("L", point(3*unit, 20*unit))
 
 
 @window.event
 def on_draw():
     window.clear()
 
-    pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
-                                 [0, 1, 2, 0, 2, 3],
-                                 ('v2i', current_piece.left.position()))
-
-    pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
-                                 [0, 1, 2, 0, 2, 3],
-                                 ('v2i', current_piece.right.position()))
-
-    pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
-                                 [0, 1, 2, 0, 2, 3],
-                                 ('v2i', current_piece.top.position()))
-
-    pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
-                                 [0, 1, 2, 0, 2, 3],
-                                 ('v2i', current_piece.bottom.position()))
+    for c in current_piece.pieces:
+        pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
+                                     [0, 1, 2, 0, 2, 3],
+                                     ('v2i', c.position()))
 
 
 pyglet.app.run()
