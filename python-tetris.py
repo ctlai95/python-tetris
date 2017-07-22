@@ -33,30 +33,6 @@ class piece:
             )
         return t
 
-    def move_left(self):
-        tmp = self.coords
-        self.coords = []
-        for c in tmp:
-            self.coords.append(tuple((c[0]-UNIT, c[1])))
-
-    def move_right(self):
-        tmp = self.coords
-        self.coords = []
-        for c in tmp:
-            self.coords.append(tuple((c[0]+UNIT, c[1])))
-
-    def move_up(self):
-        tmp = self.coords
-        self.coords = []
-        for c in tmp:
-            self.coords.append(tuple((c[0], c[1]+UNIT)))
-
-    def move_down(self):
-        tmp = self.coords
-        self.coords = []
-        for c in tmp:
-            self.coords.append(tuple((c[0], c[1]-UNIT)))
-
     def move(self, direction):
         tmp = self.coords
         self.coords = []
