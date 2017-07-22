@@ -57,17 +57,26 @@ class piece:
         for c in tmp:
             self.coords.append(tuple((c[0], c[1]-UNIT)))
 
+    def move(self, direction):
+        tmp = self.coords
+        self.coords = []
+        if direction == pyglet.window.key.MOTION_LEFT:
+            for c in tmp:
+                self.coords.append(tuple((c[0]-UNIT, c[1])))
+        if direction == pyglet.window.key.MOTION_RIGHT:
+            for c in tmp:
+                self.coords.append(tuple((c[0]+UNIT, c[1])))
+        if direction == pyglet.window.key.MOTION_UP:
+            for c in tmp:
+                self.coords.append(tuple((c[0], c[1]+UNIT)))
+        if direction == pyglet.window.key.MOTION_DOWN:
+            for c in tmp:
+                self.coords.append(tuple((c[0], c[1]-UNIT)))
+
 
 @window.event
 def on_text_motion(motion):
-    if(motion == pyglet.window.key.MOTION_LEFT):
-        current_piece.move_left()
-    if(motion == pyglet.window.key.MOTION_RIGHT):
-        current_piece.move_right()
-    if(motion == pyglet.window.key.MOTION_UP):
-        current_piece.move_up()
-    if(motion == pyglet.window.key.MOTION_DOWN):
-        current_piece.move_down()
+    current_piece.move(motion)
 
 
 current_piece = piece(T_PIECE)
@@ -77,7 +86,7 @@ current_piece = piece(T_PIECE)
 def on_draw():
     window.clear()
 
-    for i in range(0, current_piece.size):
+    for i in range(current_piece.size):
         pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
                                      [0, 1, 2, 0, 2, 3],
                                      ('v2i', current_piece.opengl_coords()[i]))
