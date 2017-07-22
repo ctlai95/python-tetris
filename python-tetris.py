@@ -1,6 +1,13 @@
 import pyglet
 
 UNIT = 40
+O_PIECE = [(4, 20), (5, 20), (4, 21), (5, 21)]
+I_PIECE = [(3, 20), (4, 20), (5, 20), (6, 20)]
+J_PIECE = [(3, 21), (3, 20), (4, 20), (5, 20)]
+L_PIECE = [(3, 20), (4, 20), (5, 20), (5, 21)]
+S_PIECE = [(3, 20), (4, 20), (4, 21), (5, 21)]
+Z_PIECE = [(3, 21), (4, 21), (4, 20), (5, 20)]
+T_PIECE = [(3, 20), (4, 20), (5, 20), (4, 21)]
 
 window = pyglet.window.Window(10*UNIT, 22*UNIT)
 # window.push_handlers(pyglet.window.event.WindowEventLogger())
@@ -26,6 +33,30 @@ class piece:
             )
         return t
 
+    def move_left(self):
+        tmp = self.coords
+        self.coords = []
+        for c in tmp:
+            self.coords.append(tuple((c[0]-UNIT, c[1])))
+
+    def move_right(self):
+        tmp = self.coords
+        self.coords = []
+        for c in tmp:
+            self.coords.append(tuple((c[0]+UNIT, c[1])))
+
+    def move_up(self):
+        tmp = self.coords
+        self.coords = []
+        for c in tmp:
+            self.coords.append(tuple((c[0], c[1]+UNIT)))
+
+    def move_down(self):
+        tmp = self.coords
+        self.coords = []
+        for c in tmp:
+            self.coords.append(tuple((c[0], c[1]-UNIT)))
+
 
 @window.event
 def on_text_motion(motion):
@@ -39,10 +70,7 @@ def on_text_motion(motion):
         current_piece.move_down()
 
 
-current_piece = piece([(0, 0),
-                       (1, 0),
-                       (2, 0),
-                       (3, 0)])
+current_piece = piece(T_PIECE)
 
 
 @window.event
