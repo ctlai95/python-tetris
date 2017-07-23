@@ -43,6 +43,7 @@ class piece:
             for c in tmp:
                 self.coords.append(tuple((c[0]+UNIT, c[1])))
         if direction == pyglet.window.key.MOTION_UP:
+            # TODO: t4 piece rotation
             print("💩")
             self.coords = tmp
         if direction == pyglet.window.key.MOTION_DOWN:
