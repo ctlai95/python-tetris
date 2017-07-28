@@ -37,8 +37,8 @@ class piece:
             )
         return t
 
-    def move(self, direction):
-        if direction == pyglet.window.key.MOTION_LEFT:
+    def move(self, key):
+        if key == pyglet.window.key.MOTION_LEFT:
             moveable = True
             for c in self.coords:
                 if c[0] <= LEFT_BORDER*UNIT:
@@ -48,7 +48,7 @@ class piece:
                 self.coords = []
                 for c in tmp:
                     self.coords.append(tuple((c[0]-UNIT, c[1])))
-        if direction == pyglet.window.key.MOTION_RIGHT:
+        if key == pyglet.window.key.MOTION_RIGHT:
             moveable = True
             for c in self.coords:
                 if c[0]+UNIT >= RIGHT_BORDER*UNIT:
@@ -58,7 +58,7 @@ class piece:
                 self.coords = []
                 for c in tmp:
                     self.coords.append(tuple((c[0]+UNIT, c[1])))
-        if direction == pyglet.window.key.MOTION_UP:
+        if key == pyglet.window.key.MOTION_UP:
             moveable = True
             for c in self.coords:
                 if c[1]+UNIT >= UPPER_BORDER*UNIT:
@@ -68,7 +68,7 @@ class piece:
                 self.coords = []
                 for c in tmp:
                     self.coords.append(tuple((c[0], c[1]+UNIT)))
-        if direction == pyglet.window.key.MOTION_DOWN:
+        if key == pyglet.window.key.MOTION_DOWN:
             moveable = True
             for c in self.coords:
                 if c[1] <= LOWER_BORDER*UNIT:
@@ -78,14 +78,32 @@ class piece:
                 self.coords = []
                 for c in tmp:
                     self.coords.append(tuple((c[0], c[1]-UNIT)))
+        if key == pyglet.window.key.SPACE:
+            height = UPPER_BORDER*UNIT
+            for c in self.coords:
+                if c[1] < height:
+                    height = c[1]
+            tmp = self.coords
+            self.coords = []
+            for c in tmp:
+                self.coords.append(tuple((c[0], c[1]-height)))
 
 
 @window.event
 def on_text_motion(motion):
-    current_piece.move(motion)
+    if motion == pyglet.window.key.MOTION_LEFT or \
+       motion == pyglet.window.key.MOTION_RIGHT or \
+       motion == pyglet.window.key.MOTION_DOWN:
+        current_piece.move(motion)
 
 
-current_piece = piece(T_PIECE)
+@window.event
+def on_key_press(symbol, modifier):
+    if symbol == pyglet.window.key.SPACE:
+        current_piece.move(symbol)
+
+
+current_piece = piece(O_PIECE)
 
 
 @window.event
