@@ -59,15 +59,8 @@ class piece:
                 for c in tmp:
                     self.coords.append(tuple((c[0]+UNIT, c[1])))
         if key == pyglet.window.key.MOTION_UP:
-            moveable = True
-            for c in self.coords:
-                if c[1]+UNIT >= UPPER_BORDER*UNIT:
-                    moveable = False
-            if moveable is True:
-                tmp = self.coords
-                self.coords = []
-                for c in tmp:
-                    self.coords.append(tuple((c[0], c[1]+UNIT)))
+            # TODO: t4 piece rotation
+            print("💩")
         if key == pyglet.window.key.MOTION_DOWN:
             moveable = True
             for c in self.coords:
@@ -93,6 +86,7 @@ class piece:
 def on_text_motion(motion):
     if motion == pyglet.window.key.MOTION_LEFT or \
        motion == pyglet.window.key.MOTION_RIGHT or \
+       motion == pyglet.window.key.MOTION_UP or \
        motion == pyglet.window.key.MOTION_DOWN:
         current_piece.move(motion)
 
