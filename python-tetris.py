@@ -1,6 +1,10 @@
 import pyglet
 
 UNIT = 40
+LEFT_BORDER = 0
+RIGHT_BORDER = 10
+UPPER_BORDER = 22
+LOWER_BORDER = 0
 O_PIECE = [(4, 20), (5, 20), (4, 21), (5, 21)]
 I_PIECE = [(3, 20), (4, 20), (5, 20), (6, 20)]
 J_PIECE = [(3, 21), (3, 20), (4, 20), (5, 20)]
@@ -34,20 +38,46 @@ class piece:
         return t
 
     def move(self, direction):
-        tmp = self.coords
-        self.coords = []
         if direction == pyglet.window.key.MOTION_LEFT:
-            for c in tmp:
-                self.coords.append(tuple((c[0]-UNIT, c[1])))
+            moveable = True
+            for c in self.coords:
+                if c[0] <= LEFT_BORDER*UNIT:
+                    moveable = False
+            if moveable is True:
+                tmp = self.coords
+                self.coords = []
+                for c in tmp:
+                    self.coords.append(tuple((c[0]-UNIT, c[1])))
         if direction == pyglet.window.key.MOTION_RIGHT:
-            for c in tmp:
-                self.coords.append(tuple((c[0]+UNIT, c[1])))
+            moveable = True
+            for c in self.coords:
+                if c[0]+UNIT >= RIGHT_BORDER*UNIT:
+                    moveable = False
+            if moveable is True:
+                tmp = self.coords
+                self.coords = []
+                for c in tmp:
+                    self.coords.append(tuple((c[0]+UNIT, c[1])))
         if direction == pyglet.window.key.MOTION_UP:
-            for c in tmp:
-                self.coords.append(tuple((c[0], c[1]+UNIT)))
+            moveable = True
+            for c in self.coords:
+                if c[1]+UNIT >= UPPER_BORDER*UNIT:
+                    moveable = False
+            if moveable is True:
+                tmp = self.coords
+                self.coords = []
+                for c in tmp:
+                    self.coords.append(tuple((c[0], c[1]+UNIT)))
         if direction == pyglet.window.key.MOTION_DOWN:
-            for c in tmp:
-                self.coords.append(tuple((c[0], c[1]-UNIT)))
+            moveable = True
+            for c in self.coords:
+                if c[1] <= LOWER_BORDER*UNIT:
+                    moveable = False
+            if moveable is True:
+                tmp = self.coords
+                self.coords = []
+                for c in tmp:
+                    self.coords.append(tuple((c[0], c[1]-UNIT)))
 
 
 @window.event
