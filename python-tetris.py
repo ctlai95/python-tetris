@@ -86,14 +86,14 @@ class piece:
 def on_text_motion(motion):
     if motion == pyglet.window.key.MOTION_LEFT or \
        motion == pyglet.window.key.MOTION_RIGHT or \
-       motion == pyglet.window.key.MOTION_UP or \
        motion == pyglet.window.key.MOTION_DOWN:
         current_piece.move(motion)
 
 
 @window.event
 def on_key_press(symbol, modifier):
-    if symbol == pyglet.window.key.SPACE:
+    if symbol == pyglet.window.key.SPACE or \
+       symbol == pyglet.window.key.MOTION_UP:
         current_piece.move(symbol)
 
 
