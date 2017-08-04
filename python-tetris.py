@@ -2,10 +2,23 @@ import pyglet
 import config
 import piece
 
-window = pyglet.window.Window(10*config.UNIT, 22*config.UNIT)
-# window.push_handlers(pyglet.window.event.WindowEventLogger())
 
-global current_piece
+class Window(pyglet.window.Window):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.piece = Piece(O_PIECE)
+
+    def on_draw(self):
+        self.clear()
+        self.piece.render()
+
+    def on_text_motion(self, direction):
+        tmp = []
+        if direction == pyglet.window.key.MOTION_LEFT:
+            for x, y in self.piece.shape:
+                tmp.append(tuple((x-1, y)))
+            self.piece = Piece(tmp)
+
 
 
 @window.event
@@ -36,4 +49,6 @@ def on_draw():
                                      ('v2i', current_piece.opengl_coords()[i]))
 
 
-pyglet.app.run()
+if __name__ == '__main__':
+    window = Window(10*UNIT, 22*UNIT, "Python Tetris", resizable=True)
+    pyglet.app.run()
