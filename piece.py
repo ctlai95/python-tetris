@@ -2,12 +2,17 @@ import pyglet
 import config
 
 
-class piece:
+class Piece:
     def __init__(self, coords):
         self.coords = []
         for c in coords:
             self.coords.append(tuple(x * config.UNIT for x in c))
-        self.size = len(coords)
+
+    def render(self):
+        for i in range(len(self.coords)):
+            pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
+                                         [0, 1, 2, 0, 2, 3],
+                                         ('v2i', self.opengl_coords()[i]))
 
     def opengl_coords(self):
         t = []

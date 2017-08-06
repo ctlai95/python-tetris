@@ -1,6 +1,7 @@
 from pyglet.gl import pyglet
 import config
 
+
 class Piece:
     def __init__(self, coords):
         self.shape = coords
