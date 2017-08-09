@@ -25,46 +25,51 @@ class Piece:
             )
         return t
 
-    def move(self, key):
-        if key == pyglet.window.key.MOTION_LEFT:
-            moveable = True
-            for c in self.coords:
-                if c[0] <= config.LEFT_BORDER*config.UNIT:
-                    moveable = False
-            if moveable is True:
-                tmp = self.coords
-                self.coords = []
-                for c in tmp:
-                    self.coords.append(tuple((c[0]-config.UNIT, c[1])))
-        if key == pyglet.window.key.MOTION_RIGHT:
-            moveable = True
-            for c in self.coords:
-                if c[0]+config.UNIT >= config.RIGHT_BORDER*config.UNIT:
-                    moveable = False
-            if moveable is True:
-                tmp = self.coords
-                self.coords = []
-                for c in tmp:
-                    self.coords.append(tuple((c[0]+config.UNIT, c[1])))
-        if key == pyglet.window.key.MOTION_UP:
-            # TODO: t4 piece rotation
-            print("💩")
-        if key == pyglet.window.key.MOTION_DOWN:
-            moveable = True
-            for c in self.coords:
-                if c[1] <= config.LOWER_BORDER*config.UNIT:
-                    moveable = False
-            if moveable is True:
-                tmp = self.coords
-                self.coords = []
-                for c in tmp:
-                    self.coords.append(tuple((c[0], c[1]-config.UNIT)))
-        if key == pyglet.window.key.SPACE:
-            height = config.UPPER_BORDER*config.UNIT
-            for c in self.coords:
-                if c[1] < height:
-                    height = c[1]
+    def move_down(self):
+        moveable = True
+        for c in self.coords:
+            if c[1] <= config.LOWER_BORDER*config.UNIT:
+                moveable = False
+        if moveable is True:
             tmp = self.coords
             self.coords = []
             for c in tmp:
-                self.coords.append(tuple((c[0], c[1]-height)))
+                self.coords.append(tuple((c[0], c[1]-config.UNIT)))
+
+    def move_left(self):
+        moveable = True
+        for c in self.coords:
+            if c[0] <= config.LEFT_BORDER*config.UNIT:
+                moveable = False
+        if moveable is True:
+            tmp = self.coords
+            self.coords = []
+            for c in tmp:
+                self.coords.append(tuple((c[0]-config.UNIT, c[1])))
+
+    def move_right(self):
+        moveable = True
+        for c in self.coords:
+            if c[0]+config.UNIT >= config.RIGHT_BORDER*config.UNIT:
+                moveable = False
+        if moveable is True:
+            tmp = self.coords
+            self.coords = []
+            for c in tmp:
+                self.coords.append(tuple((c[0]+config.UNIT, c[1])))
+
+    def hard_drop(self):
+        height = config.UPPER_BORDER*config.UNIT
+        for c in self.coords:
+            if c[1] < height:
+                height = c[1]
+        tmp = self.coords
+        self.coords = []
+        for c in tmp:
+            self.coords.append(tuple((c[0], c[1]-height)))
+
+    def rotate_cw(self):
+        pass
+
+    def rotate_ccw(self):
+        pass

@@ -13,15 +13,18 @@ class Window(pyglet.window.Window):
         self.piece.render()
 
     def on_text_motion(self, motion):
-        if motion == pyglet.window.key.MOTION_LEFT or \
-           motion == pyglet.window.key.MOTION_RIGHT or \
-           motion == pyglet.window.key.MOTION_DOWN:
-                self.piece.move(motion)
+        if motion == pyglet.window.key.MOTION_LEFT:
+            self.piece.move_left()
+        if motion == pyglet.window.key.MOTION_RIGHT:
+            self.piece.move_right()
+        if motion == pyglet.window.key.MOTION_DOWN:
+            self.piece.move_down()
 
     def on_key_press(self, symbol, modifier):
-        if symbol == pyglet.window.key.SPACE or \
-           symbol == pyglet.window.key.MOTION_UP:
-                self.piece.move(symbol)
+        if symbol == pyglet.window.key.SPACE:
+            self.piece.hard_drop()
+        if symbol == pyglet.window.key.MOTION_UP:
+            self.piece.rotate_cw()
 
 
 if __name__ == '__main__':
