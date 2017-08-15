@@ -70,6 +70,20 @@ class Piece:
                 map(operator.add, self.point_of_rotation, (config.UNIT, 0))
                 )
 
+    def move_up(self):
+        moveable = True
+        for c in self.coords:
+            if c[1] >= config.UPPER_BORDER*config.UNIT:
+                moveable = False
+        if moveable is True:
+            tmp = self.coords
+            self.coords = []
+            for c in tmp:
+                self.coords.append(tuple((c[0], c[1]+config.UNIT)))
+            self.point_of_rotation = tuple(
+                map(operator.add, self.point_of_rotation, (0, config.UNIT))
+                )
+
     def hard_drop(self):
         height = config.UPPER_BORDER*config.UNIT
         for c in self.coords:
@@ -100,6 +114,8 @@ class Piece:
                 self.move_right()
             if c[0] >= config.RIGHT_BORDER * config.UNIT:
                 self.move_left()
+            if c[1] < config.LOWER_BORDER * config.UNIT:
+                self.move_up()
 
     def rotate_ccw(self):
         tmp = self.coords
@@ -121,3 +137,5 @@ class Piece:
                 self.move_right()
             if c[0] >= config.RIGHT_BORDER * config.UNIT:
                 self.move_left()
+            if c[1] < config.LOWER_BORDER * config.UNIT:
+                self.move_up()
