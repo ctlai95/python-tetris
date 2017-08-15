@@ -84,10 +84,16 @@ class Piece:
         tmp = self.coords
         self.coords = []
         for c in tmp:
-            normalized_point = tuple(map(operator.sub, c, self.point_of_rotation))
-            btm_right = tuple(map(operator.add, normalized_point, tuple((config.UNIT, 0))))
+            normalized_point = tuple(map(operator.sub,
+                                         c,
+                                         self.point_of_rotation))
+            btm_right = tuple(map(operator.add,
+                                  normalized_point,
+                                  tuple((config.UNIT, 0))))
             normalized_new_point = tuple((btm_right[1], -btm_right[0]))
-            new_point = tuple(map(operator.add, normalized_new_point, self.point_of_rotation))
+            new_point = tuple(map(operator.add,
+                                  normalized_new_point,
+                                  self.point_of_rotation))
             self.coords.append(tuple((int(new_point[0]), int(new_point[1]))))
         for c in self.coords:
             if c[0] < config.LEFT_BORDER * config.UNIT:
@@ -99,10 +105,16 @@ class Piece:
         tmp = self.coords
         self.coords = []
         for c in tmp:
-            normalized_point = tuple(map(operator.sub, c, self.point_of_rotation))
-            top_left = tuple(map(operator.add, normalized_point, tuple((0, config.UNIT))))
+            normalized_point = tuple(map(operator.sub,
+                                         c,
+                                         self.point_of_rotation))
+            top_left = tuple(map(operator.add,
+                                 normalized_point,
+                                 tuple((0, config.UNIT))))
             normalized_new_point = tuple((-top_left[1], top_left[0]))
-            new_point = tuple(map(operator.add, normalized_new_point, self.point_of_rotation))
+            new_point = tuple(map(operator.add,
+                                  normalized_new_point,
+                                  self.point_of_rotation))
             self.coords.append(tuple((int(new_point[0]), int(new_point[1]))))
         for c in self.coords:
             if c[0] < config.LEFT_BORDER * config.UNIT:
