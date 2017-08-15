@@ -106,7 +106,7 @@ class Piece:
                                          self.point_of_rotation))
             btm_right = tuple(map(operator.add,
                                   normalized_point,
-                                  tuple((config.UNIT, 0))))
+                                  (config.UNIT, 0)))
             normalized_new_point = tuple((btm_right[1], -btm_right[0]))
             new_point = tuple(map(operator.add,
                                   normalized_new_point,
@@ -129,7 +129,7 @@ class Piece:
                                          self.point_of_rotation))
             top_left = tuple(map(operator.add,
                                  normalized_point,
-                                 tuple((0, config.UNIT))))
+                                 (0, config.UNIT)))
             normalized_new_point = tuple((-top_left[1], top_left[0]))
             new_point = tuple(map(operator.add,
                                   normalized_new_point,
