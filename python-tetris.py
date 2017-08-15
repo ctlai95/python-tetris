@@ -6,7 +6,8 @@ import piece
 class Window(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.piece = piece.Piece(config.O_PIECE)
+        self.piece = piece.Piece(config.T_PIECE,
+                                 config.T_PIECE_ROTATION)
 
     def on_draw(self):
         self.clear()
@@ -25,6 +26,8 @@ class Window(pyglet.window.Window):
             self.piece.hard_drop()
         if symbol == pyglet.window.key.MOTION_UP:
             self.piece.rotate_cw()
+        if symbol == pyglet.window.key.Z:
+            self.piece.rotate_ccw()
 
 
 if __name__ == '__main__':
