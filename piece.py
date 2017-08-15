@@ -93,6 +93,9 @@ class Piece:
         self.coords = []
         for c in tmp:
             self.coords.append(tuple((c[0], c[1]-height)))
+        self.point_of_rotation = tuple(map(operator.add,
+                                           self.point_of_rotation,
+                                           (0, -height)))
 
     def rotate_cw(self):
         tmp = self.coords
