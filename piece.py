@@ -101,8 +101,7 @@ class Piece:
         tmp = self.coords
         self.coords = []
         for c in tmp:
-            normalized_point = tuple(map(operator.sub,
-                                         c,
+            normalized_point = tuple(map(operator.sub, c,
                                          self.point_of_rotation))
             btm_right = tuple(map(operator.add,
                                   normalized_point,
@@ -124,8 +123,7 @@ class Piece:
         tmp = self.coords
         self.coords = []
         for c in tmp:
-            normalized_point = tuple(map(operator.sub,
-                                         c,
+            normalized_point = tuple(map(operator.sub, c,
                                          self.point_of_rotation))
             top_left = tuple(map(operator.add,
                                  normalized_point,
