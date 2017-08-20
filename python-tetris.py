@@ -29,8 +29,13 @@ class Window(pyglet.window.Window):
         if symbol == pyglet.window.key.Z:
             self.piece.rotate_ccw()
 
+    def piece_gravity(self, dt):
+        self.piece.move_down()
+
 
 if __name__ == '__main__':
     window = Window(10*config.UNIT, 22*config.UNIT,
                     "Python Tetris", resizable=True)
+    pyglet.clock.schedule_interval(window.piece_gravity,
+                                   config.GRAVITY_INTERVAL)
     pyglet.app.run()
