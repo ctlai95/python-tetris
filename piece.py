@@ -1,6 +1,7 @@
 import pyglet
 import config
 import operator
+from pyglet.gl import *
 
 
 class Piece:
@@ -10,23 +11,54 @@ class Piece:
             self.coords.append(tuple(x * config.UNIT for x in c))
         self.point_of_rotation = tuple((rotation[0]*config.UNIT,
                                         rotation[1]*config.UNIT))
+        self.texture = pyglet.image.load("img/yellow.jpg").get_texture()
 
     def render(self):
+        for x in range(10):
+            for y in range(22):
+                pyglet.graphics.draw_indexed(4, pyglet.gl.GL_LINE_LOOP,
+                                     [0, 1, 2, 3],
+                                     ('v2i', (x*config.UNIT, y*config.UNIT,
+                                              (x+1)*config.UNIT, y*config.UNIT,
+                                              (x+1)*config.UNIT, (y+1)*config.UNIT,
+                                              x*config.UNIT, (y+1)*config.UNIT)))
+
+        # for i in range(len(self.coords)):
+        #     pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
+        #                                  [0, 1, 2, 0, 2, 3],
+        #                                  ('v2i', self.opengl_coords()[i]))
+        #     pyglet.graphics.draw_indexed(4, pyglet.gl.GL_LINE_LOOP,
+        #                                  [0, 1, 2, 3],
+        #                                  ('v2i', self.opengl_coords()[i]))
         for i in range(len(self.coords)):
-            pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
-                                         [0, 1, 2, 0, 2, 3],
-                                         ('v2i', self.opengl_coords()[i]))
+            glEnable(GL_TEXTURE_2D)
+            glBindTexture(GL_TEXTURE_2D, self.texture.id)
+            vlist = pyglet.graphics.vertex_list(4, self.opengl_coords()[i])
+            vlist.draw(GL_TRIANGLES)
+            glDisable(GL_TEXTURE_2D)
+
 
     def opengl_coords(self):
+        # t = []
+        # for c in self.coords:
+        #     t.append(
+        #         (c[0], c[1],
+        #          c[0]+config.UNIT, c[1],
+        #          c[0]+config.UNIT, c[1]+config.UNIT,
+        #          c[0], c[1]+config.UNIT)
+        #     )
+        # return t
+
         t = []
         for c in self.coords:
             t.append(
-                (c[0], c[1],
-                 c[0]+config.UNIT, c[1],
-                 c[0]+config.UNIT, c[1]+config.UNIT,
-                 c[0], c[1]+config.UNIT)
+                ('v2i', [c[0], c[1],
+                         c[0]+config.UNIT, c[1],
+                         c[0]+config.UNIT, c[1]+config.UNIT,
+                         c[0], c[1]+config.UNIT])
             )
         return t
+
 
     def move_down(self):
         moveable = True

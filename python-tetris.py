@@ -1,6 +1,7 @@
 import pyglet
 import config
 import piece
+from pyglet.gl import *
 
 
 class Window(pyglet.window.Window):
@@ -11,6 +12,8 @@ class Window(pyglet.window.Window):
 
     def on_draw(self):
         self.clear()
+        glClearColor(0.3, 0.3, 0.3, 0)
+        glClear(GL_COLOR_BUFFER_BIT)
         self.piece.render()
 
     def on_text_motion(self, motion):
