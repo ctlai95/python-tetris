@@ -23,10 +23,15 @@ class Window(pyglet.window.Window):
     def on_text_motion(self, motion):
         self.map.move(motion)
 
+    def on_key_press(self, symbol, modifier):
+        if symbol == pyglet.window.key.SPACE:
+            self.map.hard_drop()
+
 
 class Piece:
     def __init__(self, coords):
         self.coords = coords
+        print(coords)
 
     def opengl_coords(self, x, y):
         x *= UNIT
@@ -102,7 +107,26 @@ class Map:
 
         elif direction == pyglet.window.key.MOTION_DOWN:
             self.unfillMap()
-            self.piece.move_down()
+            moveable = True
+
+            for x, y in self.piece.coords:
+                if (y <= 0 or self.matrix[x][y - 1] == 1):
+                    moveable = False
+                    break
+
+            if moveable:
+                self.piece.move_down()
+            else:
+                self.switch_piece()
+
+    def switch_piece(self):
+        print("Switching pieces...")
+        self.fillMap()
+        print("Z-Piece: ", Z_PIECE)
+        self.piece = Piece(Z_PIECE)
+
+    def hard_drop(self):
+        pass
 
 
 if __name__ == '__main__':
