@@ -1,13 +1,16 @@
 import pyglet
+import random
 
 UNIT = 40
-O_PIECE = [(4, 20), (5, 20), (4, 21), (5, 21)]
-I_PIECE = [(3, 20), (4, 20), (5, 20), (6, 20)]
-J_PIECE = [(3, 21), (3, 20), (4, 20), (5, 20)]
-L_PIECE = [(3, 20), (4, 20), (5, 20), (5, 21)]
-S_PIECE = [(3, 20), (4, 20), (4, 21), (5, 21)]
-Z_PIECE = [(3, 21), (4, 21), (4, 20), (5, 20)]
-T_PIECE = [(3, 20), (4, 20), (5, 20), (4, 21)]
+PIECES = {
+    'O_PIECE': [(4, 20), (5, 20), (4, 21), (5, 21)],
+    'I_PIECE': [(3, 20), (4, 20), (5, 20), (6, 20)],
+    'J_PIECE': [(3, 21), (3, 20), (4, 20), (5, 20)],
+    'L_PIECE': [(3, 20), (4, 20), (5, 20), (5, 21)],
+    'S_PIECE': [(3, 20), (4, 20), (4, 21), (5, 21)],
+    'Z_PIECE': [(3, 21), (4, 21), (4, 20), (5, 20)],
+    'T_PIECE': [(3, 20), (4, 20), (5, 20), (4, 21)]
+}
 
 
 class Window(pyglet.window.Window):
@@ -30,8 +33,9 @@ class Window(pyglet.window.Window):
 
 class Piece:
     def __init__(self, coords):
-        self.coords = coords
-        print(coords)
+        self.coords = []
+        for c in coords:
+            self.coords.append(tuple(x for x in c))
 
     def opengl_coords(self, x, y):
         x *= UNIT
@@ -58,7 +62,7 @@ class Piece:
 
 class Map:
     def __init__(self, width, height):
-        self.piece = Piece(Z_PIECE)
+        self.piece = Piece(PIECES["Z_PIECE"])
         self.matrix = [[0 for x in range(height)] for y in range(width)]
 
     def fillMap(self):
@@ -74,7 +78,7 @@ class Map:
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
                 if self.matrix[i][j] == 1:
-                    print(self.piece.opengl_coords(i, j))
+                    #  print(self.piece.opengl_coords(i, j))
                     pyglet.graphics.draw_indexed(
                         4, pyglet.gl.GL_TRIANGLES,
                         [0, 1, 2, 0, 2, 3],
@@ -117,13 +121,12 @@ class Map:
             if moveable:
                 self.piece.move_down()
             else:
+                self.fillMap()
                 self.switch_piece()
 
     def switch_piece(self):
-        print("Switching pieces...")
-        self.fillMap()
-        print("Z-Piece: ", Z_PIECE)
-        self.piece = Piece(Z_PIECE)
+        random_key = random.choice(list(PIECES.keys()))
+        self.piece = Piece(PIECES[random_key])
 
     def hard_drop(self):
         pass
