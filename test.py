@@ -54,27 +54,27 @@ class Piece:
             self.coords[i] = (self.coords[i][0] + 1,
                               self.coords[i][1])
 
-    def move_down(self):
+    def move_down(self, distance):
         for i in range(len(self.coords)):
             self.coords[i] = (self.coords[i][0],
-                              self.coords[i][1] - 1)
+                              self.coords[i][1] - distance)
 
 
 class Map:
     def __init__(self, width, height):
         self.piece = Piece(PIECES["Z_PIECE"])
-        self.matrix = [[0 for x in range(height)] for y in range(width)]
+        self.matrix = [[0 for y in range(height)] for x in range(width)]
 
-    def fillMap(self):
+    def fillPiece(self):
         for x, y in self.piece.coords:
             self.matrix[x][y] = 1
 
-    def unfillMap(self):
+    def unfillPiece(self):
         for x, y in self.piece.coords:
             self.matrix[x][y] = 0
 
     def render(self):
-        self.fillMap()
+        self.fillPiece()
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
                 if self.matrix[i][j] == 1:
@@ -86,7 +86,7 @@ class Map:
 
     def move(self, direction):
         if direction == pyglet.window.key.MOTION_LEFT:
-            self.unfillMap()
+            self.unfillPiece()
             moveable = True
 
             for x, y in self.piece.coords:
@@ -97,7 +97,7 @@ class Map:
                 self.piece.move_left()
 
         elif direction == pyglet.window.key.MOTION_RIGHT:
-            self.unfillMap()
+            self.unfillPiece()
             moveable = True
 
             for x, y in self.piece.coords:
@@ -110,7 +110,7 @@ class Map:
                 self.piece.move_right()
 
         elif direction == pyglet.window.key.MOTION_DOWN:
-            self.unfillMap()
+            self.unfillPiece()
             moveable = True
 
             for x, y in self.piece.coords:
@@ -119,17 +119,55 @@ class Map:
                     break
 
             if moveable:
-                self.piece.move_down()
+                self.piece.move_down(1)
             else:
-                self.fillMap()
                 self.switch_piece()
 
     def switch_piece(self):
+        self.fillPiece()
         random_key = random.choice(list(PIECES.keys()))
         self.piece = Piece(PIECES[random_key])
 
     def hard_drop(self):
-        pass
+        self.unfillPiece()
+        height = len(self.matrix[0])
+
+        # Find the lowest point of the piece
+        for c in self.piece.coords:
+            if c[1] < height:
+                height = c[1]
+
+        print("Lowest point of the piece: ", height)
+
+        # Get columns that are the lowest point
+        columns = []
+        for x, y in self.piece.coords:
+            if height == y:
+                columns.append(x)
+
+        map_height = 0
+        for x in columns:
+            for y in reversed(range(len(self.matrix[x]))):
+                if self.matrix[x][y] == 1:
+                    if y > map_height:
+                        map_height = y
+
+        print("Map Height: ", map_height)
+        if map_height != 0:
+            height = height - map_height - 1
+
+        print("Difference between the lowest height and the"
+              " highest height: ", height)
+
+        self.piece.move_down(height)
+        self.switch_piece()
+
+    # Used for debugging purposes
+    def print_map(self):
+        for i in range(len(self.matrix)):
+            for j in range(len(self.matrix[i])):
+                if self.matrix[i][j] == 1:
+                    print(i, j)
 
 
 if __name__ == '__main__':
