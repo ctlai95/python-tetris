@@ -12,6 +12,16 @@ PIECES = {
     'T_PIECE': [(3, 20), (4, 20), (5, 20), (4, 21)]
 }
 
+PIECE_ORIGINS = {
+    'O_PIECE': (5, 21),
+    'I_PIECE': (5, 20),
+    'J_PIECE': (4.5, 20.5),
+    'L_PIECE': (4.5, 20.5),
+    'S_PIECE': (4.5, 20.5),
+    'Z_PIECE': (4.5, 20.5),
+    'T_PIECE': (4.5, 20.5)
+}
+
 
 class Window(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
@@ -29,13 +39,18 @@ class Window(pyglet.window.Window):
     def on_key_press(self, symbol, modifier):
         if symbol == pyglet.window.key.SPACE:
             self.map.hard_drop()
+        elif symbol == pyglet.window.key.MOTION_UP:
+            self.map.rotate_cw()
+        elif symbol == pyglet.window.key.Z:
+            self.map.rotate_ccw()
 
 
 class Piece:
-    def __init__(self, coords):
+    def __init__(self, coords, origin):
         self.coords = []
         for c in coords:
             self.coords.append(tuple(x for x in c))
+        self.origin = origin
 
     def opengl_coords(self, x, y):
         x *= UNIT
@@ -48,21 +63,43 @@ class Piece:
         for i in range(len(self.coords)):
             self.coords[i] = (self.coords[i][0] - 1,
                               self.coords[i][1])
+        self.origin = (self.origin[0] - 1, self.origin[1])
 
     def move_right(self):
         for i in range(len(self.coords)):
             self.coords[i] = (self.coords[i][0] + 1,
                               self.coords[i][1])
+        self.origin = (self.origin[0] + 1, self.origin[1])
 
     def move_down(self, distance):
         for i in range(len(self.coords)):
             self.coords[i] = (self.coords[i][0],
                               self.coords[i][1] - distance)
+        self.origin = (self.origin[0], self.origin[1] - distance)
+
+    def clockwise_rotation(self):
+        for i in range(len(self.coords)):
+            normalized_point = tuple(x - y for x, y in zip(self.coords[i],
+                                                           self.origin))
+            btm_right = tuple(sum(t) for t in zip(normalized_point, (1, 0)))
+            new_point = tuple(sum(t) for t in zip(self.origin,
+                              (btm_right[1], -btm_right[0])))
+            self.coords[i] = (int(new_point[0]), int(new_point[1]))
+
+    def counter_clockwise_rotation(self):
+        for i in range(len(self.coords)):
+            normalized_point = tuple(x - y for x, y in zip(self.coords[i],
+                                                           self.origin))
+            top_left = tuple(sum(t) for t in zip(normalized_point, (0, 1)))
+            new_point = tuple(sum(t) for t in zip(self.origin,
+                              (-top_left[1], top_left[0])))
+            self.coords[i] = (int(new_point[0]), int(new_point[1]))
 
 
 class Map:
     def __init__(self, width, height):
-        self.piece = Piece(PIECES["Z_PIECE"])
+        random_key = random.choice(list(PIECES.keys()))
+        self.piece = Piece(PIECES[random_key], PIECE_ORIGINS[random_key])
         self.matrix = [[0 for y in range(height)] for x in range(width)]
 
     def fillPiece(self):
@@ -83,6 +120,16 @@ class Map:
                         4, pyglet.gl.GL_TRIANGLES,
                         [0, 1, 2, 0, 2, 3],
                         ('v2i', self.piece.opengl_coords(i, j)))
+
+    def rotate_cw(self):
+        self.unfillPiece()
+        self.piece.clockwise_rotation()
+        # TODO: Kicks and boundaries
+
+    def rotate_ccw(self):
+        self.unfillPiece()
+        self.piece.counter_clockwise_rotation()
+        # TODO: Kicks and boundaries
 
     def move(self, direction):
         if direction == pyglet.window.key.MOTION_LEFT:
@@ -126,7 +173,7 @@ class Map:
     def switch_piece(self):
         self.fillPiece()
         random_key = random.choice(list(PIECES.keys()))
-        self.piece = Piece(PIECES[random_key])
+        self.piece = Piece(PIECES[random_key], PIECE_ORIGINS[random_key])
 
     def hard_drop(self):
         self.unfillPiece()
@@ -137,14 +184,13 @@ class Map:
             if c[1] < height:
                 height = c[1]
 
-        print("Lowest point of the piece: ", height)
-
         # Get columns that are the lowest point
         columns = []
         for x, y in self.piece.coords:
             if height == y:
                 columns.append(x)
 
+        # Get the highest point on the map based on those columns
         map_height = 0
         for x in columns:
             for y in reversed(range(len(self.matrix[x]))):
@@ -152,12 +198,9 @@ class Map:
                     if y > map_height:
                         map_height = y
 
-        print("Map Height: ", map_height)
         if map_height != 0:
-            height = height - map_height - 1
-
-        print("Difference between the lowest height and the"
-              " highest height: ", height)
+            if map_height < height:
+                height = height - map_height - 1
 
         self.piece.move_down(height)
         self.switch_piece()
@@ -167,7 +210,7 @@ class Map:
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
                 if self.matrix[i][j] == 1:
-                    print(i, j)
+                    print("1: ", i, j)
 
 
 if __name__ == '__main__':
