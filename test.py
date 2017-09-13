@@ -2,6 +2,7 @@ import pyglet
 import random
 
 UNIT = 40
+GRAVITY_INTERVAL = 1
 PIECES = {
     'O_PIECE': [(4, 20), (5, 20), (4, 21), (5, 21)],
     'I_PIECE': [(3, 20), (4, 20), (5, 20), (6, 20)],
@@ -44,6 +45,9 @@ class Window(pyglet.window.Window):
         elif symbol == pyglet.window.key.Z:
             self.map.rotate_ccw()
 
+    def piece_gravity(self, dt):
+        self.map.gravity()
+
 
 class Piece:
     def __init__(self, coords, origin):
@@ -76,6 +80,12 @@ class Piece:
             self.coords[i] = (self.coords[i][0],
                               self.coords[i][1] - distance)
         self.origin = (self.origin[0], self.origin[1] - distance)
+
+    def move_up(self):
+        for i in range(len(self.coords)):
+            self.coords[i] = (self.coords[i][0],
+                              self.coords[i][1] + 1)
+        self.origin = (self.origin[0], self.origin[1] + 1)
 
     def clockwise_rotation(self):
         for i in range(len(self.coords)):
@@ -124,12 +134,26 @@ class Map:
     def rotate_cw(self):
         self.unfillPiece()
         self.piece.clockwise_rotation()
-        # TODO: Kicks and boundaries
+
+        for x, y in self.piece.coords:
+            if (x < 0 or self.matrix[x - 1][y] == 1):
+                self.piece.move_right()
+            elif (x >= len(self.matrix) - 1 or self.matrix[x + 1][y] == 1):
+                self.piece.move_left()
+            elif (y <= 0 or self.matrix[x][y - 1] == 1):
+                self.piece.move_up()
 
     def rotate_ccw(self):
         self.unfillPiece()
         self.piece.counter_clockwise_rotation()
-        # TODO: Kicks and boundaries
+
+        for x, y in self.piece.coords:
+            if (x < 0 or self.matrix[x - 1][y] == 1):
+                self.piece.move_right()
+            elif (x >= len(self.matrix) - 1 or self.matrix[x + 1][y] == 1):
+                self.piece.move_left()
+            elif (y <= 0 or self.matrix[x][y - 1] == 1):
+                self.piece.move_up()
 
     def move(self, direction):
         if direction == pyglet.window.key.MOTION_LEFT:
@@ -177,33 +201,35 @@ class Map:
 
     def hard_drop(self):
         self.unfillPiece()
-        height = len(self.matrix[0])
 
-        # Find the lowest point of the piece
-        for c in self.piece.coords:
-            if c[1] < height:
-                height = c[1]
-
-        # Get columns that are the lowest point
-        columns = []
-        for x, y in self.piece.coords:
-            if height == y:
-                columns.append(x)
-
-        # Get the highest point on the map based on those columns
         map_height = 0
-        for x in columns:
-            for y in reversed(range(len(self.matrix[x]))):
+        column = 0
+        piece_height = len(self.matrix[0]) - 1
+
+        for x, y in self.piece.coords:
+            if y < piece_height:
+                column = x
+
+        for x, _ in self.piece.coords:
+            for y in range(len(self.matrix[x]) - 1):
                 if self.matrix[x][y] == 1:
-                    if y > map_height:
-                        map_height = y
+                    if map_height < y + 1:
+                        map_height = y + 1
+                        column = x
 
-        if map_height != 0:
-            if map_height < height:
-                height = height - map_height - 1
+        print("Map Height: ", map_height)
+        print("Column: ", column)
 
-        self.piece.move_down(height)
+        for x, y in self.piece.coords:
+            if x == column and piece_height > y:
+                piece_height = y
+
+        self.piece.move_down(piece_height - map_height)
         self.switch_piece()
+
+    def gravity(self):
+        self.unfillPiece()
+        self.move(pyglet.window.key.MOTION_DOWN)
 
     # Used for debugging purposes
     def print_map(self):
@@ -216,4 +242,6 @@ class Map:
 if __name__ == '__main__':
     window = Window(400, 880,
                     "Python Tetris", resizable=True)
+    #  pyglet.clock.schedule_interval(window.piece_gravity,
+                                   #  GRAVITY_INTERVAL)
     pyglet.app.run()
