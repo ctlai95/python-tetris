@@ -7,12 +7,12 @@ from pyglet.gl import *
 class Window(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.piece = piece.Piece(config.T_PIECE,
-                                 config.T_PIECE_ROTATION)
+        self.piece = piece.Piece(config.O_PIECE,
+                                 config.O_PIECE_ROTATION)
 
     def on_draw(self):
         self.clear()
-        glClearColor(0.3, 0.3, 0.3, 0)
+        glClearColor(0.9, 0.9, 0.9, 0)
         glClear(GL_COLOR_BUFFER_BIT)
         self.piece.render()
 
