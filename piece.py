@@ -11,17 +11,26 @@ class Piece:
             self.coords.append(tuple(x * config.UNIT for x in c))
         self.point_of_rotation = tuple((rotation[0]*config.UNIT,
                                         rotation[1]*config.UNIT))
-        self.texture = pyglet.image.load("img/purple.png").get_texture()
+        self.texture = pyglet.image.load("img/yellow.jpg").get_texture()
 
     def render(self):
+        # draw gridlines
         for x in range(10):
             for y in range(22):
+                left = x*config.UNIT
+                right = (x+1)*config.UNIT
+                top = (y+1)*config.UNIT
+                bottom = y*config.UNIT
+                if left is 0:
+                    left = 1
+                if bottom is 0:
+                    bottom = 1
                 pyglet.graphics.draw_indexed(4, pyglet.gl.GL_LINE_LOOP,
                                              [0, 1, 2, 3],
-                                             ('v2i', (x*config.UNIT, y*config.UNIT,
-                                                      (x+1)*config.UNIT, y*config.UNIT,
-                                                      (x+1)*config.UNIT, (y+1)*config.UNIT,
-                                                      x*config.UNIT, (y+1)*config.UNIT)))
+                                             ('v2i', (left, bottom,
+                                                      right, bottom,
+                                                      right, top,
+                                                      left, top)))
 
         # for i in range(len(self.coords)):
         #     pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
@@ -30,15 +39,19 @@ class Piece:
         #     pyglet.graphics.draw_indexed(4, pyglet.gl.GL_LINE_LOOP,
         #                                  [0, 1, 2, 3],
         #                                  ('v2i', self.opengl_coords()[i]))
-        glEnable(GL_TEXTURE_2D)
-        glBindTexture(GL_TEXTURE_2D, self.texture.id)
         for i in range(len(self.coords)):
+            glEnable(GL_TEXTURE_2D)
+            glBindTexture(GL_TEXTURE_2D, self.texture.id)
             vlist = pyglet.graphics.vertex_list(
-                4, ('v2f', self.opengl_coords()[i]),
+                4, ('v2i', self.opengl_coords()[i]),
                 ('t2f', [0, 0, 1, 0, 0, 1, 1, 1]))
+            # draw piece
             vlist.draw(GL_TRIANGLE_FAN)
-        glDisable(GL_TEXTURE_2D)
-
+            glDisable(GL_TEXTURE_2D)
+            # draw border for each square
+            pyglet.graphics.draw_indexed(4, pyglet.gl.GL_LINE_LOOP,
+                                         [0, 1, 2, 3],
+                                         ('v2i', self.opengl_coords()[i]))
 
     def opengl_coords(self):
         t = []
