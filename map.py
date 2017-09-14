@@ -35,24 +35,24 @@ class Map:
         self.piece.clockwise_rotation()
 
         for x, y in self.piece.coords:
-            if (x < 0 or self.matrix[x - 1][y] == 1):
-                self.piece.move_right()
+            if (y <= 0 or self.matrix[x][y - 1] == 1):
+                self.piece.move_up()
             elif (x >= len(self.matrix) - 1 or self.matrix[x + 1][y] == 1):
                 self.piece.move_left()
-            elif (y <= 0 or self.matrix[x][y - 1] == 1):
-                self.piece.move_up()
+            elif (x < 0 or self.matrix[x - 1][y] == 1):
+                self.piece.move_right()
 
     def rotate_ccw(self):
         self.unfillPiece()
         self.piece.counter_clockwise_rotation()
 
         for x, y in self.piece.coords:
-            if (x < 0 or self.matrix[x - 1][y] == 1):
-                self.piece.move_right()
+            if (y <= 0 or self.matrix[x][y - 1] == 1):
+                self.piece.move_up()
             elif (x >= len(self.matrix) - 1 or self.matrix[x + 1][y] == 1):
                 self.piece.move_left()
-            elif (y <= 0 or self.matrix[x][y - 1] == 1):
-                self.piece.move_up()
+            elif (x < 0 or self.matrix[x - 1][y] == 1):
+                self.piece.move_right()
 
     def move(self, direction):
         if direction == pyglet.window.key.MOTION_LEFT:
