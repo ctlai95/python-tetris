@@ -131,7 +131,11 @@ class Map:
 
     # Used for debugging purposes
     def print_map(self):
-        for i in range(len(self.matrix)):
-            for j in range(len(self.matrix[i])):
-                if self.matrix[i][j] == 1:
-                    print("1: ", i, j)
+        for i in reversed(range(len(self.matrix[0]))):
+            for j in range(len(self.matrix)):
+                if self.matrix[j][i] == 1:
+                    print(1, end=" ")
+                else:
+                    print(0, end=" ")
+            print()
+        print()
