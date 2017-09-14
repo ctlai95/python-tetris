@@ -202,29 +202,27 @@ class Map:
     def hard_drop(self):
         self.unfillPiece()
 
-        map_height = 0
-        column = 0
-        piece_height = len(self.matrix[0]) - 1
-
+        piece_heights = []
         for x, y in self.piece.coords:
-            if y < piece_height:
-                column = x
+            piece_heights.append(y)
 
+        map_heights = []
         for x, _ in self.piece.coords:
-            for y in range(len(self.matrix[x]) - 1):
+            for y in reversed(range(len(self.matrix[x]) - 1)):
                 if self.matrix[x][y] == 1:
-                    if map_height < y + 1:
-                        map_height = y + 1
-                        column = x
+                    map_heights.append(y + 1)
+                    break
+                if y == 0:
+                    map_heights.append(0)
 
-        print("Map Height: ", map_height)
-        print("Column: ", column)
+        differences = [y1 - y2 for y1, y2 in zip(piece_heights, map_heights)]
 
-        for x, y in self.piece.coords:
-            if x == column and piece_height > y:
-                piece_height = y
+        lowest_difference = len(self.matrix[0]) - 1
+        for diff in differences:
+            if diff < lowest_difference:
+                lowest_difference = diff
 
-        self.piece.move_down(piece_height - map_height)
+        self.piece.move_down(lowest_difference)
         self.switch_piece()
 
     def gravity(self):
