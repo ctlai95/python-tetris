@@ -240,6 +240,6 @@ class Map:
 if __name__ == '__main__':
     window = Window(400, 880,
                     "Python Tetris", resizable=True)
-    #  pyglet.clock.schedule_interval(window.piece_gravity,
-                                   #  GRAVITY_INTERVAL)
+    pyglet.clock.schedule_interval(window.piece_gravity,
+                                   GRAVITY_INTERVAL)
     pyglet.app.run()
