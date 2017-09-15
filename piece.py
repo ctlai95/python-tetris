@@ -5,13 +5,13 @@ from pyglet.gl import *
 
 
 class Piece:
-    def __init__(self, coords, rotation):
+    def __init__(self, coords, rotation, imagepath):
         self.coords = []
         for c in coords:
             self.coords.append(tuple(x * config.UNIT for x in c))
         self.point_of_rotation = tuple((rotation[0]*config.UNIT,
                                         rotation[1]*config.UNIT))
-        self.texture = pyglet.image.load("img/yellow.jpg").get_texture()
+        self.texture = pyglet.image.load(imagepath).get_texture()
 
     def render(self):
         # draw gridlines
