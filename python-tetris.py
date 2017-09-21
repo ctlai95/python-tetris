@@ -31,7 +31,6 @@ class Window(pyglet.window.Window):
             self.piece.rotate_cw()
         if symbol == pyglet.window.key.Z:
             self.piece.rotate_ccw()
-
     def render_grid(self):
         vertex_list = pyglet.graphics.vertex_list(4, 'v2i', 'c3B')
         for x in range(10):
@@ -56,7 +55,12 @@ class Window(pyglet.window.Window):
                                          50, 50, 50]
                 vertex_list.draw(GL_TRIANGLE_FAN)
 
+    def piece_gravity(self, dt):
+        self.piece.move_down()
+
 if __name__ == '__main__':
     window = Window(10*config.UNIT, 22*config.UNIT,
                     "Python Tetris", resizable=True)
+    pyglet.clock.schedule_interval(window.piece_gravity,
+                                   config.GRAVITY_INTERVAL)
     pyglet.app.run()
