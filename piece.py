@@ -18,15 +18,16 @@ class Piece:
 
         for i in range(len(self.coords)):
             vertex_list.vertices = self.opengl_coords()[i]
-            vertex_list.colors = [self.color[0],self.color[1],self.color[2],
-                                  self.color[0],self.color[1],self.color[2],
-                                  self.color[0],self.color[1],self.color[2],
-                                  self.color[0],self.color[1],self.color[2]]
-            vertex_list.draw(GL_TRIANGLE_FAN)
-            vertex_list.colors = [int(0.8*self.color[0]), int(0.8*self.color[1]), int(0.8*self.color[2]),
-                                  int(0.8*self.color[0]), int(0.8*self.color[1]), int(0.8*self.color[2]),
-                                  int(0.8*self.color[0]), int(0.8*self.color[1]), int(0.8*self.color[2]),
-                                  int(0.8*self.color[0]), int(0.8*self.color[1]), int(0.8*self.color[2])]
+            vertex_list.colors = [self.color[0], self.color[1], self.color[2],
+                                  self.color[0], self.color[1], self.color[2],
+                                  self.color[0], self.color[1], self.color[2],
+                                  self.color[0], self.color[1], self.color[2]]
+            vertex_list.draw(pyglet.gl.GL_TRIANGLE_FAN)
+            shade = [int(c * 0.8) for c in self.color]
+            vertex_list.colors = [shade[0], shade[1], shade[2],
+                                  shade[0], shade[1], shade[2],
+                                  shade[0], shade[1], shade[2],
+                                  shade[0], shade[1], shade[2]]
             pyglet.gl.glLineWidth(2)
             vertex_list.draw(GL_LINE_LOOP)
 
