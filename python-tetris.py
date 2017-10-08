@@ -1,6 +1,8 @@
 import pyglet
 import config
 import map
+import piece
+from pyglet.gl import *
 
 
 class Window(pyglet.window.Window):

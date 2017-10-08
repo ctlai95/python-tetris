@@ -2,44 +2,80 @@ import pyglet
 import random
 import config
 import piece
+from pyglet.gl import *
 
 
 class Map:
     def __init__(self, width, height):
         random_key = random.choice(list(config.PIECES.keys()))
         self.piece = piece.Piece(config.PIECES[random_key],
-                                 config.PIECE_ORIGINS[random_key])
+                                 config.PIECE_ORIGINS[random_key],
+                                 config.PIECE_COLOR[random_key])
         self.matrix = [[0 for y in range(height)] for x in range(width)]
+
+    def opengl_coords(self, x, y):
+        x *= config.UNIT
+        y *= config.UNIT
+        return (x, y,
+                x + config.UNIT, y,
+                x + config.UNIT, y + config.UNIT,
+                x, y + config.UNIT)
 
     def fillPiece(self):
         for x, y in self.piece.coords:
-            self.matrix[x][y] = 1
+            self.matrix[x][y] = self.piece.color
 
     def unfillPiece(self):
         for x, y in self.piece.coords:
             self.matrix[x][y] = 0
 
     def render(self):
+        self.render_grid()
         self.fillPiece()
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
-                if self.matrix[i][j] == 1:
-                    #  print(self.piece.opengl_coords(i, j))
-                    pyglet.graphics.draw_indexed(
-                        4, pyglet.gl.GL_TRIANGLES,
-                        [0, 1, 2, 0, 2, 3],
-                        ('v2i', self.piece.opengl_coords(i, j)))
+                if self.matrix[i][j] != 0:
+                    vertex_list = pyglet.graphics.vertex_list(4, 'v2i', 'c3B')
+                    vertex_list.vertices = self.opengl_coords(i, j)
+
+                    vertex_list.colors = [self.matrix[i][j][0],
+                                          self.matrix[i][j][1],
+                                          self.matrix[i][j][2]]*4
+                    vertex_list.draw(GL_TRIANGLE_FAN)
+                    shade = [int(c * 0.8) for c in self.matrix[i][j]]
+                    vertex_list.colors = [shade[0], shade[1], shade[2]]*4
+                    pyglet.gl.glLineWidth(2)
+                    vertex_list.draw(GL_LINE_LOOP)
+
+    def render_grid(self):
+        vertex_list = pyglet.graphics.vertex_list(4, 'v2i', 'c3B')
+        for i in range(len(self.matrix)):
+            for j in range(len(self.matrix[i])):
+                vertex_list.vertices = self.opengl_coords(i, j)
+
+                if (i % 2 is 0 and j % 2 is 0) or \
+                   ((i+1) % 2 is 0 and (j+1) % 2 is 0):
+                    vertex_list.colors = [40, 40, 40,
+                                          40, 40, 40,
+                                          40, 40, 40,
+                                          40, 40, 40]
+                else:
+                    vertex_list.colors = [50, 50, 50,
+                                          50, 50, 50,
+                                          50, 50, 50,
+                                          50, 50, 50]
+                vertex_list.draw(pyglet.gl.GL_TRIANGLE_FAN)
 
     def rotate_cw(self):
         self.unfillPiece()
         self.piece.clockwise_rotation()
 
         for x, y in self.piece.coords:
-            if (y <= 0 or self.matrix[x][y - 1] == 1):
+            if (y <= 0 or self.matrix[x][y - 1] != 0):
                 self.piece.move_up()
-            elif (x >= len(self.matrix) - 1 or self.matrix[x + 1][y] == 1):
+            elif (x >= len(self.matrix) - 1 or self.matrix[x + 1][y] != 0):
                 self.piece.move_left()
-            elif (x < 0 or self.matrix[x - 1][y] == 1):
+            elif (x < 0 or self.matrix[x - 1][y] != 0):
                 self.piece.move_right()
 
     def rotate_ccw(self):
@@ -47,11 +83,11 @@ class Map:
         self.piece.counter_clockwise_rotation()
 
         for x, y in self.piece.coords:
-            if (y <= 0 or self.matrix[x][y - 1] == 1):
+            if (y <= 0 or self.matrix[x][y - 1] != 0):
                 self.piece.move_up()
-            elif (x >= len(self.matrix) - 1 or self.matrix[x + 1][y] == 1):
+            elif (x >= len(self.matrix) - 1 or self.matrix[x + 1][y] != 0):
                 self.piece.move_left()
-            elif (x < 0 or self.matrix[x - 1][y] == 1):
+            elif (x < 0 or self.matrix[x - 1][y] != 0):
                 self.piece.move_right()
 
     def move(self, direction):
@@ -60,7 +96,7 @@ class Map:
             moveable = True
 
             for x, y in self.piece.coords:
-                if (x <= 0 or self.matrix[x - 1][y] == 1):
+                if (x <= 0 or self.matrix[x - 1][y] != 0):
                     moveable = False
 
             if moveable:
@@ -72,7 +108,7 @@ class Map:
 
             for x, y in self.piece.coords:
                 if (x >= len(self.matrix) - 1 or
-                        self.matrix[x + 1][y] == 1):
+                        self.matrix[x + 1][y] != 0):
                     moveable = False
                     break
 
@@ -84,7 +120,7 @@ class Map:
             moveable = True
 
             for x, y in self.piece.coords:
-                if (y <= 0 or self.matrix[x][y - 1] == 1):
+                if (y <= 0 or self.matrix[x][y - 1] != 0):
                     moveable = False
                     break
 
@@ -97,7 +133,8 @@ class Map:
         self.fillPiece()
         random_key = random.choice(list(config.PIECES.keys()))
         self.piece = piece.Piece(config.PIECES[random_key],
-                                 config.PIECE_ORIGINS[random_key])
+                                 config.PIECE_ORIGINS[random_key],
+                                 config.PIECE_COLOR[random_key])
 
     def hard_drop(self):
         self.unfillPiece()
@@ -109,7 +146,7 @@ class Map:
         map_heights = []
         for x, _ in self.piece.coords:
             for y in reversed(range(len(self.matrix[x]) - 1)):
-                if self.matrix[x][y] == 1:
+                if self.matrix[x][y] != 0:
                     map_heights.append(y + 1)
                     break
                 if y == 0:
