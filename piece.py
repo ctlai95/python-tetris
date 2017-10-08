@@ -1,21 +1,35 @@
 import pyglet
 import config
 import operator
+from pyglet.gl import *
 
 
 class Piece:
-    def __init__(self, coords, rotation):
+    def __init__(self, coords, rotation, color):
         self.coords = []
         for c in coords:
             self.coords.append(tuple(x * config.UNIT for x in c))
         self.point_of_rotation = tuple((rotation[0]*config.UNIT,
                                         rotation[1]*config.UNIT))
+        self.color = color
 
     def render(self):
+        vertex_list = pyglet.graphics.vertex_list(4, 'v2i', 'c3B')
+
         for i in range(len(self.coords)):
-            pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
-                                         [0, 1, 2, 0, 2, 3],
-                                         ('v2i', self.opengl_coords()[i]))
+            vertex_list.vertices = self.opengl_coords()[i]
+            vertex_list.colors = [self.color[0], self.color[1], self.color[2],
+                                  self.color[0], self.color[1], self.color[2],
+                                  self.color[0], self.color[1], self.color[2],
+                                  self.color[0], self.color[1], self.color[2]]
+            vertex_list.draw(pyglet.gl.GL_TRIANGLE_FAN)
+            shade = [int(c * 0.8) for c in self.color]
+            vertex_list.colors = [shade[0], shade[1], shade[2],
+                                  shade[0], shade[1], shade[2],
+                                  shade[0], shade[1], shade[2],
+                                  shade[0], shade[1], shade[2]]
+            pyglet.gl.glLineWidth(2)
+            vertex_list.draw(GL_LINE_LOOP)
 
     def opengl_coords(self):
         t = []
