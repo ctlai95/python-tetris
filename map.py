@@ -6,10 +6,10 @@ import piece
 
 class Map:
     def __init__(self, width, height):
-        random_key = random.choice(list(config.PIECES.keys()))
-        self.piece = piece.Piece(config.PIECES[random_key],
-                                 config.PIECE_ORIGINS[random_key],
-                                 config.PIECE_COLOR[random_key])
+        random_key = random.choice(list(config.SPAWN_LOCATIONS.keys()))
+        self.piece = piece.Piece(config.SPAWN_LOCATIONS[random_key],
+                                 config.ROTATION_POINTS[random_key],
+                                 config.COLORS[random_key])
         self.matrix = [[0 for y in range(height)] for x in range(width)]
 
     def opengl_coords(self, x, y):
@@ -115,10 +115,10 @@ class Map:
 
     def switch_piece(self):
         self.fill_piece()
-        random_key = random.choice(list(config.PIECES.keys()))
-        self.piece = piece.Piece(config.PIECES[random_key],
-                                 config.PIECE_ORIGINS[random_key],
-                                 config.PIECE_COLOR[random_key])
+        random_key = random.choice(list(config.SPAWN_LOCATIONS.keys()))
+        self.piece = piece.Piece(config.SPAWN_LOCATIONS[random_key],
+                                 config.ROTATION_POINTS[random_key],
+                                 config.COLORS[random_key])
 
     def hard_drop(self):
         self.unfill_piece()
