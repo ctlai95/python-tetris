@@ -1,8 +1,6 @@
 import pyglet
 import config
 import map
-import piece
-from pyglet.gl import *
 
 
 class Window(pyglet.window.Window):
@@ -21,10 +19,8 @@ class Window(pyglet.window.Window):
     def on_key_press(self, symbol, modifier):
         if symbol == pyglet.window.key.SPACE:
             self.map.hard_drop()
-        elif symbol == pyglet.window.key.MOTION_UP:
-            self.map.rotate_cw()
-        elif symbol == pyglet.window.key.Z:
-            self.map.rotate_ccw()
+        elif symbol == pyglet.window.key.UP or symbol == pyglet.window.key.Z:
+            self.map.rotation(symbol)
 
     def piece_gravity(self, dt):
         self.map.gravity()

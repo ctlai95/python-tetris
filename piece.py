@@ -1,8 +1,3 @@
-import pyglet
-import config
-from pyglet.gl import *
-
-
 class Piece:
     def __init__(self, coords, rotation_point, color):
         self.coords = []
