@@ -1,5 +1,5 @@
 import config
-import coordinate
+import point
 import tetromino
 
 
@@ -8,9 +8,9 @@ class Map:
 
     def __init__(self, width, height):
         self.matrix = [[0 for y in range(height)] for x in range(width)]
-        name = "T"
+        name = "O"
         self.current_tetromino = tetromino.Tetromino(
-            name, coordinate.Coordinate(config.SPAWN[name]))
+            name, point.Point(config.SPAWN[name]))
         self.other_tetrominos = []
 
     def render_map(self):

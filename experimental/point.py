@@ -1,9 +1,9 @@
-class Coordinate:
-    """A coordinate is a point on the map with an x and y position"""
+class Point:
+    """A point is a coordinate on the map with an x and y position"""
 
-    def __init__(self, coordinate):
-        self.x = coordinate[0]
-        self.y = coordinate[1]
+    def __init__(self, xy):  # xy is a tuple
+        self.x = xy[0]
+        self.y = xy[1]
 
     def _x(self):
         """Returns the x position"""

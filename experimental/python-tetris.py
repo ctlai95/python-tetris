@@ -1,10 +1,10 @@
 import pyglet
 
 import config
-import coordinate
+import map
+import point
 import square
 import tetromino
-import map
 
 
 class Window(pyglet.window.Window):
@@ -25,6 +25,8 @@ class Window(pyglet.window.Window):
             self.map.current_tetromino.move_right()
         elif symbol == pyglet.window.key.DOWN:
             self.map.current_tetromino.move_down()
+        elif symbol == pyglet.window.key.UP:
+            self.map.current_tetromino.rotate_cw()
         elif symbol == pyglet.window.key.ESCAPE:
             pyglet.app.exit()
 

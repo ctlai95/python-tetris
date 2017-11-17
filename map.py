@@ -35,7 +35,6 @@ class Map:
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
                 if self.matrix[i][j] != 0:
-                    print(self.opengl_coords(i, j))
                     self.render_piece(self.opengl_coords(
                         i, j - lowest_difference), config.COLORS['GHOST'] * 4)
         for i in range(len(self.matrix)):
@@ -48,7 +47,6 @@ class Map:
 
     def render_piece(self, coords, colors):
         vertex_list = pyglet.graphics.vertex_list(4, 'v2i', 'c3B')
-        print(coords)
         vertex_list.vertices = coords
         vertex_list.colors = colors
         vertex_list.draw(pyglet.gl.GL_TRIANGLE_FAN)
@@ -141,7 +139,6 @@ class Map:
         for x, y in self.piece.coords:
             piece_heights.append(y)
 
-        print("piece_heights:\t", piece_heights)
         map_heights = []
         for x, _ in self.piece.coords:
             for y in reversed(range(len(self.matrix[x]) - 1)):
@@ -151,17 +148,14 @@ class Map:
                 if y == 0:
                     map_heights.append(0)
 
-        print("map_heights:\t", map_heights)
 
         differences = [y1 - y2 for y1, y2 in zip(piece_heights, map_heights)]
 
-        print(len(self.matrix[0]) - 1)
         lowest_difference = len(self.matrix[0]) - 1
         for diff in differences:
             if diff < lowest_difference:
                 lowest_difference = diff
 
-        print("lowest_difference:\t", lowest_difference)
         return lowest_difference
 
     def gravity(self):

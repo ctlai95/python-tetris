@@ -11,6 +11,9 @@ class Square:
         self.x = coords._x()
         self.y = coords._y()
 
+    def tuple(self):
+        return (self.x, self.y)
+
     def move_left(self):
         """Moves the square 1 unit to the left"""
         self.x -= 1
