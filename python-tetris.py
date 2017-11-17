@@ -6,8 +6,8 @@ import map
 class Window(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.map = map.Map(int(self.width/config.UNIT),
-                           int(self.height/config.UNIT))
+        self.map = map.Map(int(self.width / config.UNIT),
+                           int(self.height / config.UNIT))
 
     def on_draw(self):
         self.clear()
@@ -21,6 +21,10 @@ class Window(pyglet.window.Window):
             self.map.hard_drop()
         elif symbol == pyglet.window.key.UP or symbol == pyglet.window.key.Z:
             self.map.rotation(symbol)
+        elif symbol == pyglet.window.key.ESCAPE:
+            pyglet.app.exit()
+        else:
+            pass
 
     def piece_gravity(self, dt):
         self.map.gravity()

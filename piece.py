@@ -41,7 +41,10 @@ class Piece:
                                               self.rotation_point))
             btm_right = tuple(sum(t) for t in zip(normalized_point, (1, 0)))
             new_point = tuple(sum(t) for t in zip(self.rotation_point,
-                              (btm_right[1], -btm_right[0])))
+                                                  (btm_right[1],
+                                                   -btm_right[0])
+                                                  )
+                              )
             self.coords[i] = (int(new_point[0]), int(new_point[1]))
 
     def counter_clockwise_rotation(self):
@@ -51,5 +54,5 @@ class Piece:
                                               self.rotation_point))
             top_left = tuple(sum(t) for t in zip(normalized_point, (0, 1)))
             new_point = tuple(sum(t) for t in zip(self.rotation_point,
-                              (-top_left[1], top_left[0])))
+                                                  (-top_left[1], top_left[0])))
             self.coords[i] = (int(new_point[0]), int(new_point[1]))

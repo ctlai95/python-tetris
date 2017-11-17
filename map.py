@@ -30,21 +30,32 @@ class Map:
 
     def render(self):
         self.render_grid()
+        lowest_difference = self.get_lowest_difference()
         self.fill_piece()
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
                 if self.matrix[i][j] != 0:
-                    vertex_list = pyglet.graphics.vertex_list(4, 'v2i', 'c3B')
-                    vertex_list.vertices = self.opengl_coords(i, j)
+                    print(self.opengl_coords(i, j))
+                    self.render_piece(self.opengl_coords(
+                        i, j - lowest_difference), config.COLORS['GHOST'] * 4)
+        for i in range(len(self.matrix)):
+            for j in range(len(self.matrix[i])):
+                if self.matrix[i][j] != 0:
+                    self.render_piece(self.opengl_coords(i, j),
+                                      [self.matrix[i][j][0],
+                                       self.matrix[i][j][1],
+                                       self.matrix[i][j][2]] * 4)
 
-                    vertex_list.colors = [self.matrix[i][j][0],
-                                          self.matrix[i][j][1],
-                                          self.matrix[i][j][2]]*4
-                    vertex_list.draw(pyglet.gl.GL_TRIANGLE_FAN)
-                    shade = [int(c * 0.8) for c in self.matrix[i][j]]
-                    vertex_list.colors = [shade[0], shade[1], shade[2]]*4
-                    pyglet.gl.glLineWidth(2)
-                    vertex_list.draw(pyglet.gl.GL_LINE_LOOP)
+    def render_piece(self, coords, colors):
+        vertex_list = pyglet.graphics.vertex_list(4, 'v2i', 'c3B')
+        print(coords)
+        vertex_list.vertices = coords
+        vertex_list.colors = colors
+        vertex_list.draw(pyglet.gl.GL_TRIANGLE_FAN)
+        shade = [int(c * 0.8) for c in vertex_list.colors]
+        vertex_list.colors = [shade[0], shade[1], shade[2]] * 4
+        pyglet.gl.glLineWidth(2)
+        vertex_list.draw(pyglet.gl.GL_LINE_LOOP)
 
     def render_grid(self):
         vertex_list = pyglet.graphics.vertex_list(4, 'v2i', 'c3B')
@@ -53,10 +64,10 @@ class Map:
                 vertex_list.vertices = self.opengl_coords(i, j)
 
                 if (i % 2 is 0 and j % 2 is 0) or \
-                   ((i+1) % 2 is 0 and (j+1) % 2 is 0):
-                    vertex_list.colors = [40, 40, 40]*4
+                   ((i + 1) % 2 is 0 and (j + 1) % 2 is 0):
+                    vertex_list.colors = [40, 40, 40] * 4
                 else:
-                    vertex_list.colors = [50, 50, 50]*4
+                    vertex_list.colors = [50, 50, 50] * 4
                 vertex_list.draw(pyglet.gl.GL_TRIANGLE_FAN)
 
     def rotation(self, direction):
@@ -122,11 +133,15 @@ class Map:
 
     def hard_drop(self):
         self.unfill_piece()
+        self.piece.move_down(self.get_lowest_difference())
+        self.switch_piece()
 
+    def get_lowest_difference(self):
         piece_heights = []
         for x, y in self.piece.coords:
             piece_heights.append(y)
 
+        print("piece_heights:\t", piece_heights)
         map_heights = []
         for x, _ in self.piece.coords:
             for y in reversed(range(len(self.matrix[x]) - 1)):
@@ -136,15 +151,18 @@ class Map:
                 if y == 0:
                     map_heights.append(0)
 
+        print("map_heights:\t", map_heights)
+
         differences = [y1 - y2 for y1, y2 in zip(piece_heights, map_heights)]
 
+        print(len(self.matrix[0]) - 1)
         lowest_difference = len(self.matrix[0]) - 1
         for diff in differences:
             if diff < lowest_difference:
                 lowest_difference = diff
 
-        self.piece.move_down(lowest_difference)
-        self.switch_piece()
+        print("lowest_difference:\t", lowest_difference)
+        return lowest_difference
 
     def gravity(self):
         self.unfill_piece()
