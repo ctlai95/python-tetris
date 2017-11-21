@@ -54,6 +54,7 @@ class Tetromino:
 
     def offset(self, values):
         # TODO: make it so that movements are done by adding tuples
+        pass
 
     def rotate_cw(self):
         """Rotates the tetromino by 90 degrees, clockwise"""
