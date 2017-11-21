@@ -26,6 +26,10 @@ class Square:
         """Moves the square 1 unit down"""
         self.y -= 1
 
+    def move_up(self):
+        """Moves the square 1 unit up"""
+        self.y += 1
+
     def render_square(self, color):
         """Renders the square to the screen"""
         r = renderer.Renderer(self.x, self.y, color)

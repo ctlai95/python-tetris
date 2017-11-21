@@ -1,6 +1,7 @@
-UNIT = 40
+UNIT = 40  # Length of a square in pixels
 GRAVITY_INTERVAL = 1
 
+# Each tetromino's square's position relative to the bottomleft piece
 LAYOUTS = {
     'O': [[0, 0], [1, 0], [1, 1], [0, 1]],
     'I': [[0, 0], [1, 0], [2, 0], [3, 0]],
@@ -11,6 +12,7 @@ LAYOUTS = {
     'T': [[0, 0], [1, 0], [1, 1], [2, 0]]
 }
 
+# Each tetromino's spawn location on the map
 SPAWN = {
     'O': (4, 20),
     'I': (3, 20),
@@ -21,16 +23,18 @@ SPAWN = {
     'T': (3, 20)
 }
 
+# Each tetromino's point of rotation relative to its origin
 ROTATION_POINTS = {
-    'O': (5, 21),
-    'I': (5, 20),
-    'J': (4.5, 20.5),
-    'L': (4.5, 20.5),
-    'S': (4.5, 20.5),
-    'Z': (4.5, 20.5),
-    'T': (4.5, 20.5)
+    'O': (1, 1),
+    'I': (2, 0),
+    'J': (1.5, 0.5),
+    'L': (1.5, 0.5),
+    'S': (1.5, 0.5),
+    'Z': (1.5, 0.5),
+    'T': (1.5, 0.5)
 }
 
+# Color values in RGB
 COLORS = {
     'O': [244, 197, 36],
     'T': [227, 72, 182],
