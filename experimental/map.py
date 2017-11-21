@@ -17,7 +17,7 @@ class Map:
         self.other_tetrominos = []
 
     def render_map(self):
-        """Renders the map to the screen"""
+        """Renders the map to the screen and updates matrices"""
         self.clear_matrix(self.piece_matrix)
         self.clear_matrix(self.map_matrix)
 

@@ -34,6 +34,10 @@ ROTATION_POINTS = {
     'T': (1.5, 0.5)
 }
 
+ROTATIONAL_KICKS = {
+
+}
+
 # Color values in RGB
 COLORS = {
     'O': [244, 197, 36],

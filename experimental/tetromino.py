@@ -14,6 +14,7 @@ class Tetromino:
         self.loc = location  # of the bottomleft-most piece
         self.sqrs = self.populate_sqrs()
         self.color = config.COLORS[self.name]
+        self.state = 0
 
     def populate_sqrs(self):
         """Returns the 4 squares as a list, according to name"""
@@ -22,18 +23,6 @@ class Tetromino:
             sqrs.append(square.Square(point.Point(
                 utils.tuple_add(self.loc._xy(), config.LAYOUTS[self.name][i]))))
         return sqrs
-
-    # def leftmost(self):
-    #     """Returns the left-most x-coordinate"""
-    #     return min(self.sqrs[0].x, self.sqrs[1].x, self.sqrs[2].x, self.sqrs[3].x)
-    #
-    # def rightmost(self):
-    #     """returns the right-most x-coordinate"""
-    #     return max(self.sqrs[0].x, self.sqrs[1].x, self.sqrs[2].x, self.sqrs[3].x)
-    #
-    # def bottommost(self):
-    #     """returns the bottom-most y-coordinate"""
-    #     return min(self.sqrs[0].y, self.sqrs[1].y, self.sqrs[2].y, self.sqrs[3].y)
 
     def move_left(self):
         """Moves the tetromino 1 unit to the left"""
@@ -62,6 +51,9 @@ class Tetromino:
             utils.tuple_add(self.loc._xy(), (0, 1)))
         for s in self.sqrs:
             s.move_up()
+
+    def offset(self, values):
+        # TODO: make it so that movements are done by adding tuples
 
     def rotate_cw(self):
         """Rotates the tetromino by 90 degrees, clockwise"""
