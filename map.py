@@ -69,7 +69,11 @@ class Map:
         """Renders the background squares"""
         for i in range(self.width):
             for j in range(self.height):
-                s = renderer.Renderer(i, j, config.COLORS["BACKGROUND"])
+                if (i % 2 is 0 and j % 2 is 0) or \
+                        ((i + 1) % 2 is 0 and (j + 1) % 2 is 0):
+                    s = renderer.Renderer(i, j, config.COLORS["BG_DARK"])
+                else:
+                    s = renderer.Renderer(i, j, config.COLORS["BG_LIGHT"])
                 s.draw()
 
     def print_matrix(self):
