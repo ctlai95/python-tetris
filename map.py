@@ -1,172 +1,82 @@
-import pyglet
-import random
 import config
-import piece
+import point
+import randomizer
+import renderer
+import tetromino
 
 
 class Map:
+    """Map contains all the tetrominos in the current game"""
+
     def __init__(self, width, height):
-        random_key = random.choice(list(config.SPAWN_LOCATIONS.keys()))
-        self.piece = piece.Piece(config.SPAWN_LOCATIONS[random_key],
-                                 config.ROTATION_POINTS[random_key],
-                                 config.COLORS[random_key])
-        self.matrix = [[0 for y in range(height)] for x in range(width)]
+        self.width = width
+        self.height = height
+        self.map_matrix = [[0 for y in range(height)] for x in range(width)]
+        self.piece_matrix = [[0 for y in range(height)] for x in range(width)]
+        self.random_list = randomizer.Randomizer()
+        next_piece = self.random_list.next()
+        self.current_tetromino = tetromino.Tetromino(
+            next_piece, point.Point(config.SPAWN[next_piece]), config.COLORS[next_piece])
+        self.other_tetrominos = []
 
-    def opengl_coords(self, x, y):
-        x *= config.UNIT
-        y *= config.UNIT
-        return (x, y,
-                x + config.UNIT, y,
-                x + config.UNIT, y + config.UNIT,
-                x, y + config.UNIT)
+    def render_map(self):
+        """Renders the map to the screen and updates matrices"""
+        self.clear_matrix(self.piece_matrix)
+        self.clear_matrix(self.map_matrix)
 
-    def fill_piece(self):
-        for x, y in self.piece.coords:
-            self.matrix[x][y] = self.piece.color
+        self.render_background()
 
-    def unfill_piece(self):
-        for x, y in self.piece.coords:
-            self.matrix[x][y] = 0
+        # Render current playable piece
+        self.current_tetromino.render_tetromino()
+        for s in self.current_tetromino.sqrs:
+            self.fill_matrix(self.piece_matrix, s)
 
-    def render(self):
-        self.render_grid()
-        lowest_difference = self.get_lowest_difference()
-        self.fill_piece()
-        for i in range(len(self.matrix)):
-            for j in range(len(self.matrix[i])):
-                if self.matrix[i][j] != 0:
-                    self.render_piece(self.opengl_coords(
-                        i, j - lowest_difference), config.COLORS['GHOST'] * 4)
-        for i in range(len(self.matrix)):
-            for j in range(len(self.matrix[i])):
-                if self.matrix[i][j] != 0:
-                    self.render_piece(self.opengl_coords(i, j),
-                                      [self.matrix[i][j][0],
-                                       self.matrix[i][j][1],
-                                       self.matrix[i][j][2]] * 4)
-
-    def render_piece(self, coords, colors):
-        vertex_list = pyglet.graphics.vertex_list(4, 'v2i', 'c3B')
-        vertex_list.vertices = coords
-        vertex_list.colors = colors
-        vertex_list.draw(pyglet.gl.GL_TRIANGLE_FAN)
-        shade = [int(c * 0.8) for c in vertex_list.colors]
-        vertex_list.colors = [shade[0], shade[1], shade[2]] * 4
-        pyglet.gl.glLineWidth(2)
-        vertex_list.draw(pyglet.gl.GL_LINE_LOOP)
-
-    def render_grid(self):
-        vertex_list = pyglet.graphics.vertex_list(4, 'v2i', 'c3B')
-        for i in range(len(self.matrix)):
-            for j in range(len(self.matrix[i])):
-                vertex_list.vertices = self.opengl_coords(i, j)
-
-                if (i % 2 is 0 and j % 2 is 0) or \
-                   ((i + 1) % 2 is 0 and (j + 1) % 2 is 0):
-                    vertex_list.colors = [40, 40, 40] * 4
-                else:
-                    vertex_list.colors = [50, 50, 50] * 4
-                vertex_list.draw(pyglet.gl.GL_TRIANGLE_FAN)
-
-    def rotation(self, direction):
-        self.unfill_piece()
-        if direction == pyglet.window.key.UP:
-            self.piece.clockwise_rotation()
-        elif direction == pyglet.window.key.Z:
-            self.piece.counter_clockwise_rotation()
-
-        for x, y in self.piece.coords:
-            if (y <= 0 or self.matrix[x][y - 1] != 0):
-                self.piece.move_up()
-            elif (x >= len(self.matrix) - 1 or self.matrix[x + 1][y] != 0):
-                self.piece.move_left()
-            elif (x < 0 or self.matrix[x - 1][y] != 0):
-                self.piece.move_right()
-
-    def move(self, direction):
-        if direction == pyglet.window.key.MOTION_LEFT:
-            self.unfill_piece()
-            moveable = True
-
-            for x, y in self.piece.coords:
-                if (x <= 0 or self.matrix[x - 1][y] != 0):
-                    moveable = False
-
-            if moveable:
-                self.piece.move_left()
-
-        elif direction == pyglet.window.key.MOTION_RIGHT:
-            self.unfill_piece()
-            moveable = True
-
-            for x, y in self.piece.coords:
-                if (x >= len(self.matrix) - 1 or
-                        self.matrix[x + 1][y] != 0):
-                    moveable = False
-                    break
-
-            if moveable:
-                self.piece.move_right()
-
-        elif direction == pyglet.window.key.MOTION_DOWN:
-            self.unfill_piece()
-            moveable = True
-
-            for x, y in self.piece.coords:
-                if (y <= 0 or self.matrix[x][y - 1] != 0):
-                    moveable = False
-                    break
-
-            if moveable:
-                self.piece.move_down(1)
-            else:
-                self.switch_piece()
+        # Render the rest of the map
+        for t in self.other_tetrominos:
+            t.render_tetromino()
+            for s in t.sqrs:
+                self.fill_matrix(self.map_matrix, s)
 
     def switch_piece(self):
-        self.fill_piece()
-        random_key = random.choice(list(config.SPAWN_LOCATIONS.keys()))
-        self.piece = piece.Piece(config.SPAWN_LOCATIONS[random_key],
-                                 config.ROTATION_POINTS[random_key],
-                                 config.COLORS[random_key])
+        """Appends the current piece to the map and assigns a new current piece"""
+        next_piece = self.random_list.next()
+        self.current_tetromino = tetromino.Tetromino(
+            next_piece, point.Point(config.SPAWN[next_piece]), config.COLORS[next_piece])
 
-    def hard_drop(self):
-        self.unfill_piece()
-        self.piece.move_down(self.get_lowest_difference())
-        self.switch_piece()
+    def fill_matrix(self, matrix, square):
+        """Fills the matrix at the given indices with a 1"""
+        if square.x >= self.width or square.y >= self.height:
+            print(
+                "Warning: position exceeds boundaries: [{:d}][{:d}]".format(square.x, square.y))
+            return
+        matrix[square.x][square.y] = 1
 
-    def get_lowest_difference(self):
-        piece_heights = []
-        for x, y in self.piece.coords:
-            piece_heights.append(y)
+    def unfill_matrix(self, matrix, square):
+        """Fills the matrix at the given indices with a 0"""
+        if square.x >= self.width or square.y >= self.height:
+            print(
+                "Warning: position exceeds boundaries: [{:d}][{:d}]".format(square.x, square.y))
+            return
+        matrix[square.x][square.y] = 0
 
-        map_heights = []
-        for x, _ in self.piece.coords:
-            for y in reversed(range(len(self.matrix[x]) - 1)):
-                if self.matrix[x][y] != 0:
-                    map_heights.append(y + 1)
-                    break
-                if y == 0:
-                    map_heights.append(0)
+    def clear_matrix(self, matrix):
+        """Clears the current matrix"""
+        for i in range(self.width):
+            for j in range(self.height):
+                matrix[i][j] = 0
 
+    def render_background(self):
+        """Renders the background squares"""
+        for i in range(self.width):
+            for j in range(self.height):
+                s = renderer.Renderer(i, j, config.COLORS["BACKGROUND"])
+                s.draw()
 
-        differences = [y1 - y2 for y1, y2 in zip(piece_heights, map_heights)]
-
-        lowest_difference = len(self.matrix[0]) - 1
-        for diff in differences:
-            if diff < lowest_difference:
-                lowest_difference = diff
-
-        return lowest_difference
-
-    def gravity(self):
-        self.unfill_piece()
-        self.move(pyglet.window.key.MOTION_DOWN)
-
-    # Used for debugging purposes
-    def print_map(self):
-        for i in reversed(range(len(self.matrix[0]))):
-            for j in range(len(self.matrix)):
-                if self.matrix[j][i] != 0:
+    def print_matrix(self):
+        """Prints the current matrix for debugging purposes"""
+        for i in reversed(range(self.height)):
+            for j in range(self.width):
+                if self.map_matrix[j][i] or self.piece_matrix[j][i] == 1:
                     print(1, end=" ")
                 else:
                     print(0, end=" ")
