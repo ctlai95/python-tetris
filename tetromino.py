@@ -48,8 +48,7 @@ class Tetromino:
             # replace the old square with the new square
             self.sqrs[i] = square.Square(
                 point.Point((int(new_point[0]), int(new_point[1]))))
-        self.state += 1
-        self.state %= 4
+        self.state = (self.state + 1) % 4
 
     def rotate_ccw(self):
         """Rotates the tetromino by 90 degrees, counter-clockwise"""
@@ -70,8 +69,7 @@ class Tetromino:
             # replace the old square with the new square
             self.sqrs[i] = square.Square(
                 point.Point((int(new_point[0]), int(new_point[1]))))
-        self.state -= 1
-        self.state %= 4
+        self.state = (self.state - 1) % 4
 
     def render_tetromino(self):
         """Renders the tetromino to the screen"""
