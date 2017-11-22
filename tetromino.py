@@ -13,8 +13,8 @@ class Tetromino:
         self.name = name
         self.loc = location  # of the bottomleft-most piece
         self.sqrs = self.populate_sqrs()
-        self.color = color
         self.state = 0
+        self.color = color
 
     def populate_sqrs(self):
         """Returns the 4 squares as a list, according to name"""

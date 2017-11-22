@@ -24,24 +24,41 @@ class Map:
         self.clear_matrix(self.piece_matrix)
         self.clear_matrix(self.map_matrix)
 
+        # Render the background
         self.render_background()
 
-        # Render current playable piece
-        self.current_tetromino.render_tetromino()
-        for s in self.current_tetromino.sqrs:
-            self.fill_matrix(self.piece_matrix, s)
-
-        # Render the rest of the map
+        # Render piece except current one
         for t in self.other_tetrominos:
             t.render_tetromino()
             for s in t.sqrs:
                 self.fill_matrix(self.map_matrix, s)
+
+        # Render the ghost tetromino
+        self.render_ghost()
+
+        # Render current playable tetromino
+        self.current_tetromino.render_tetromino()
+        for s in self.current_tetromino.sqrs:
+            self.fill_matrix(self.piece_matrix, s)
 
     def switch_piece(self):
         """Appends the current piece to the map and assigns a new current piece"""
         next_piece = self.random_list.next()
         self.current_tetromino = tetromino.Tetromino(
             next_piece, point.Point(config.SPAWN[next_piece]), config.COLORS[next_piece])
+
+    def render_ghost(self):
+        ghost = tetromino.Tetromino(self.current_tetromino.name,
+                                    self.current_tetromino.loc, config.COLORS["GHOST"])
+        for i in range(self.current_tetromino.state):
+            ghost.rotate_cw()
+        for i in range(self.height):
+            ghost.offset(0, -1)
+            for s in ghost.sqrs:
+                if s.y < 0 or self.map_matrix[s.x][s.y] == 1:
+                    ghost.offset(0, 1)
+                    break
+        ghost.render_tetromino()
 
     def fill_matrix(self, matrix, square):
         """Fills the matrix at the given indices with a 1"""
