@@ -34,6 +34,8 @@ ROTATION_POINTS = {
     'T': (1.5, 0.5)
 }
 
+# Wall kicks are based on the Super Rotation System (SRS)
+# http://tetris.wikia.com/wiki/SRS
 JLSTZ_WALL_KICK = {
     '0R': [(0, 0), (-1, 0), (-1, +1), (0, -2), (-1, -2)],
     'R0': [(0, 0), (+1, 0), (+1, -1), (0, +2), (+1, +2)],
