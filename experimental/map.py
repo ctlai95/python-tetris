@@ -1,5 +1,6 @@
 import config
 import point
+import randomizer
 import tetromino
 
 
@@ -11,9 +12,12 @@ class Map:
         self.height = height
         self.map_matrix = [[0 for y in range(height)] for x in range(width)]
         self.piece_matrix = [[0 for y in range(height)] for x in range(width)]
-        name = "I"
+        self.random_list = randomizer.Randomizer()
+        next_piece = self.random_list.next()
         self.current_tetromino = tetromino.Tetromino(
-            name, point.Point(config.SPAWN[name]))
+            next_piece, point.Point(config.SPAWN[next_piece]), config.COLORS[next_piece])
+        self.current_ghost = tetromino.Tetromino(
+            next_piece, point.Point(config.SPAWN[next_piece]), config.COLORS['GHOST'])
         self.other_tetrominos = []
 
     def render_map(self):
@@ -33,8 +37,10 @@ class Map:
                 self.fill_matrix(self.map_matrix, s)
 
     def switch_piece(self):
+        """Appends the current piece to the map and assigns a new current piece"""
+        next_piece = self.random_list.next()
         self.current_tetromino = tetromino.Tetromino(
-            "I", point.Point(config.SPAWN["I"]))
+            next_piece, point.Point(config.SPAWN[next_piece]), config.COLORS[next_piece])
 
     def fill_matrix(self, matrix, square):
         """Fills the matrix at the given indices with a 1"""
@@ -58,30 +64,11 @@ class Map:
             for j in range(self.height):
                 matrix[i][j] = 0
 
-    def lowest_difference(self):
-        """Returns the number of units a tetromino can drop before touching something"""
-        tetromino_lowest = self.height
-        for s in self.current_tetromino.sqrs:
-            if s.y < tetromino_lowest:
-                tetromino_lowest = s.y
-        lowest_difference = self.height
-        for s in self.current_tetromino.sqrs:
-            y = tetromino_lowest
-            count = 0
-            while y > 0:
-                y -= 1
-                if self.map_matrix[s.x][y] != 0:
-                    break
-                count += 1
-            if count < lowest_difference:
-                lowest_difference = count
-        return lowest_difference
-
     def print_matrix(self):
         """Prints the current matrix for debugging purposes"""
         for i in reversed(range(self.height)):
             for j in range(self.width):
-                if self.map_matrix[j][i] != 0:
+                if self.map_matrix[j][i] or self.piece_matrix[j][i] == 1:
                     print(1, end=" ")
                 else:
                     print(0, end=" ")

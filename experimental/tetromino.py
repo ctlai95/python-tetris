@@ -9,11 +9,11 @@ import utils
 class Tetromino:
     """A tetromino is a piece which consists of exactly 4 squares"""
 
-    def __init__(self, name, location):
+    def __init__(self, name, location, color):
         self.name = name
         self.loc = location  # of the bottomleft-most piece
         self.sqrs = self.populate_sqrs()
-        self.color = config.COLORS[self.name]
+        self.color = color
         self.state = 0
 
     def populate_sqrs(self):
@@ -24,37 +24,10 @@ class Tetromino:
                 utils.tuple_add(self.loc._xy(), config.LAYOUTS[self.name][i]))))
         return sqrs
 
-    def move_left(self):
-        """Moves the tetromino 1 unit to the left"""
-        self.loc = point.Point(
-            utils.tuple_add(self.loc._xy(), (-1, 0)))
+    def offset(self, x, y):
+        self.loc = point.Point(utils.tuple_add(self.loc._xy(), (x, y)))
         for s in self.sqrs:
-            s.move_left()
-
-    def move_right(self):
-        """Moves the tetromino 1 unit to the right"""
-        self.loc = point.Point(
-            utils.tuple_add(self.loc._xy(), (1, 0)))
-        for s in self.sqrs:
-            s.move_right()
-
-    def move_down(self):
-        """Moves the tetromino 1 unit down"""
-        self.loc = point.Point(
-            utils.tuple_add(self.loc._xy(), (0, -1)))
-        for s in self.sqrs:
-            s.move_down()
-
-    def move_up(self):
-        """Moves the tetromino 1 unit up"""
-        self.loc = point.Point(
-            utils.tuple_add(self.loc._xy(), (0, 1)))
-        for s in self.sqrs:
-            s.move_up()
-
-    def offset(self, values):
-        # TODO: make it so that movements are done by adding tuples
-        pass
+            s.offset(x, y)
 
     def rotate_cw(self):
         """Rotates the tetromino by 90 degrees, clockwise"""
@@ -75,6 +48,8 @@ class Tetromino:
             # replace the old square with the new square
             self.sqrs[i] = square.Square(
                 point.Point((int(new_point[0]), int(new_point[1]))))
+        self.state += 1
+        self.state %= 4
 
     def rotate_ccw(self):
         """Rotates the tetromino by 90 degrees, counter-clockwise"""
@@ -95,6 +70,8 @@ class Tetromino:
             # replace the old square with the new square
             self.sqrs[i] = square.Square(
                 point.Point((int(new_point[0]), int(new_point[1]))))
+        self.state -= 1
+        self.state %= 4
 
     def render_tetromino(self):
         """Renders the tetromino to the screen"""
