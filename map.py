@@ -27,7 +27,7 @@ class Map:
         # Render the background
         self.render_background()
 
-        # Render piece except current one
+        # Render pieces except current one
         for t in self.other_tetrominos:
             t.render_tetromino()
             for s in t.sqrs:
