@@ -1,6 +1,7 @@
 import config
 import point
 import randomizer
+import renderer
 import tetromino
 
 
@@ -16,14 +17,14 @@ class Map:
         next_piece = self.random_list.next()
         self.current_tetromino = tetromino.Tetromino(
             next_piece, point.Point(config.SPAWN[next_piece]), config.COLORS[next_piece])
-        self.current_ghost = tetromino.Tetromino(
-            next_piece, point.Point(config.SPAWN[next_piece]), config.COLORS['GHOST'])
         self.other_tetrominos = []
 
     def render_map(self):
         """Renders the map to the screen and updates matrices"""
         self.clear_matrix(self.piece_matrix)
         self.clear_matrix(self.map_matrix)
+
+        self.render_background()
 
         # Render current playable piece
         self.current_tetromino.render_tetromino()
@@ -63,6 +64,13 @@ class Map:
         for i in range(self.width):
             for j in range(self.height):
                 matrix[i][j] = 0
+
+    def render_background(self):
+        """Renders the background squares"""
+        for i in range(self.width):
+            for j in range(self.height):
+                s = renderer.Renderer(i, j, config.COLORS["BACKGROUND"])
+                s.draw()
 
     def print_matrix(self):
         """Prints the current matrix for debugging purposes"""

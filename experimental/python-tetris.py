@@ -18,7 +18,6 @@ class Window(pyglet.window.Window):
     def on_draw(self):
         self.clear()
         self.map.render_map()
-        self.map.print_matrix()
 
     def on_key_press(self, symbol, modifier):
         if symbol == pyglet.window.key.LEFT:
