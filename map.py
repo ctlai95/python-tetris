@@ -97,9 +97,7 @@ class Map:
         """Prints the current matrix for debugging purposes"""
         for i in reversed(range(self.height)):
             for j in range(self.width):
-                if self.map_matrix[j][i] or self.piece_matrix[j][i] == 1:
-                    print(1, end=" ")
-                else:
-                    print(0, end=" ")
+                print(self.map_matrix[j][i]
+                      or self.piece_matrix[j][i], end=" ")
             print()
         print()
