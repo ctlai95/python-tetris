@@ -20,8 +20,16 @@ class Tetromino:
         """Returns the 4 squares as a list, according to name"""
         sqrs = []
         for i in range(4):
-            sqrs.append(square.Square(point.Point(
-                utils.tuple_add(self.loc._xy(), config.LAYOUTS[self.name][i]))))
+            sqrs.append(
+                square.Square(
+                    point.Point(
+                        utils.tuple_add(
+                            self.loc._xy(),
+                            config.LAYOUTS[self.name][i]
+                        )
+                    )
+                )
+            )
         return sqrs
 
     def offset(self, x, y):

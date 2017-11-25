@@ -7,9 +7,9 @@ import renderer
 class Square:
     """The Square class renders a square with the given Coordinates"""
 
-    def __init__(self, coords):
-        self.x = coords._x()
-        self.y = coords._y()
+    def __init__(self, point):
+        self.x = point._x()
+        self.y = point._y()
 
     def tuple(self):
         return (self.x, self.y)

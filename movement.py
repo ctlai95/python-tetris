@@ -52,11 +52,7 @@ class Movement:
             return
         self.map.current_tetromino.rotate_cw()
 
-        if self.map.current_tetromino.name == "J" or \
-                self.map.current_tetromino.name == "L" or \
-                self.map.current_tetromino.name == "S" or \
-                self.map.current_tetromino.name == "T" or \
-                self.map.current_tetromino.name == "Z":
+        if self.map.current_tetromino.name in ("J", "L", "S", "T", "Z"):
             wall_kick = config.JLSTZ_WALL_KICK
         elif self.map.current_tetromino.name == "I":
             wall_kick = config.I_WALL_KICK
@@ -82,11 +78,7 @@ class Movement:
             return
         self.map.current_tetromino.rotate_ccw()
 
-        if self.map.current_tetromino.name == "J" or \
-                self.map.current_tetromino.name == "L" or \
-                self.map.current_tetromino.name == "S" or \
-                self.map.current_tetromino.name == "T" or \
-                self.map.current_tetromino.name == "Z":
+        if self.map.current_tetromino.name in ("J", "L", "S", "T", "Z"):
             wall_kick = config.JLSTZ_WALL_KICK
         elif self.map.current_tetromino.name == "I":
             wall_kick = config.I_WALL_KICK

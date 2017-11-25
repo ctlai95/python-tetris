@@ -16,7 +16,10 @@ class Map:
         self.random_list = randomizer.Randomizer()
         next_piece = self.random_list.next()
         self.current_tetromino = tetromino.Tetromino(
-            next_piece, point.Point(config.SPAWN[next_piece]), config.COLORS[next_piece])
+            next_piece,
+            point.Point(config.SPAWN[next_piece]),
+            config.COLORS[next_piece]
+        )
         self.other_tetrominos = []
 
     def render_map(self):
@@ -42,14 +45,23 @@ class Map:
             self.fill_matrix(self.piece_matrix, s)
 
     def switch_piece(self):
-        """Appends the current piece to the map and assigns a new current piece"""
+        """
+        Appends the current piece to the map and assigns a new current piece
+        """
         next_piece = self.random_list.next()
         self.current_tetromino = tetromino.Tetromino(
-            next_piece, point.Point(config.SPAWN[next_piece]), config.COLORS[next_piece])
+            next_piece,
+            point.Point(config.SPAWN[next_piece]),
+            config.COLORS[next_piece]
+        )
 
     def render_ghost(self):
-        ghost = tetromino.Tetromino(self.current_tetromino.name,
-                                    self.current_tetromino.loc, config.COLORS["GHOST"])
+        """Renders the ghost of the current tetromino"""
+        ghost = tetromino.Tetromino(
+            self.current_tetromino.name,
+            self.current_tetromino.loc,
+            config.COLORS["GHOST"]
+        )
         for i in range(self.current_tetromino.state):
             ghost.rotate_cw()
         for i in range(self.height):
@@ -64,7 +76,8 @@ class Map:
         """Fills the matrix at the given indices with a 1"""
         if square.x >= self.width or square.y >= self.height:
             print(
-                "Warning: position exceeds boundaries: [{:d}][{:d}]".format(square.x, square.y))
+                "Warning: position exceeds boundaries: " +
+                "[{:d}][{:d}]".format(square.x, square.y))
             return
         matrix[square.x][square.y] = 1
 
@@ -72,7 +85,8 @@ class Map:
         """Fills the matrix at the given indices with a 0"""
         if square.x >= self.width or square.y >= self.height:
             print(
-                "Warning: position exceeds boundaries: [{:d}][{:d}]".format(square.x, square.y))
+                "Warning: position exceeds boundaries: " +
+                "[{:d}][{:d}]".format(square.x, square.y))
             return
         matrix[square.x][square.y] = 0
 
