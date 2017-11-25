@@ -13,15 +13,23 @@ class Tetromino:
         self.name = name
         self.loc = location  # of the bottomleft-most piece
         self.sqrs = self.populate_sqrs()
-        self.color = color
         self.state = 0
+        self.color = color
 
     def populate_sqrs(self):
         """Returns the 4 squares as a list, according to name"""
         sqrs = []
         for i in range(4):
-            sqrs.append(square.Square(point.Point(
-                utils.tuple_add(self.loc._xy(), config.LAYOUTS[self.name][i]))))
+            sqrs.append(
+                square.Square(
+                    point.Point(
+                        utils.tuple_add(
+                            self.loc._xy(),
+                            config.LAYOUTS[self.name][i]
+                        )
+                    )
+                )
+            )
         return sqrs
 
     def offset(self, x, y):
