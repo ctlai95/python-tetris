@@ -50,12 +50,12 @@ class Movement:
         """Rotates a tetromino clockwise, corrected to the boundaries and other pieces"""
         if self.map.current_tetromino.name == "O":
             return
-        self.map.current_tetromino.rotate_cw()
 
         if self.map.current_tetromino.name in ("J", "L", "S", "T", "Z"):
             wall_kick = config.JLSTZ_WALL_KICK
         elif self.map.current_tetromino.name == "I":
             wall_kick = config.I_WALL_KICK
+
         if self.map.current_tetromino.state == 0:
             rotation = "0R"
         elif self.map.current_tetromino.state == 1:
@@ -64,6 +64,8 @@ class Movement:
             rotation = "2L"
         elif self.map.current_tetromino.state == 3:
             rotation = "L0"
+
+        self.map.current_tetromino.rotate_cw()
         for p in wall_kick[rotation]:
             ok = self.wall_kick_test(p[0], p[1])
             if ok:
@@ -76,12 +78,12 @@ class Movement:
         """Rotates a tetromino counter-clockwise, corrected to the boundaries and other pieces"""
         if self.map.current_tetromino.name == "O":
             return
-        self.map.current_tetromino.rotate_ccw()
 
         if self.map.current_tetromino.name in ("J", "L", "S", "T", "Z"):
             wall_kick = config.JLSTZ_WALL_KICK
         elif self.map.current_tetromino.name == "I":
             wall_kick = config.I_WALL_KICK
+
         if self.map.current_tetromino.state == 0:
             rotation = "0L"
         elif self.map.current_tetromino.state == 1:
@@ -90,6 +92,8 @@ class Movement:
             rotation = "2R"
         elif self.map.current_tetromino.state == 3:
             rotation = "L2"
+
+        self.map.current_tetromino.rotate_ccw()
         for p in wall_kick[rotation]:
             ok = self.wall_kick_test(p[0], p[1])
             if ok:
