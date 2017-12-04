@@ -1,4 +1,5 @@
-import config
+import consts
+
 import map
 import tetromino
 
@@ -52,9 +53,9 @@ class Movement:
             return
 
         if self.map.current_tetromino.name in ("J", "L", "S", "T", "Z"):
-            wall_kick = config.JLSTZ_WALL_KICK
+            wall_kick = consts.JLSTZ_WALL_KICK
         elif self.map.current_tetromino.name == "I":
-            wall_kick = config.I_WALL_KICK
+            wall_kick = consts.I_WALL_KICK
 
         if self.map.current_tetromino.state == 0:
             rotation = "0R"
@@ -80,9 +81,9 @@ class Movement:
             return
 
         if self.map.current_tetromino.name in ("J", "L", "S", "T", "Z"):
-            wall_kick = config.JLSTZ_WALL_KICK
+            wall_kick = consts.JLSTZ_WALL_KICK
         elif self.map.current_tetromino.name == "I":
-            wall_kick = config.I_WALL_KICK
+            wall_kick = consts.I_WALL_KICK
 
         if self.map.current_tetromino.state == 0:
             rotation = "0L"
@@ -122,3 +123,4 @@ class Movement:
                     break
         self.map.other_tetrominos.append(self.map.current_tetromino)
         self.map.switch_piece()
+        self.map.holdable = True

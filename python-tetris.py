@@ -1,6 +1,8 @@
-import pyglet
+import consts
 
-import config
+import pyglet
+from pyglet.window import Window, key
+
 import map
 import movement
 import point
@@ -11,8 +13,7 @@ import tetromino
 class Window(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.map = map.Map(int(self.width / config.UNIT),
-                           int(self.height / config.UNIT))
+        self.map = map.Map(10, 22)
         self.movement = movement.Movement(self.map)
 
     def on_draw(self):
@@ -32,10 +33,12 @@ class Window(pyglet.window.Window):
             self.movement.rotate_ccw()
         elif symbol == pyglet.window.key.SPACE:
             self.movement.hard_drop()
+        elif modifier & key.MOD_SHIFT:
+            self.map.hold_piece()
         elif symbol == pyglet.window.key.ESCAPE:
             pyglet.app.exit()
 
 
 if __name__ == '__main__':
-    window = Window(400, 880, "Python Tetris")
+    window = Window(14 * consts.UNIT, 22 * consts.UNIT, "Python Tetris")
     pyglet.app.run()

@@ -1,6 +1,6 @@
 from random import shuffle
 
-import config
+import consts
 
 
 class Randomizer:
@@ -19,6 +19,6 @@ class Randomizer:
 
     def new_list(self):
         self.list = []
-        for k in list(config.LAYOUTS.keys()):
+        for k in list(consts.LAYOUTS.keys()):
             self.list.append(k)
         shuffle(self.list)

@@ -1,4 +1,4 @@
-import config
+import consts
 import point
 import randomizer
 import renderer
@@ -17,10 +17,12 @@ class Map:
         next_piece = self.random_list.next()
         self.current_tetromino = tetromino.Tetromino(
             next_piece,
-            point.Point(config.SPAWN[next_piece]),
-            config.COLORS[next_piece]
+            point.Point(consts.SPAWN[next_piece]),
+            consts.COLORS[next_piece]
         )
         self.other_tetrominos = []
+        self.holdable = True
+        self.held_tetromino = None
 
     def render_map(self):
         """Renders the map to the screen and updates matrices"""
@@ -51,8 +53,8 @@ class Map:
         next_piece = self.random_list.next()
         self.current_tetromino = tetromino.Tetromino(
             next_piece,
-            point.Point(config.SPAWN[next_piece]),
-            config.COLORS[next_piece]
+            point.Point(consts.SPAWN[next_piece]),
+            consts.COLORS[next_piece]
         )
 
     def render_ghost(self):
@@ -60,7 +62,7 @@ class Map:
         ghost = tetromino.Tetromino(
             self.current_tetromino.name,
             self.current_tetromino.loc,
-            config.COLORS["GHOST"]
+            consts.COLORS["GHOST"]
         )
         for i in range(self.current_tetromino.state):
             ghost.rotate_cw()
@@ -102,10 +104,31 @@ class Map:
             for j in range(self.height):
                 if (i % 2 is 0 and j % 2 is 0) or \
                         ((i + 1) % 2 is 0 and (j + 1) % 2 is 0):
-                    s = renderer.Renderer(i, j, config.COLORS["BG_DARK"])
+                    s = renderer.Renderer(i, j, consts.COLORS["BG_DARK"])
                 else:
-                    s = renderer.Renderer(i, j, config.COLORS["BG_LIGHT"])
+                    s = renderer.Renderer(i, j, consts.COLORS["BG_LIGHT"])
                 s.draw()
+
+    def hold_piece(self):
+        """Holds the current tetromino and switches to another one"""
+        if self.holdable is False:
+            return
+        self.holdable = False
+        if self.held_tetromino is None:
+            self.held_tetromino = tetromino.Tetromino(
+                self.current_tetromino.name,
+                point.Point(consts.SPAWN[self.current_tetromino.name]),
+                consts.COLORS[self.current_tetromino.name]
+            )
+            self.switch_piece()
+        else:
+            tmp = self.current_tetromino
+            self.current_tetromino = self.held_tetromino
+            self.held_tetromino = tetromino.Tetromino(
+                tmp.name,
+                point.Point(consts.SPAWN[tmp.name]),
+                consts.COLORS[tmp.name]
+            )
 
     def print_matrix(self):
         """Prints the current matrix for debugging purposes"""

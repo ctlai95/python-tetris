@@ -1,6 +1,6 @@
 import pyglet
 
-import config
+import consts
 import renderer
 
 

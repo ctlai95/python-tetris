@@ -1,6 +1,6 @@
 import operator
 
-import config
+import consts
 import point
 import square
 import utils
@@ -11,7 +11,7 @@ class Tetromino:
 
     def __init__(self, name, location, color):
         self.name = name
-        self.loc = location  # of the bottomleft-most piece
+        self.loc = location
         self.sqrs = self.populate_sqrs()
         self.state = 0
         self.color = color
@@ -25,7 +25,7 @@ class Tetromino:
                     point.Point(
                         utils.tuple_add(
                             self.loc._xy(),
-                            config.LAYOUTS[self.name][i]
+                            consts.LAYOUTS[self.name][i]
                         )
                     )
                 )
@@ -41,7 +41,7 @@ class Tetromino:
         """Rotates the tetromino by 90 degrees, clockwise"""
         # the point of rotation, relative to the map origin
         abs_rotation_pt = utils.tuple_add(
-            self.loc._xy(), config.ROTATION_POINTS[self.name])
+            self.loc._xy(), consts.ROTATION_POINTS[self.name])
         for i in range(len(self.sqrs)):
             # the square's position relative to the point of rotation
             current_square = utils.tuple_subtract(
@@ -62,7 +62,7 @@ class Tetromino:
         """Rotates the tetromino by 90 degrees, counter-clockwise"""
         # the point of rotation, relative to the map origin
         abs_rotation_pt = utils.tuple_add(
-            self.loc._xy(), config.ROTATION_POINTS[self.name])
+            self.loc._xy(), consts.ROTATION_POINTS[self.name])
         for i in range(len(self.sqrs)):
             # the square's position relative to the point of rotation
             current_square = utils.tuple_subtract(
