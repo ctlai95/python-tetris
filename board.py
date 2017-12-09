@@ -6,7 +6,7 @@ import tetromino
 
 
 class Board:
-    """board contains all the tetrominos in the current game"""
+    """Board contains all the tetrominos in the current game"""
 
     def __init__(self, width, height):
         self.width = width
@@ -108,27 +108,6 @@ class Board:
                 else:
                     s = renderer.Renderer(i, j, config.COLORS["BG_LIGHT"])
                 s.draw()
-
-    def hold_piece(self):
-        """Holds the current tetromino and switches to another one"""
-        if self.holdable is False:
-            return
-        self.holdable = False
-        if self.held_tetromino is None:
-            self.held_tetromino = tetromino.Tetromino(
-                self.current_tetromino.name,
-                point.Point(config.SPAWN[self.current_tetromino.name]),
-                config.COLORS[self.current_tetromino.name]
-            )
-            self.switch_piece()
-        else:
-            tmp = self.current_tetromino
-            self.current_tetromino = self.held_tetromino
-            self.held_tetromino = tetromino.Tetromino(
-                tmp.name,
-                point.Point(config.SPAWN[tmp.name]),
-                config.COLORS[tmp.name]
-            )
 
     def print_matrix(self):
         """Prints the current matrix for debugging purposes"""
