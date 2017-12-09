@@ -1,7 +1,7 @@
 import pyglet
 
-import config
 import board
+import config
 import movement
 import point
 import square
@@ -11,7 +11,7 @@ import tetromino
 class Window(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.board = board.board(int(self.width / config.UNIT),
+        self.board = board.Board(int(self.width / config.UNIT),
                                  int(self.height / config.UNIT))
         self.movement = movement.Movement(self.board)
 
