@@ -12,7 +12,7 @@ LAYOUTS = {
     'T': [[0, 0], [1, 0], [1, 1], [2, 0]]
 }
 
-# Each tetromino's spawn location on the map
+# Each tetromino's spawn location on the board
 SPAWN = {
     'O': (4, 20),
     'I': (3, 20),

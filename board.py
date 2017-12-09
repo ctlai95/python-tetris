@@ -5,13 +5,13 @@ import renderer
 import tetromino
 
 
-class Map:
-    """Map contains all the tetrominos in the current game"""
+class board:
+    """board contains all the tetrominos in the current game"""
 
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.map_matrix = [[0 for y in range(height)] for x in range(width)]
+        self.board_matrix = [[0 for y in range(height)] for x in range(width)]
         self.piece_matrix = [[0 for y in range(height)] for x in range(width)]
         self.random_list = randomizer.Randomizer()
         next_piece = self.random_list.next()
@@ -22,10 +22,10 @@ class Map:
         )
         self.other_tetrominos = []
 
-    def render_map(self):
-        """Renders the map to the screen and updates matrices"""
+    def render_board(self):
+        """Renders the board to the screen and updates matrices"""
         self.clear_matrix(self.piece_matrix)
-        self.clear_matrix(self.map_matrix)
+        self.clear_matrix(self.board_matrix)
 
         # Render the background
         self.render_background()
@@ -34,7 +34,7 @@ class Map:
         for t in self.other_tetrominos:
             t.render_tetromino()
             for s in t.sqrs:
-                self.fill_matrix(self.map_matrix, s)
+                self.fill_matrix(self.board_matrix, s)
 
         # Render the ghost tetromino
         self.render_ghost()
@@ -46,7 +46,7 @@ class Map:
 
     def switch_piece(self):
         """
-        Appends the current piece to the map and assigns a new current piece
+        Appends the current piece to the board and assigns a new current piece
         """
         next_piece = self.random_list.next()
         self.current_tetromino = tetromino.Tetromino(
@@ -67,7 +67,7 @@ class Map:
         for i in range(self.height):
             ghost.offset(0, -1)
             for s in ghost.sqrs:
-                if s.y < 0 or self.map_matrix[s.x][s.y] == 1:
+                if s.y < 0 or self.board_matrix[s.x][s.y] == 1:
                     ghost.offset(0, 1)
                     break
         ghost.render_tetromino()
@@ -111,7 +111,7 @@ class Map:
         """Prints the current matrix for debugging purposes"""
         for i in reversed(range(self.height)):
             for j in range(self.width):
-                print(self.map_matrix[j][i]
+                print(self.board_matrix[j][i]
                       or self.piece_matrix[j][i], end=" ")
             print()
         print()

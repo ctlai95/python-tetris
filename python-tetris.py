@@ -1,7 +1,7 @@
 import pyglet
 
 import config
-import map
+import board
 import movement
 import point
 import square
@@ -11,13 +11,13 @@ import tetromino
 class Window(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.map = map.Map(int(self.width / config.UNIT),
-                           int(self.height / config.UNIT))
-        self.movement = movement.Movement(self.map)
+        self.board = board.board(int(self.width / config.UNIT),
+                                 int(self.height / config.UNIT))
+        self.movement = movement.Movement(self.board)
 
     def on_draw(self):
         self.clear()
-        self.map.render_map()
+        self.board.render_board()
 
     def on_key_press(self, symbol, modifier):
         if symbol == pyglet.window.key.LEFT:

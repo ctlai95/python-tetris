@@ -39,7 +39,7 @@ class Tetromino:
 
     def rotate_cw(self):
         """Rotates the tetromino by 90 degrees, clockwise"""
-        # the point of rotation, relative to the map origin
+        # the point of rotation, relative to the board origin
         abs_rotation_pt = utils.tuple_add(
             self.loc._xy(), config.ROTATION_POINTS[self.name])
         for i in range(len(self.sqrs)):
@@ -60,7 +60,7 @@ class Tetromino:
 
     def rotate_ccw(self):
         """Rotates the tetromino by 90 degrees, counter-clockwise"""
-        # the point of rotation, relative to the map origin
+        # the point of rotation, relative to the board origin
         abs_rotation_pt = utils.tuple_add(
             self.loc._xy(), config.ROTATION_POINTS[self.name])
         for i in range(len(self.sqrs)):
