@@ -12,7 +12,9 @@ import tetromino
 class Window(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.map = map.Map(10, 22)
+        self.map = map.Map()
+        self.map = map.Map(int(self.width / config.UNIT),
+                           int(self.height / config.UNIT))
         self.movement = movement.Movement(self.map)
 
     def on_draw(self):
@@ -39,5 +41,5 @@ class Window(pyglet.window.Window):
 
 
 if __name__ == '__main__':
-    window = Window(10 * config.UNIT, 22 * config.UNIT, "Python Tetris")
+    window = Window(400, 880, "Python Tetris")
     pyglet.app.run()
