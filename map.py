@@ -2,7 +2,6 @@ import config
 import point
 import randomizer
 import renderer
-import square
 import tetromino
 
 
