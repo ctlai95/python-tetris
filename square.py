@@ -1,15 +1,16 @@
 import pyglet
 
-import consts
+import config
 import renderer
 
 
 class Square:
     """The Square class renders a square with the given Coordinates"""
 
-    def __init__(self, point):
+    def __init__(self, point, length):
         self.x = point._x()
         self.y = point._y()
+        self.length = length
 
     def tuple(self):
         return (self.x, self.y)
@@ -20,5 +21,5 @@ class Square:
 
     def render_square(self, color):
         """Renders the square to the screen"""
-        r = renderer.Renderer(self.x, self.y, color)
+        r = renderer.Renderer(self.x, self.y, self.length, color)
         r.draw()

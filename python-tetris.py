@@ -1,8 +1,7 @@
-import consts
-
 import pyglet
 from pyglet.window import Window, key
 
+import config
 import map
 import movement
 import point
@@ -40,5 +39,5 @@ class Window(pyglet.window.Window):
 
 
 if __name__ == '__main__':
-    window = Window(14 * consts.UNIT, 22 * consts.UNIT, "Python Tetris")
+    window = Window(10 * config.UNIT, 22 * config.UNIT, "Python Tetris")
     pyglet.app.run()

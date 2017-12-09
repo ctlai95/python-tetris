@@ -1,6 +1,6 @@
 import operator
 
-import consts
+import config
 import point
 import square
 import utils
@@ -25,9 +25,10 @@ class Tetromino:
                     point.Point(
                         utils.tuple_add(
                             self.loc._xy(),
-                            consts.LAYOUTS[self.name][i]
+                            config.LAYOUTS[self.name][i]
                         )
-                    )
+                    ),
+                    1
                 )
             )
         return sqrs
@@ -41,7 +42,7 @@ class Tetromino:
         """Rotates the tetromino by 90 degrees, clockwise"""
         # the point of rotation, relative to the map origin
         abs_rotation_pt = utils.tuple_add(
-            self.loc._xy(), consts.ROTATION_POINTS[self.name])
+            self.loc._xy(), config.ROTATION_POINTS[self.name])
         for i in range(len(self.sqrs)):
             # the square's position relative to the point of rotation
             current_square = utils.tuple_subtract(
@@ -55,14 +56,15 @@ class Tetromino:
                 (btm_right[1], -btm_right[0]), abs_rotation_pt)
             # replace the old square with the new square
             self.sqrs[i] = square.Square(
-                point.Point((int(new_point[0]), int(new_point[1]))))
+                point.Point((int(new_point[0]), int(new_point[1]))),
+                1)
         self.state = (self.state + 1) % 4
 
     def rotate_ccw(self):
         """Rotates the tetromino by 90 degrees, counter-clockwise"""
         # the point of rotation, relative to the map origin
         abs_rotation_pt = utils.tuple_add(
-            self.loc._xy(), consts.ROTATION_POINTS[self.name])
+            self.loc._xy(), config.ROTATION_POINTS[self.name])
         for i in range(len(self.sqrs)):
             # the square's position relative to the point of rotation
             current_square = utils.tuple_subtract(
@@ -76,7 +78,8 @@ class Tetromino:
                 (-top_left[1], top_left[0]), abs_rotation_pt)
             # replace the old square with the new square
             self.sqrs[i] = square.Square(
-                point.Point((int(new_point[0]), int(new_point[1]))))
+                point.Point((int(new_point[0]), int(new_point[1]))),
+                1)
         self.state = (self.state - 1) % 4
 
     def render_tetromino(self):

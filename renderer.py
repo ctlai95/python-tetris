@@ -1,14 +1,15 @@
 import pyglet
 
-import consts
+import config
 
 
 class Renderer:
     """Renderer handles drawing of colored squares at a given position"""
 
-    def __init__(self, x_pos, y_pos, color):
-        self.x = x_pos * consts.UNIT
-        self.y = y_pos * consts.UNIT
+    def __init__(self, x_pos, y_pos, length, color):
+        self.x = x_pos * config.UNIT
+        self.y = y_pos * config.UNIT
+        self.length = length * config.UNIT
         self.color = color
 
     def draw(self):
@@ -16,9 +17,9 @@ class Renderer:
         and color and draws it to the screen"""
         vertex_list = pyglet.graphics.vertex_list(4, 'v2i', 'c3B')
         vertex_list.vertices = [self.x, self.y,
-                                self.x + consts.UNIT, self.y,
-                                self.x + consts.UNIT, self.y + consts.UNIT,
-                                self.x, self.y + consts.UNIT]
+                                self.x + self.length, self.y,
+                                self.x + self.length, self.y + self.length,
+                                self.x, self.y + self.length]
         vertex_list.colors = self.color * 4
         vertex_list.draw(pyglet.gl.GL_TRIANGLE_FAN)
         # The border uses the same vertices and a darker shade of the same color
