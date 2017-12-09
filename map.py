@@ -105,9 +105,9 @@ class Map:
             for j in range(self.height):
                 if (i % 2 is 0 and j % 2 is 0) or \
                         ((i + 1) % 2 is 0 and (j + 1) % 2 is 0):
-                    s = renderer.Renderer(i, j, 1, config.COLORS["BG_DARK"])
+                    s = renderer.Renderer(i, j, config.COLORS["BG_DARK"])
                 else:
-                    s = renderer.Renderer(i, j, 1, config.COLORS["BG_LIGHT"])
+                    s = renderer.Renderer(i, j, config.COLORS["BG_LIGHT"])
                 s.draw()
 
     def hold_piece(self):

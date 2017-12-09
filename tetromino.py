@@ -11,7 +11,7 @@ class Tetromino:
 
     def __init__(self, name, location, color):
         self.name = name
-        self.loc = location
+        self.loc = location  # of the bottomleft-most piece
         self.sqrs = self.populate_sqrs()
         self.state = 0
         self.color = color
@@ -27,8 +27,7 @@ class Tetromino:
                             self.loc._xy(),
                             config.LAYOUTS[self.name][i]
                         )
-                    ),
-                    1
+                    )
                 )
             )
         return sqrs
@@ -56,8 +55,7 @@ class Tetromino:
                 (btm_right[1], -btm_right[0]), abs_rotation_pt)
             # replace the old square with the new square
             self.sqrs[i] = square.Square(
-                point.Point((int(new_point[0]), int(new_point[1]))),
-                1)
+                point.Point((int(new_point[0]), int(new_point[1]))))
         self.state = (self.state + 1) % 4
 
     def rotate_ccw(self):
@@ -78,8 +76,7 @@ class Tetromino:
                 (-top_left[1], top_left[0]), abs_rotation_pt)
             # replace the old square with the new square
             self.sqrs[i] = square.Square(
-                point.Point((int(new_point[0]), int(new_point[1]))),
-                1)
+                point.Point((int(new_point[0]), int(new_point[1]))))
         self.state = (self.state - 1) % 4
 
     def render_tetromino(self):
