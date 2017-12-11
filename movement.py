@@ -56,14 +56,14 @@ class Movement:
         elif self.map.current_tetromino.name == "I":
             wall_kick = config.I_WALL_KICK
 
-        if self.map.current_tetromino.state == 0:
-            rotation = "0R"
-        elif self.map.current_tetromino.state == 1:
-            rotation = "R2"
-        elif self.map.current_tetromino.state == 2:
-            rotation = "2L"
-        elif self.map.current_tetromino.state == 3:
-            rotation = "L0"
+        if self.map.current_tetromino.state is tetromino.State.ZERO:
+            rotation = "0->1"
+        elif self.map.current_tetromino.state is tetromino.State.ONE:
+            rotation = "1->2"
+        elif self.map.current_tetromino.state is tetromino.State.TWO:
+            rotation = "2->3"
+        elif self.map.current_tetromino.state is tetromino.State.THREE:
+            rotation = "3->0"
 
         self.map.current_tetromino.rotate_cw()
         for p in wall_kick[rotation]:
@@ -84,14 +84,14 @@ class Movement:
         elif self.map.current_tetromino.name == "I":
             wall_kick = config.I_WALL_KICK
 
-        if self.map.current_tetromino.state == 0:
-            rotation = "0L"
-        elif self.map.current_tetromino.state == 1:
-            rotation = "R0"
-        elif self.map.current_tetromino.state == 2:
-            rotation = "2R"
-        elif self.map.current_tetromino.state == 3:
-            rotation = "L2"
+        if self.map.current_tetromino.state is tetromino.State.ZERO:
+            rotation = "0->3"
+        elif self.map.current_tetromino.state is tetromino.State.ONE:
+            rotation = "1->0"
+        elif self.map.current_tetromino.state is tetromino.State.TWO:
+            rotation = "2->1"
+        elif self.map.current_tetromino.state is tetromino.State.THREE:
+            rotation = "3->2"
 
         self.map.current_tetromino.rotate_ccw()
         for p in wall_kick[rotation]:
