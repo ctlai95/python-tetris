@@ -1,6 +1,6 @@
 import config
-import map
-import tetromino
+from map import map
+from tetromino import tetromino
 
 
 class Movement:

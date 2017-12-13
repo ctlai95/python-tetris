@@ -1,11 +1,8 @@
 import pyglet
 
 import config
-import map
-import movement
-import point
-import square
-import tetromino
+from map import map
+from movement import movement
 
 
 class Window(pyglet.window.Window):

@@ -1,7 +1,4 @@
-import pyglet
-
-import config
-import renderer
+from renderer import renderer
 
 
 class Square:

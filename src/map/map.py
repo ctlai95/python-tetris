@@ -1,8 +1,8 @@
 import config
-import point
-import randomizer
-import renderer
-import tetromino
+from point import point
+from randomizer import randomizer
+from renderer import renderer
+from tetromino import tetromino
 
 
 class Map:

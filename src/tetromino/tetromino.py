@@ -1,9 +1,9 @@
 import operator
 
 import config
-import point
-import square
-import utils
+from point import point
+from square import square
+from utils import utils
 
 
 class Tetromino:
