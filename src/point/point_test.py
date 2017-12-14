@@ -1,4 +1,4 @@
-import point
+from src.point import point
 
 
 def test_x():

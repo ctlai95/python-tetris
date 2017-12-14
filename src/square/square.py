@@ -1,4 +1,4 @@
-from renderer import renderer
+from src.renderer import renderer
 
 
 class Square:

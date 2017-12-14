@@ -1,9 +1,9 @@
 import operator
 
-import config
-from point import point
-from square import square
-from utils import utils
+from src import config
+from src.point.point import Point
+from src.square.square import Square
+from src.utils import tuples
 
 
 class Tetromino:
@@ -21,9 +21,9 @@ class Tetromino:
         sqrs = []
         for i in range(4):
             sqrs.append(
-                square.Square(
-                    point.Point(
-                        utils.tuple_add(
+                Square(
+                    Point(
+                        tuples.add(
                             self.loc._xy(),
                             config.LAYOUTS[self.name][i]
                         )
@@ -33,50 +33,50 @@ class Tetromino:
         return sqrs
 
     def offset(self, x, y):
-        self.loc = point.Point(utils.tuple_add(self.loc._xy(), (x, y)))
+        self.loc = Point(tuples.add(self.loc._xy(), (x, y)))
         for s in self.sqrs:
             s.offset(x, y)
 
     def rotate_cw(self):
         """Rotates the tetromino by 90 degrees, clockwise"""
         # the point of rotation, relative to the map origin
-        abs_rotation_pt = utils.tuple_add(
+        abs_rotation_pt = tuples.add(
             self.loc._xy(), config.ROTATION_POINTS[self.name])
         for i in range(len(self.sqrs)):
             # the square's position relative to the point of rotation
-            current_square = utils.tuple_subtract(
+            current_square = tuples.subtract(
                 self.sqrs[i].tuple(), abs_rotation_pt)
             # the square's bottom right point, which will be the new
             # square origin after the rotation
-            btm_right = utils.tuple_add(
+            btm_right = tuples.add(
                 current_square, (1, 0))
             # x -> y and y -> -x for rotation about the origin
-            new_point = utils.tuple_add(
+            new_point = tuples.add(
                 (btm_right[1], -btm_right[0]), abs_rotation_pt)
             # replace the old square with the new square
-            self.sqrs[i] = square.Square(
-                point.Point((int(new_point[0]), int(new_point[1]))))
+            self.sqrs[i] = Square(
+                Point((int(new_point[0]), int(new_point[1]))))
         self.state = (self.state + 1) % 4
 
     def rotate_ccw(self):
         """Rotates the tetromino by 90 degrees, counter-clockwise"""
         # the point of rotation, relative to the map origin
-        abs_rotation_pt = utils.tuple_add(
+        abs_rotation_pt = tuples.add(
             self.loc._xy(), config.ROTATION_POINTS[self.name])
         for i in range(len(self.sqrs)):
             # the square's position relative to the point of rotation
-            current_square = utils.tuple_subtract(
+            current_square = tuples.subtract(
                 self.sqrs[i].tuple(), abs_rotation_pt)
             # the square's bottom right point, which will be the new
             # square origin after the rotation
-            top_left = utils.tuple_add(
+            top_left = tuples.add(
                 current_square, (0, 1))
             # x -> y and y -> -x for rotation about the origin
-            new_point = utils.tuple_add(
+            new_point = tuples.add(
                 (-top_left[1], top_left[0]), abs_rotation_pt)
             # replace the old square with the new square
-            self.sqrs[i] = square.Square(
-                point.Point((int(new_point[0]), int(new_point[1]))))
+            self.sqrs[i] = Square(
+                Point((int(new_point[0]), int(new_point[1]))))
         self.state = (self.state - 1) % 4
 
     def render_tetromino(self):

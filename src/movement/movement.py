@@ -1,6 +1,6 @@
 import config
-from map import map
-from tetromino import tetromino
+import map
+import tetromino
 
 
 class Movement:
@@ -21,7 +21,8 @@ class Movement:
         """If the current tetromino is moveable, move 1 unit right"""
         moveable = True
         for s in self.map.current_tetromino.sqrs:
-            if s.x + 1 >= self.map.width or self.map.map_matrix[s.x + 1][s.y] != 0:
+            if s.x + 1 >= self.map.width or \
+                    self.map.map_matrix[s.x + 1][s.y] != 0:
                 moveable = False
                 break
         if moveable:
@@ -47,7 +48,9 @@ class Movement:
             self.map.current_tetromino.offset(0, 1)
 
     def rotate_cw(self):
-        """Rotates a tetromino clockwise, corrected to the boundaries and other pieces"""
+        """
+        Rotates a tetromino clockwise, corrected to the boundaries and other pieces
+        """
         if self.map.current_tetromino.name == "O":
             return
 

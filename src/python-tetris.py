@@ -1,8 +1,8 @@
 import pyglet
 
 import config
-from map import map
-from movement import movement
+from src.map import map
+from src.movement import movement
 
 
 class Window(pyglet.window.Window):

@@ -1,4 +1,4 @@
-import randomizer
+from src.randomizer import randomizer
 
 
 def test_new_list():

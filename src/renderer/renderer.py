@@ -1,6 +1,6 @@
 import pyglet
 
-import config
+from src import config
 
 
 class Renderer:
