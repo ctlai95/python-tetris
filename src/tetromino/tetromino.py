@@ -21,15 +21,8 @@ class Tetromino:
         sqrs = []
         for i in range(4):
             sqrs.append(
-                Square(
-                    Point(
-                        tuples.add(
-                            self.loc._xy(),
-                            config.LAYOUTS[self.name][i]
-                        )
-                    )
-                )
-            )
+                Square(Point(tuples.add(self.loc._xy(),
+                                        config.LAYOUTS[self.name][i]))))
         return sqrs
 
     def offset(self, x, y):

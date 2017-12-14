@@ -1,6 +1,4 @@
-import config
-import map
-import tetromino
+from src import config
 
 
 class Movement:
@@ -49,7 +47,7 @@ class Movement:
 
     def rotate_cw(self):
         """
-        Rotates a tetromino clockwise, corrected to the boundaries and other pieces
+        Rotates a tetromino clockwise, corrected to boundaries and other pieces
         """
         if self.map.current_tetromino.name == "O":
             return
@@ -78,7 +76,9 @@ class Movement:
         self.map.current_tetromino.rotate_ccw()
 
     def rotate_ccw(self):
-        """Rotates a tetromino counter-clockwise, corrected to the boundaries and other pieces"""
+        """
+        Rotates a tetromino counter-clockwise, corrected to boundaries and other pieces
+        """
         if self.map.current_tetromino.name == "O":
             return
 

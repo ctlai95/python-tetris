@@ -1,7 +1,7 @@
 import config
-from src.point import point
-from src.randomizer import randomizer
-from src.renderer import renderer
+from src.point.point import Point
+from src.randomizer.randomizer import Randomizer
+from src.renderer.renderer import Renderer
 from src.tetromino import tetromino
 
 
@@ -13,11 +13,11 @@ class Map:
         self.height = height
         self.map_matrix = [[0 for y in range(height)] for x in range(width)]
         self.piece_matrix = [[0 for y in range(height)] for x in range(width)]
-        self.random_list = randomizer.Randomizer()
+        self.random_list = Randomizer()
         next_piece = self.random_list.next()
         self.current_tetromino = tetromino.Tetromino(
             next_piece,
-            point.Point(config.SPAWN[next_piece]),
+            Point(config.SPAWN[next_piece]),
             config.COLORS[next_piece]
         )
         self.other_tetrominos = []
@@ -51,7 +51,7 @@ class Map:
         next_piece = self.random_list.next()
         self.current_tetromino = tetromino.Tetromino(
             next_piece,
-            point.Point(config.SPAWN[next_piece]),
+            Point(config.SPAWN[next_piece]),
             config.COLORS[next_piece]
         )
 
@@ -102,9 +102,9 @@ class Map:
             for j in range(self.height):
                 if (i % 2 is 0 and j % 2 is 0) or \
                         ((i + 1) % 2 is 0 and (j + 1) % 2 is 0):
-                    s = renderer.Renderer(i, j, config.COLORS["BG_DARK"])
+                    s = Renderer(i, j, config.COLORS["BG_DARK"])
                 else:
-                    s = renderer.Renderer(i, j, config.COLORS["BG_LIGHT"])
+                    s = Renderer(i, j, config.COLORS["BG_LIGHT"])
                 s.draw()
 
     def print_matrix(self):

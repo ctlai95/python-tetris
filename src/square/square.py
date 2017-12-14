@@ -1,4 +1,4 @@
-from src.renderer import renderer
+from src.renderer.renderer import Renderer
 
 
 class Square:
@@ -17,5 +17,5 @@ class Square:
 
     def render_square(self, color):
         """Renders the square to the screen"""
-        r = renderer.Renderer(self.x, self.y, color)
+        r = Renderer(self.x, self.y, color)
         r.draw()
