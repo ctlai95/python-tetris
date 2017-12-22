@@ -3,7 +3,7 @@ import operator
 from src import config
 from src.point.point import Point
 from src.square.square import Square
-from src.utils import tuples
+from src.utils.tuples import tuples
 
 
 class Tetromino:

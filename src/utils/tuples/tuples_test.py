@@ -1,4 +1,4 @@
-from src.utils import tuples
+from src.utils.tuples import tuples
 
 
 def test_add():
