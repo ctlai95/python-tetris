@@ -1,4 +1,5 @@
 from src import config
+from src.colors import colors
 from src.point.point import Point
 from src.square.square import Square
 from src.tetromino.tetromino import Tetromino
@@ -6,15 +7,23 @@ from src.utils.tuples import tuples
 
 
 def test_init():
-    names = ["O", "I", "J", "L", "S", "Z", "T"]
-    for name in names:
+    names_colors = {
+        "O": colors.YELLOW,
+        "I": colors.TEAL,
+        "J": colors.BLUE,
+        "L": colors.ORANGE,
+        "S": colors.GREEN,
+        "Z": colors.RED,
+        "T": colors.PURPLE,
+    }
+    for name, color in names_colors.items():
         for i in range(10):
             for j in range(22):
                 t = Tetromino(name, Point((i, j)), config.COLORS[name])
                 assert t.name == name
                 assert t.loc._xy() == (i, j)
                 assert t.state == 0
-                assert t.color == config.COLORS[name]
+                assert t.color == color
 
 
 def test_populate_sqrs():
@@ -101,13 +110,14 @@ def test_rotate_cw():
             for j in range(22):
                 t = Tetromino(name, Point((i, j)), config.COLORS[name])
                 old_position = t.loc
-                for layout in layouts:
+                for num_rotations, layout in enumerate(layouts):
                     assert t.loc._xy() == old_position._xy()
                     squares_tuples = get_list_tuples(t.sqrs)
                     layout_offset = []
                     for l in layout:
                         layout_offset.append(tuples.add(l, (i, j)))
                     assert sorted(squares_tuples) == sorted(layout_offset)
+                    assert t.state == (num_rotations % 4)
                     t.rotate_cw()
 
 
@@ -117,13 +127,14 @@ def test_rotate_ccw():
             for j in range(22):
                 t = Tetromino(name, Point((i, j)), config.COLORS[name])
                 old_position = t.loc
-                for layout in reversed(layouts):
+                for num_rotations, layout in enumerate(reversed(layouts)):
                     assert t.loc._xy() == old_position._xy()
                     squares_tuples = get_list_tuples(t.sqrs)
                     layout_offset = []
                     for l in layout:
                         layout_offset.append(tuples.add(l, (i, j)))
                     assert sorted(squares_tuples) == sorted(layout_offset)
+                    assert t.state == ((4 - num_rotations) % 4)
                     t.rotate_ccw()
 
 

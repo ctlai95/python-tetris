@@ -123,5 +123,4 @@ class Movement:
                 if s.y < 0 or self.map.map_matrix[s.x][s.y] == 1:
                     self.map.current_tetromino.offset(0, 1)
                     break
-        self.map.other_tetrominos.append(self.map.current_tetromino)
         self.map.switch_piece()

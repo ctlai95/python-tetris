@@ -1,5 +1,3 @@
-import operator
-
 from src import config
 from src.point.point import Point
 from src.square.square import Square
