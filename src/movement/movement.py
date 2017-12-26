@@ -77,7 +77,8 @@ class Movement:
 
     def rotate_ccw(self):
         """
-        Rotates a tetromino counter-clockwise, corrected to boundaries and other pieces
+        Rotates a tetromino counter-clockwise, corrected to boundaries and
+        other pieces
         """
         if self.map.current_tetromino.name == "O":
             return

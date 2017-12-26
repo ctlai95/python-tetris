@@ -21,7 +21,8 @@ class Renderer:
                                 self.x, self.y + config.UNIT]
         vertex_list.colors = self.color * 4
         vertex_list.draw(pyglet.gl.GL_TRIANGLE_FAN)
-        # The border uses the same vertices and a darker shade of the same color
+        # The border uses the same vertices and a darker shade of
+        # the same color
         border_color = [int(c * 0.8) for c in vertex_list.colors]
         vertex_list.colors = [border_color[0],
                               border_color[1],
