@@ -1,6 +1,4 @@
-import config
-import board
-import tetromino
+from src import config
 
 
 class Movement:
@@ -20,8 +18,10 @@ class Movement:
     def move_right(self):
         """If the current tetromino is moveable, move 1 unit right"""
         moveable = True
+
         for s in self.board.current_tetromino.sqrs:
-            if s.x + 1 >= self.board.width or self.board.board_matrix[s.x + 1][s.y] != 0:
+            if s.x + 1 >= self.board.width or \
+                    self.board.board_matrix[s.x + 1][s.y] != 0:
                 moveable = False
                 break
         if moveable:
@@ -47,7 +47,9 @@ class Movement:
             self.board.current_tetromino.offset(0, 1)
 
     def rotate_cw(self):
-        """Rotates a tetromino clockwise, corrected to the boundaries and other pieces"""
+        """
+        Rotates a tetromino clockwise, corrected to boundaries and other pieces
+        """
         if self.board.current_tetromino.name == "O":
             return
 
@@ -75,7 +77,10 @@ class Movement:
         self.board.current_tetromino.rotate_ccw()
 
     def rotate_ccw(self):
-        """Rotates a tetromino counter-clockwise, corrected to the boundaries and other pieces"""
+        """
+        Rotates a tetromino counter-clockwise, corrected to boundaries and
+        other pieces
+        """
         if self.board.current_tetromino.name == "O":
             return
 
@@ -120,5 +125,4 @@ class Movement:
                 if s.y < 0 or self.board.board_matrix[s.x][s.y] == 1:
                     self.board.current_tetromino.offset(0, 1)
                     break
-        self.board.other_tetrominos.append(self.board.current_tetromino)
         self.board.switch_piece()

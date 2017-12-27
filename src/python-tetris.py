@@ -1,19 +1,16 @@
 import pyglet
 
-import board
-import config
-import movement
-import point
-import square
-import tetromino
+from src import config
+from src.board.board import Board
+from src.movement.movement import Movement
 
 
 class Window(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.board = board.Board(int(self.width / config.UNIT),
-                                 int(self.height / config.UNIT))
-        self.movement = movement.Movement(self.board)
+        self.board = Board(int(self.width / config.UNIT),
+                           int(self.height / config.UNIT))
+        self.movement = Movement(self.board)
 
     def on_draw(self):
         self.clear()
