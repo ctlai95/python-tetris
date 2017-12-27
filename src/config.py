@@ -1,18 +1,20 @@
+from src.colors import colors
+
 UNIT = 40  # Length of a square in pixels
 GRAVITY_INTERVAL = 1
 
 # Each tetromino's square's position relative to the bottomleft piece
 LAYOUTS = {
-    'O': [[0, 0], [1, 0], [1, 1], [0, 1]],
-    'I': [[0, 0], [1, 0], [2, 0], [3, 0]],
-    'J': [[0, 0], [1, 0], [2, 0], [0, 1]],
-    'L': [[0, 0], [1, 0], [2, 0], [2, 1]],
-    'S': [[0, 0], [1, 0], [1, 1], [2, 1]],
-    'Z': [[1, 0], [1, 1], [0, 1], [2, 0]],
-    'T': [[0, 0], [1, 0], [1, 1], [2, 0]]
+    'O': [(0, 0), (1, 0), (1, 1), (0, 1)],
+    'I': [(0, 0), (1, 0), (2, 0), (3, 0)],
+    'J': [(0, 0), (1, 0), (2, 0), (0, 1)],
+    'L': [(0, 0), (1, 0), (2, 0), (2, 1)],
+    'S': [(0, 0), (1, 0), (1, 1), (2, 1)],
+    'Z': [(1, 0), (1, 1), (0, 1), (2, 0)],
+    'T': [(0, 0), (1, 0), (1, 1), (2, 0)]
 }
 
-# Each tetromino's spawn location on the map
+# Each tetromino's spawn location on the board
 SPAWN = {
     'O': (4, 20),
     'I': (3, 20),
@@ -60,16 +62,11 @@ I_WALL_KICK = {
 
 # Color values in RGB
 COLORS = {
-    'O': [244, 197, 36],
-    'T': [227, 72, 182],
-    'S': [124, 227, 22],
-    'I': [70, 194, 255],
-    'J': [54, 99, 246],
-    'Z': [245, 61, 102],
-    'L': [237, 130, 33],
-
-    'GHOST': [100, 100, 100],
-
-    'BG_DARK': [40, 40, 40],
-    'BG_LIGHT': [43, 43, 43],
+    'O': colors.YELLOW,
+    'I': colors.TEAL,
+    'J': colors.BLUE,
+    'L': colors.ORANGE,
+    'S': colors.GREEN,
+    'Z': colors.RED,
+    'T': colors.PURPLE,
 }
