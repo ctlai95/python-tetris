@@ -1,9 +1,11 @@
-language: python
+language:       python
 python:
   - "3.6"
 # command to install dependencies
+before_install:
+  - export PYTHONPATH="$PYTHONPATH:$PWD"
 install:
   - pip3 install pyglet
   - pip3 install pytest
 # command to run tests
-script:   pytest -v
+script:         pytest -v
