@@ -1,8 +1,8 @@
-from src.randomizer import randomizer
+from src.randomizer.randomizer import Randomizer
 
 
 def test_new_list():
-    r = randomizer.Randomizer()
+    r = Randomizer()
     assert len(r.list) == 7
     expected = ["O", "I", "J", "L", "S", "Z", "T"]
     for e in expected:
@@ -10,7 +10,7 @@ def test_new_list():
 
 
 def test_next():
-    r = randomizer.Randomizer()
+    r = Randomizer()
     for i in range(7, 0, -1):
         n = r.next()
         assert n not in r.list

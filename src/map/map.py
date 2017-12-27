@@ -3,7 +3,7 @@ from src.colors import colors
 from src.point.point import Point
 from src.randomizer.randomizer import Randomizer
 from src.renderer.renderer import Renderer
-from src.tetromino import tetromino
+from src.tetromino.tetromino import Tetromino
 
 
 class Map:
@@ -16,7 +16,7 @@ class Map:
         self.piece_matrix = [[0 for y in range(height)] for x in range(width)]
         self.random_list = Randomizer()
         next_piece = self.random_list.next()
-        self.current_tetromino = tetromino.Tetromino(
+        self.current_tetromino = Tetromino(
             next_piece,
             Point(config.SPAWN[next_piece]),
             config.COLORS[next_piece]
@@ -51,7 +51,7 @@ class Map:
         """
         self.other_tetrominos.append(self.current_tetromino)
         next_piece = self.random_list.next()
-        self.current_tetromino = tetromino.Tetromino(
+        self.current_tetromino = Tetromino(
             next_piece,
             Point(config.SPAWN[next_piece]),
             config.COLORS[next_piece]
@@ -59,7 +59,7 @@ class Map:
 
     def render_ghost(self):
         """Renders the ghost of the current tetromino"""
-        ghost = tetromino.Tetromino(
+        ghost = Tetromino(
             self.current_tetromino.name,
             self.current_tetromino.loc,
             colors.ASH
