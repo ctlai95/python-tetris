@@ -1,33 +1,34 @@
-import config
-import point
-import randomizer
-import renderer
-import tetromino
+from src import config
+from src.colors import colors
+from src.point.point import Point
+from src.randomizer.randomizer import Randomizer
+from src.renderer.renderer import Renderer
+from src.tetromino.tetromino import Tetromino
 
 
-class Map:
-    """Map contains all the tetrominos in the current game"""
+class Board:
+    """Board contains all the tetrominos in the current game"""
 
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.map_matrix = [[0 for y in range(height)] for x in range(width)]
+        self.board_matrix = [[0 for y in range(height)] for x in range(width)]
         self.piece_matrix = [[0 for y in range(height)] for x in range(width)]
-        self.random_list = randomizer.Randomizer()
+        self.random_list = Randomizer()
         next_piece = self.random_list.next()
-        self.current_tetromino = tetromino.Tetromino(
+        self.current_tetromino = Tetromino(
             next_piece,
-            point.Point(config.SPAWN[next_piece]),
+            Point(config.SPAWN[next_piece]),
             config.COLORS[next_piece]
         )
         self.other_tetrominos = []
         self.holdable = True
         self.held_tetromino = None
 
-    def render_map(self):
-        """Renders the map to the screen and updates matrices"""
+    def render_board(self):
+        """Renders the board to the screen and updates matrices"""
         self.clear_matrix(self.piece_matrix)
-        self.clear_matrix(self.map_matrix)
+        self.clear_matrix(self.board_matrix)
 
         # Render the background
         self.render_background()
@@ -36,7 +37,7 @@ class Map:
         for t in self.other_tetrominos:
             t.render_tetromino()
             for s in t.sqrs:
-                self.fill_matrix(self.map_matrix, s)
+                self.fill_matrix(self.board_matrix, s)
 
         # Render the ghost tetromino
         self.render_ghost()
@@ -47,29 +48,27 @@ class Map:
             self.fill_matrix(self.piece_matrix, s)
 
     def switch_piece(self):
-        """
-        Appends the current piece to the map and assigns a new current piece
-        """
+        """Assigns a new current piece"""
         next_piece = self.random_list.next()
-        self.current_tetromino = tetromino.Tetromino(
+        self.current_tetromino = Tetromino(
             next_piece,
-            point.Point(config.SPAWN[next_piece]),
+            Point(config.SPAWN[next_piece]),
             config.COLORS[next_piece]
         )
 
     def render_ghost(self):
         """Renders the ghost of the current tetromino"""
-        ghost = tetromino.Tetromino(
+        ghost = Tetromino(
             self.current_tetromino.name,
             self.current_tetromino.loc,
-            config.COLORS["GHOST"]
+            colors.ASH
         )
         for i in range(self.current_tetromino.state):
             ghost.rotate_cw()
         for i in range(self.height):
             ghost.offset(0, -1)
             for s in ghost.sqrs:
-                if s.y < 0 or self.map_matrix[s.x][s.y] == 1:
+                if s.y < 0 or self.board_matrix[s.x][s.y] == 1:
                     ghost.offset(0, 1)
                     break
         ghost.render_tetromino()
@@ -104,9 +103,9 @@ class Map:
             for j in range(self.height):
                 if (i % 2 is 0 and j % 2 is 0) or \
                         ((i + 1) % 2 is 0 and (j + 1) % 2 is 0):
-                    s = renderer.Renderer(i, j, config.COLORS["BG_DARK"])
+                    s = Renderer(i, j, colors.CHARCOAL)
                 else:
-                    s = renderer.Renderer(i, j, config.COLORS["BG_LIGHT"])
+                    s = Renderer(i, j, colors.JET)
                 s.draw()
 
     def hold_piece(self):
@@ -115,18 +114,18 @@ class Map:
             return
         self.holdable = False
         if self.held_tetromino is None:
-            self.held_tetromino = tetromino.Tetromino(
+            self.held_tetromino = Tetromino(
                 self.current_tetromino.name,
-                point.Point(config.SPAWN[self.current_tetromino.name]),
+                Point(config.SPAWN[self.current_tetromino.name]),
                 config.COLORS[self.current_tetromino.name]
             )
             self.switch_piece()
         else:
             tmp = self.current_tetromino
             self.current_tetromino = self.held_tetromino
-            self.held_tetromino = tetromino.Tetromino(
+            self.held_tetromino = Tetromino(
                 tmp.name,
-                point.Point(config.SPAWN[tmp.name]),
+                Point(config.SPAWN[tmp.name]),
                 config.COLORS[tmp.name]
             )
 
@@ -134,7 +133,7 @@ class Map:
         """Prints the current matrix for debugging purposes"""
         for i in reversed(range(self.height)):
             for j in range(self.width):
-                print(self.map_matrix[j][i]
+                print(self.board_matrix[j][i]
                       or self.piece_matrix[j][i], end=" ")
             print()
         print()

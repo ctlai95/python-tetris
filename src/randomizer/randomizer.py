@@ -1,6 +1,6 @@
 from random import shuffle
 
-import config
+from src import config
 
 
 class Randomizer:

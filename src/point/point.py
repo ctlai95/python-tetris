@@ -1,5 +1,5 @@
 class Point:
-    """A point is a coordinate on the map with an x and y position"""
+    """A point is a coordinate on the board with an x and y position"""
 
     def __init__(self, xy):  # xy is a tuple
         self.x = xy[0]
