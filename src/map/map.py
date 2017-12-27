@@ -1,8 +1,9 @@
-import config
-import point
-import randomizer
-import renderer
-import tetromino
+from src import config
+from src.colors import colors
+from src.point.point import Point
+from src.randomizer.randomizer import Randomizer
+from src.renderer.renderer import Renderer
+from src.tetromino.tetromino import Tetromino
 
 
 class Map:
@@ -13,11 +14,11 @@ class Map:
         self.height = height
         self.map_matrix = [[0 for y in range(height)] for x in range(width)]
         self.piece_matrix = [[0 for y in range(height)] for x in range(width)]
-        self.random_list = randomizer.Randomizer()
+        self.random_list = Randomizer()
         next_piece = self.random_list.next()
-        self.current_tetromino = tetromino.Tetromino(
+        self.current_tetromino = Tetromino(
             next_piece,
-            point.Point(config.SPAWN[next_piece]),
+            Point(config.SPAWN[next_piece]),
             config.COLORS[next_piece]
         )
         self.other_tetrominos = []
@@ -48,19 +49,20 @@ class Map:
         """
         Appends the current piece to the map and assigns a new current piece
         """
+        self.other_tetrominos.append(self.current_tetromino)
         next_piece = self.random_list.next()
-        self.current_tetromino = tetromino.Tetromino(
+        self.current_tetromino = Tetromino(
             next_piece,
-            point.Point(config.SPAWN[next_piece]),
+            Point(config.SPAWN[next_piece]),
             config.COLORS[next_piece]
         )
 
     def render_ghost(self):
         """Renders the ghost of the current tetromino"""
-        ghost = tetromino.Tetromino(
+        ghost = Tetromino(
             self.current_tetromino.name,
             self.current_tetromino.loc,
-            config.COLORS["GHOST"]
+            colors.ASH
         )
         for i in range(self.current_tetromino.state):
             ghost.rotate_cw()
@@ -102,9 +104,9 @@ class Map:
             for j in range(self.height):
                 if (i % 2 is 0 and j % 2 is 0) or \
                         ((i + 1) % 2 is 0 and (j + 1) % 2 is 0):
-                    s = renderer.Renderer(i, j, config.COLORS["BG_DARK"])
+                    s = Renderer(i, j, colors.CHARCOAL)
                 else:
-                    s = renderer.Renderer(i, j, config.COLORS["BG_LIGHT"])
+                    s = Renderer(i, j, colors.JET)
                 s.draw()
 
     def print_matrix(self):

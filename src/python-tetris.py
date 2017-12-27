@@ -1,19 +1,16 @@
 import pyglet
 
 import config
-import map
-import movement
-import point
-import square
-import tetromino
+from src.map.map import Map
+from src.movement.movement import Movement
 
 
 class Window(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.map = map.Map(int(self.width / config.UNIT),
-                           int(self.height / config.UNIT))
-        self.movement = movement.Movement(self.map)
+        self.map = Map(int(self.width / config.UNIT),
+                       int(self.height / config.UNIT))
+        self.movement = Movement(self.map)
 
     def on_draw(self):
         self.clear()
