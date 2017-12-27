@@ -3,7 +3,7 @@ python:
   - "3.6"
 # command to install dependencies
 before_install:
-  - export PYTHONPATH="$PYTHONPATH:$PWD"
+  - export PYTHONPATH="$PYTHONPATH:ctlai95/python-tetris"
 install:
   - pip3 install pyglet
   - pip3 install pytest
