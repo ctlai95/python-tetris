@@ -1,4 +1,5 @@
 from src.board.board import Board
+from src.movement.movement import Movement
 from src.point.point import Point
 from src.square.square import Square
 
@@ -54,3 +55,21 @@ def test_clear_matrix():
     for i in range(10):
         for j in range(22):
             assert b.board_matrix[i][j] == 0
+
+
+def test_hold_piece():
+    b = Board(10, 22)
+    m = Movement(b)
+    assert b.held_tetromino == None
+    last_tetromino_name = b.current_tetromino.name
+    # should hold current tetromino
+    b.hold_piece()
+    assert b.held_tetromino.name == last_tetromino_name
+    # not dropped yet, so held tetromino should be unchanged
+    b.hold_piece()
+    assert b.held_tetromino.name == last_tetromino_name
+    # drop piece then hold, held piece should replace current
+    m.hard_drop()
+    b.hold_piece()
+    assert b.held_tetromino.name != last_tetromino_name
+    assert b.current_tetromino.name == last_tetromino_name
