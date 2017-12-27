@@ -6,7 +6,7 @@ from src.board.board import Board
 from src.movement.movement import Movement
 
 
-class Window(pyglet.window.Window):
+class Window(Window):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.board = Board(int(self.width / config.UNIT),
@@ -18,23 +18,23 @@ class Window(pyglet.window.Window):
         self.board.render_board()
 
     def on_key_press(self, symbol, modifier):
-        if symbol == pyglet.window.key.LEFT:
+        if symbol == key.LEFT:
             self.movement.move_left()
-        elif symbol == pyglet.window.key.RIGHT:
+        elif symbol == key.RIGHT:
             self.movement.move_right()
-        elif symbol == pyglet.window.key.DOWN:
+        elif symbol == key.DOWN:
             self.movement.move_down()
-        elif symbol == pyglet.window.key.UP:
+        elif symbol == key.UP:
             self.movement.rotate_cw()
-        elif symbol == pyglet.window.key.Z:
+        elif symbol == key.Z:
             self.movement.rotate_ccw()
-        elif symbol == pyglet.window.key.SPACE:
+        elif symbol == key.SPACE:
             self.movement.hard_drop()
-        elif symbol == pyglet.window.key.LSHIFT or \
-                symbol == pyglet.window.key.RSHIFT or \
-                symbol == pyglet.window.key.C:
+        elif symbol == key.LSHIFT or \
+                symbol == key.RSHIFT or \
+                symbol == key.C:
             self.board.hold_piece()
-        elif symbol == pyglet.window.key.ESCAPE:
+        elif symbol == key.ESCAPE:
             pyglet.app.exit()
 
 
