@@ -35,7 +35,7 @@ class Board:
         for t in self.other_tetrominos:
             t.render_tetromino()
             for s in t.sqrs:
-                self.fill_matrix(self.board_matrix, s)
+                self.fill_square(self.board_matrix, s)
 
         # Render the ghost tetromino
         self.render_ghost()
@@ -43,7 +43,7 @@ class Board:
         # Render current playable tetromino
         self.current_tetromino.render_tetromino()
         for s in self.current_tetromino.sqrs:
-            self.fill_matrix(self.piece_matrix, s)
+            self.fill_square(self.piece_matrix, s)
 
     def switch_piece(self):
         """
@@ -89,7 +89,7 @@ class Board:
                     break
         ghost.render_tetromino()
 
-    def fill_matrix(self, matrix, square):
+    def fill_square(self, matrix, square):
         """Fills the matrix at the given indices with a 1"""
         if square.x >= self.width or square.y >= self.height:
             print("Warning: position exceeds boundaries: " +
@@ -97,7 +97,7 @@ class Board:
             return
         matrix[square.x][square.y] = 1
 
-    def unfill_matrix(self, matrix, square):
+    def unfill_square(self, matrix, square):
         """Fills the matrix at the given indices with a 0"""
         if square.x >= self.width or square.y >= self.height:
             print("Warning: position exceeds boundaries: " +
