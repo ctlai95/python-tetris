@@ -57,6 +57,19 @@ class Board:
             config.COLORS[next_piece]
         )
 
+    def get_filled_lines(self):
+        """Returns the number of lines filled"""
+        filled_lines = []
+        for i in range(self.height):
+            is_filled = True
+            for j in range(self.width):
+                if self.board_matrix[j][i] == 0:
+                    is_filled = False
+            if is_filled:
+                filled_lines.append(i)
+
+        return filled_lines
+
     def render_ghost(self):
         """Renders the ghost of the current tetromino"""
         ghost = Tetromino(
@@ -77,18 +90,16 @@ class Board:
     def fill_matrix(self, matrix, square):
         """Fills the matrix at the given indices with a 1"""
         if square.x >= self.width or square.y >= self.height:
-            print(
-                "Warning: position exceeds boundaries: " +
-                "[{:d}][{:d}]".format(square.x, square.y))
+            print("Warning: position exceeds boundaries: " +
+                  "[{:d}][{:d}]".format(square.x, square.y))
             return
         matrix[square.x][square.y] = 1
 
     def unfill_matrix(self, matrix, square):
         """Fills the matrix at the given indices with a 0"""
         if square.x >= self.width or square.y >= self.height:
-            print(
-                "Warning: position exceeds boundaries: " +
-                "[{:d}][{:d}]".format(square.x, square.y))
+            print("Warning: position exceeds boundaries: " +
+                  "{:d}][{:d}]".format(square.x, square.y))
             return
         matrix[square.x][square.y] = 0
 
