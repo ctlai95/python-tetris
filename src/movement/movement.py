@@ -125,5 +125,7 @@ class Movement:
                 if s.y < 0 or self.board.board_matrix[s.x][s.y] == 1:
                     self.board.current_tetromino.offset(0, 1)
                     break
-        filled_lines = self.board.get_filled_lines()
+        filled_sqrs = self.board.get_filled_lines()
+        for sqr in filled_sqrs:
+            print(sqr.x, sqr.y)
         self.board.switch_piece()

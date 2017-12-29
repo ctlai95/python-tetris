@@ -59,16 +59,18 @@ class Board:
 
     def get_filled_lines(self):
         """Returns the number of lines filled"""
-        filled_lines = []
+        filled_squares = []
         for i in range(self.height):
             is_filled = True
             for j in range(self.width):
                 if self.board_matrix[j][i] == 0:
                     is_filled = False
             if is_filled:
-                filled_lines.append(i)
-
-        return filled_lines
+                for tetromino in self.other_tetrominos:
+                    for square in tetromino.sqrs:
+                        if square.y == i:
+                            filled_squares.append(square)
+        return filled_squares
 
     def render_ghost(self):
         """Renders the ghost of the current tetromino"""
