@@ -1,4 +1,5 @@
 from src import config
+from src.tetromino.tetromino import State
 
 
 class Movement:
@@ -58,14 +59,14 @@ class Movement:
         elif self.board.current_tetromino.name == "I":
             wall_kick = config.I_WALL_KICK
 
-        if self.board.current_tetromino.state == 0:
-            rotation = "0R"
-        elif self.board.current_tetromino.state == 1:
-            rotation = "R2"
-        elif self.board.current_tetromino.state == 2:
-            rotation = "2L"
-        elif self.board.current_tetromino.state == 3:
-            rotation = "L0"
+        if self.board.current_tetromino.state == State.ZERO:
+            rotation = "0->1"
+        elif self.board.current_tetromino.state == State.ONE:
+            rotation = "1->2"
+        elif self.board.current_tetromino.state == State.TWO:
+            rotation = "2->3"
+        elif self.board.current_tetromino.state == State.THREE:
+            rotation = "3->0"
 
         self.board.current_tetromino.rotate_cw()
         for p in wall_kick[rotation]:
@@ -89,14 +90,14 @@ class Movement:
         elif self.board.current_tetromino.name == "I":
             wall_kick = config.I_WALL_KICK
 
-        if self.board.current_tetromino.state == 0:
-            rotation = "0L"
-        elif self.board.current_tetromino.state == 1:
-            rotation = "R0"
-        elif self.board.current_tetromino.state == 2:
-            rotation = "2R"
-        elif self.board.current_tetromino.state == 3:
-            rotation = "L2"
+        if self.board.current_tetromino.state == State.ZERO:
+            rotation = "0->3"
+        elif self.board.current_tetromino.state == State.ONE:
+            rotation = "1->0"
+        elif self.board.current_tetromino.state == State.TWO:
+            rotation = "2->1"
+        elif self.board.current_tetromino.state == State.THREE:
+            rotation = "3->2"
 
         self.board.current_tetromino.rotate_ccw()
         for p in wall_kick[rotation]:

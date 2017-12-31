@@ -1,7 +1,25 @@
+from enum import Enum
+
 from src import config
 from src.point.point import Point
 from src.square.square import Square
 from src.utils.tuples import tuples
+
+
+class State(Enum):
+    """State is used to keep track of the current Tetromino's rotation state"""
+    ZERO = 0  # Initial spawn state
+    ONE = 1  # 1 clockwise or 3 counter-clockwise rotations from spawn state
+    TWO = 2  # 2 rotations in either direction from spawn state
+    THREE = 3  # 3 clockwise or 1 counter-clockwise rotations from spawn state
+
+    def next(self):
+        v = (self.value + 1) % 4
+        return State(v)
+
+    def prev(self):
+        v = (self.value - 1) % 4
+        return State(v)
 
 
 class Tetromino:
@@ -11,7 +29,7 @@ class Tetromino:
         self.name = name
         self.loc = location  # of the bottomleft-most piece
         self.sqrs = self.populate_sqrs()
-        self.state = 0
+        self.state = State.ZERO
         self.color = color
 
     def populate_sqrs(self):
@@ -48,7 +66,7 @@ class Tetromino:
             # replace the old square with the new square
             self.sqrs[i] = Square(
                 Point((int(new_point[0]), int(new_point[1]))))
-        self.state = (self.state + 1) % 4
+        self.state = self.state.next()
 
     def rotate_ccw(self):
         """Rotates the tetromino by 90 degrees, counter-clockwise"""
@@ -67,10 +85,11 @@ class Tetromino:
             # x -> y and y -> -x for rotation about the origin
             new_point = tuples.add(
                 (-top_left[1], top_left[0]), abs_rotation_pt)
+
             # replace the old square with the new square
             self.sqrs[i] = Square(
                 Point((int(new_point[0]), int(new_point[1]))))
-        self.state = (self.state - 1) % 4
+        self.state = self.state.prev()
 
     def render_tetromino(self):
         """Renders the tetromino to the screen"""

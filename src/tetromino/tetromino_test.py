@@ -2,7 +2,7 @@ from src import config
 from src.colors import colors
 from src.point.point import Point
 from src.square.square import Square
-from src.tetromino.tetromino import Tetromino
+from src.tetromino.tetromino import State, Tetromino
 from src.utils.tuples import tuples
 
 
@@ -22,7 +22,7 @@ def test_init():
                 t = Tetromino(name, Point((i, j)), config.COLORS[name])
                 assert t.name == name
                 assert t.loc._xy() == (i, j)
-                assert t.state == 0
+                assert t.state == State.ZERO
                 assert t.color == color
 
 
@@ -117,7 +117,7 @@ def test_rotate_cw():
                     for l in layout:
                         layout_offset.append(tuples.add(l, (i, j)))
                     assert sorted(squares_tuples) == sorted(layout_offset)
-                    assert t.state == (num_rotations % 4)
+                    assert t.state == State(num_rotations % 4)
                     t.rotate_cw()
 
 
@@ -134,7 +134,7 @@ def test_rotate_ccw():
                     for l in layout:
                         layout_offset.append(tuples.add(l, (i, j)))
                     assert sorted(squares_tuples) == sorted(layout_offset)
-                    assert t.state == ((4 - num_rotations) % 4)
+                    assert t.state == State((4 - num_rotations) % 4)
                     t.rotate_ccw()
 
 

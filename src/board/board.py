@@ -64,7 +64,7 @@ class Board:
             self.current_tetromino.loc,
             colors.ASH
         )
-        for i in range(self.current_tetromino.state):
+        for i in range(self.current_tetromino.state.value):
             ghost.rotate_cw()
         for i in range(self.height):
             ghost.offset(0, -1)
