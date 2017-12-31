@@ -126,4 +126,6 @@ class Movement:
                 if s.y < 0 or self.board.board_matrix[s.x][s.y] == 1:
                     self.board.current_tetromino.offset(0, 1)
                     break
+        self.board.other_tetrominos.append(self.board.current_tetromino)
         self.board.switch_piece()
+        self.board.holdable = True

@@ -22,6 +22,8 @@ class Board:
             config.COLORS[next_piece]
         )
         self.other_tetrominos = []
+        self.holdable = True
+        self.held_tetromino = None
 
     def render_board(self):
         """Renders the board to the screen and updates matrices"""
@@ -46,10 +48,7 @@ class Board:
             self.fill_matrix(self.piece_matrix, s)
 
     def switch_piece(self):
-        """
-        Appends the current piece to the board and assigns a new current piece
-        """
-        self.other_tetrominos.append(self.current_tetromino)
+        """Assigns a new current piece"""
         next_piece = self.random_list.next()
         self.current_tetromino = Tetromino(
             next_piece,
@@ -108,6 +107,27 @@ class Board:
                 else:
                     s = Renderer(i, j, colors.JET)
                 s.draw()
+
+    def hold_piece(self):
+        """Holds the current tetromino and switches to another one"""
+        if self.holdable is False:
+            return
+        self.holdable = False
+        if self.held_tetromino is None:
+            self.held_tetromino = Tetromino(
+                self.current_tetromino.name,
+                Point(config.SPAWN[self.current_tetromino.name]),
+                config.COLORS[self.current_tetromino.name]
+            )
+            self.switch_piece()
+        else:
+            tmp = self.current_tetromino
+            self.current_tetromino = self.held_tetromino
+            self.held_tetromino = Tetromino(
+                tmp.name,
+                Point(config.SPAWN[tmp.name]),
+                config.COLORS[tmp.name]
+            )
 
     def print_matrix(self):
         """Prints the current matrix for debugging purposes"""
