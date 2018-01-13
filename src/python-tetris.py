@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import threading
+
 import pyglet
 from pyglet.window import Window, key
 
@@ -13,19 +15,15 @@ class Window(Window):
         self.board = Board(int(self.width / config.UNIT),
                            int(self.height / config.UNIT))
         self.movement = Movement(self.board)
+        self.keys = key.KeyStateHandler()
+        self.push_handlers(self.keys)
 
     def on_draw(self):
         self.clear()
         self.board.render_board()
 
     def on_key_press(self, symbol, modifier):
-        if symbol == key.LEFT:
-            self.movement.move_left()
-        elif symbol == key.RIGHT:
-            self.movement.move_right()
-        elif symbol == key.DOWN:
-            self.movement.move_down()
-        elif symbol == key.UP:
+        if symbol == key.UP:
             self.movement.rotate_cw()
         elif symbol == key.Z:
             self.movement.rotate_ccw()
@@ -35,10 +33,37 @@ class Window(Window):
                 symbol == key.RSHIFT or \
                 symbol == key.C:
             self.board.hold_piece()
-        elif symbol == key.ESCAPE:
-            pyglet.app.exit()
+
+    def listen_left(self):
+        if self.keys[key.LEFT]:
+            self.movement.move_left()
+
+    def listen_right(self):
+        if self.keys[key.RIGHT]:
+            self.movement.move_right()
+
+    def listen_down(self):
+        if self.keys[key.DOWN]:
+            self.movement.move_down()
+
+    def start_listeners(self):
+        threading.Thread(target=self.listen_left).start()
+        threading.Thread(target=self.listen_right).start()
+        threading.Thread(target=self.listen_down).start()
 
 
 if __name__ == '__main__':
     window = Window(400, 880, "Python Tetris")
-    pyglet.app.run()
+
+    while True:
+        pyglet.clock.tick()
+        window.start_listeners()
+
+        for win in pyglet.app.windows:
+            win.switch_to()
+            win.dispatch_events()
+            win.dispatch_event('on_draw')
+            win.flip()
+
+        if window.keys[key.ESCAPE]:
+            break
