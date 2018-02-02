@@ -1,19 +1,21 @@
-import threading
-
 import pyglet
-from pyglet.window import key
+from pyglet.window import Window, key
 
 
 class Keyboard:
     def __init__(self, window, board, movement):
-        self.keys = key.KeyStateHandler()
-        window.push_handlers(self.keys)
         self.board = board
         self.movement = movement
 
-    def handle_actions(self, symbol, modifier):
+    def on_key_press(self, symbol, modifier):
         if symbol == key.UP:
             self.movement.rotate_cw()
+        elif symbol == key.LEFT:
+            self.movement.move_left()
+        elif symbol == key.RIGHT:
+            self.movement.move_right()
+        elif symbol == key.DOWN:
+            self.movement.move_down()
         elif symbol == key.Z:
             self.movement.rotate_ccw()
         elif symbol == key.SPACE:
@@ -23,21 +25,4 @@ class Keyboard:
                 symbol == key.C:
             self.board.hold_piece()
         elif symbol == key.ESCAPE:
-            exit()
-
-    def listen_left(self):
-        if self.keys[key.LEFT]:
-            self.movement.move_left()
-
-    def listen_right(self):
-        if self.keys[key.RIGHT]:
-            self.movement.move_right()
-
-    def listen_down(self):
-        if self.keys[key.DOWN]:
-            self.movement.move_down()
-
-    def start_listeners(self):
-        threading.Thread(target=self.listen_left).start()
-        threading.Thread(target=self.listen_right).start()
-        threading.Thread(target=self.listen_down).start()
+            pyglet.app.exit()

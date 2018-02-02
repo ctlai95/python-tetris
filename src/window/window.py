@@ -13,10 +13,8 @@ class Window(Window):
                            int(self.height / config.UNIT))
         self.movement = Movement(self.board)
         self.keyboard = Keyboard(self, self.board, self.movement)
+        self.on_key_press = self.keyboard.on_key_press
 
     def on_draw(self):
         self.clear()
         self.board.render_board()
-
-    def on_key_press(self, symbol, modifier):
-        self.keyboard.handle_actions(symbol, modifier)
