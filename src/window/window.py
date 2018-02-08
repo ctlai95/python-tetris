@@ -25,8 +25,14 @@ class Window(Window):
 
     def update(self, dt):
         if self.key_handler[key.LEFT]:
-            self.movement.move_left()
+            self.keyboard.timers[key.LEFT].increment()
+            if self.keyboard.timers[key.LEFT].value > 2:
+                self.movement.move_left()
         if self.key_handler[key.RIGHT]:
-            self.movement.move_right()
+            self.keyboard.timers[key.RIGHT].increment()
+            if self.keyboard.timers[key.RIGHT].value > 2:
+                self.movement.move_right()
         if self.key_handler[key.DOWN]:
-            self.movement.move_down()
+            self.keyboard.timers[key.DOWN].increment()
+            if self.keyboard.timers[key.DOWN].value > 2:
+                self.movement.move_down()
