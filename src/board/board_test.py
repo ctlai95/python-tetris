@@ -39,7 +39,7 @@ def test_fill_unfill_board():
     b = Board(10, 22)
     for i in range(10):
         for j in range(22):
-            b.fill_matrix(b.board_matrix, Square(Point((i, j))))
+            b.fill_square(b.board_matrix, Square(Point((i, j))))
             assert b.board_matrix[i][j] == 1
     for i in range(10):
         for j in range(22):

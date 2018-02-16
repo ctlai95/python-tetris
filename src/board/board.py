@@ -32,10 +32,9 @@ class Board:
         self.render_background()
 
         # Render pieces except current one
-        for t in self.other_tetrominos:
-            t.render_tetromino()
-            for s in t.sqrs:
-                self.fill_square(self.board_matrix, s)
+        for sqr in self.other_tetrominos:
+            sqr.render_square()
+            self.fill_square(self.board_matrix, sqr)
 
         # Render the ghost tetromino
         self.render_ghost()
@@ -49,7 +48,8 @@ class Board:
         """
         Appends the current piece to the board and assigns a new current piece
         """
-        self.other_tetrominos.append(self.current_tetromino)
+        for sqr in self.current_tetromino.sqrs:
+            self.other_tetrominos.append(sqr)
         next_piece = self.random_list.next()
         self.current_tetromino = Tetromino(
             next_piece,
