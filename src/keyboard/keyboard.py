@@ -19,9 +19,6 @@ class Keyboard:
         self.board = board
         self.movement = movement
         self.key_handler = key_handler
-        self.leftkey_timer = Timer()
-        self.rightkey_timer = Timer()
-        self.downkey_timer = Timer()
         self.timers = {
             key.LEFT: Timer(),
             key.RIGHT: Timer(),

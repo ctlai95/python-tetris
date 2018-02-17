@@ -26,13 +26,13 @@ class Window(Window):
     def update(self, dt):
         if self.key_handler[key.LEFT]:
             self.keyboard.timers[key.LEFT].increment()
-            if self.keyboard.timers[key.LEFT].value > 2:
+            if self.keyboard.timers[key.LEFT].value > config.DAS_INTERVAL:
                 self.movement.move_left()
         if self.key_handler[key.RIGHT]:
             self.keyboard.timers[key.RIGHT].increment()
-            if self.keyboard.timers[key.RIGHT].value > 2:
+            if self.keyboard.timers[key.RIGHT].value > config.DAS_INTERVAL:
                 self.movement.move_right()
         if self.key_handler[key.DOWN]:
             self.keyboard.timers[key.DOWN].increment()
-            if self.keyboard.timers[key.DOWN].value > 2:
+            if self.keyboard.timers[key.DOWN].value > config.DAS_INTERVAL:
                 self.movement.move_down()
