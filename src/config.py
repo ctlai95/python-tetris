@@ -2,6 +2,7 @@ from src.colors import colors
 
 UNIT = 40  # Length of a square in pixels
 GRAVITY_INTERVAL = 1
+DAS_INTERVAL = 3
 
 # Each tetromino's square's position relative to the bottomleft piece
 LAYOUTS = {
