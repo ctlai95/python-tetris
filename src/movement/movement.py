@@ -125,8 +125,26 @@ class Movement:
                 if s.y < 0 or self.board.board_matrix[s.x][s.y] == 1:
                     self.board.current_tetromino.offset(0, 1)
                     break
-        filled_sqrs = self.board.get_filled_lines()
-        for sqr in filled_sqrs:
-            self.board.unfill_square(self.board.board_matrix, sqr)
+
+        #  Updating matrix
+        filled_indices = self.board.get_filled_row_index()
+        for index in filled_indices:
+            for sqr in self.board.other_tetrominos:
+                if sqr.y == index:
+                    self.board.unfill_square(self.board.board_matrix, sqr)
+                    self.board.other_tetrominos.remove(sqr)
+
+        #  for index in filled_indices:
+            #  for sqr in self.board.other_tetrominos:
+                #  if sqr.y == ind
+                #  self.board.unfill_square(self.board.board_matrix, )
+
+        #  for sqr in filled_sqrs:
+            #  self.board.unfill_square(self.board.board_matrix, sqr)
+
+        #  for sqr in self.board.other_tetrominos:
+            #  if sqr.y == filled_index
+
+
         self.board.print_matrix()
         self.board.switch_piece()

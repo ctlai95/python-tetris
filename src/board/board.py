@@ -57,20 +57,17 @@ class Board:
             config.COLORS[next_piece]
         )
 
-    def get_filled_lines(self):
+    def get_filled_row_index(self):
         """Returns the number of lines filled"""
-        filled_squares = []
-        for i in range(self.height):
+        filled_indices = []
+        for j in range(self.height):
             is_filled = True
-            for j in range(self.width):
-                if self.board_matrix[j][i] == 0:
+            for i in range(self.width):
+                if self.board_matrix[i][j] == 0:
                     is_filled = False
             if is_filled:
-                for tetromino in self.other_tetrominos:
-                    for square in tetromino.sqrs:
-                        if square.y == i:
-                            filled_squares.append(square)
-        return filled_squares
+                filled_indices.append(j)
+        return filled_indices
 
     def render_ghost(self):
         """Renders the ghost of the current tetromino"""
