@@ -1,3 +1,5 @@
+import logging
+
 from src import config
 from src.colors import colors
 from src.point.point import Point
@@ -5,11 +7,14 @@ from src.randomizer.randomizer import Randomizer
 from src.renderer.renderer import Renderer
 from src.tetromino.tetromino import Tetromino
 
+log = logging.getLogger(__name__)
+
 
 class Board:
     """Board contains all the tetrominos in the current game"""
 
     def __init__(self, width, height):
+        log.info("Initializing Board")
         self.width = width
         self.height = height
         self.board_matrix = [[0 for y in range(height)] for x in range(width)]
@@ -21,6 +26,7 @@ class Board:
             Point(config.SPAWN[next_piece]),
             config.COLORS[next_piece]
         )
+        log.info("Current tetromino: {}".format(next_piece))
         self.other_tetrominos = []
         self.holdable = True
         self.held_tetromino = None
@@ -55,6 +61,7 @@ class Board:
             Point(config.SPAWN[next_piece]),
             config.COLORS[next_piece]
         )
+        log.info("Current tetromino: {}".format(next_piece))
 
     def render_ghost(self):
         """Renders the ghost of the current tetromino"""
@@ -111,9 +118,13 @@ class Board:
     def hold_piece(self):
         """Holds the current tetromino and switches to another one"""
         if self.holdable is False:
+            log.info("Hold slot is already occupied by {}".format(
+                self.held_tetromino.name))
             return
         self.holdable = False
         if self.held_tetromino is None:
+            log.info("Putting tetromino {} on hold".format(
+                self.current_tetromino.name))
             self.held_tetromino = Tetromino(
                 self.current_tetromino.name,
                 Point(config.SPAWN[self.current_tetromino.name]),
@@ -121,8 +132,11 @@ class Board:
             )
             self.switch_piece()
         else:
+            log.info("Putting tetromino {} out of hold".format(
+                self.held_tetromino.name))
             tmp = self.current_tetromino
             self.current_tetromino = self.held_tetromino
+            log.info("Putting tetromino {} on hold".format(tmp.name))
             self.held_tetromino = Tetromino(
                 tmp.name,
                 Point(config.SPAWN[tmp.name]),
