@@ -18,8 +18,6 @@ def test_init():
     assert len(b.piece_matrix) == width
     for column in b.piece_matrix:
         assert len(column) == height
-        for value in column:
-            assert value == 0
     assert b.random_list is not None
     assert b.current_tetromino.name in ["O", "I", "J", "L", "S", "Z", "T"]
     assert len(b.other_tetrominos) == 0
