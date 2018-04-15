@@ -58,7 +58,7 @@ def test_clear_matrix():
 def test_hold_piece():
     b = Board(10, 22)
     m = Movement(b)
-    assert b.held_tetromino == None
+    assert b.held_tetromino is None
     last_tetromino_name = b.current_tetromino.name
     # should hold current tetromino
     b.hold_piece()
