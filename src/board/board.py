@@ -1,3 +1,5 @@
+import copy
+
 from src import config
 from src.colors import colors
 from src.point.point import Point
@@ -22,13 +24,35 @@ class Board:
             config.COLORS[next_piece]
         )
         self.other_tetrominos = []
+        self.ghost_tetromino = self.get_ghost_tetromino()
         self.holdable = True
         self.held_tetromino = None
 
-    def render_board(self):
-        """Renders the board to the screen and updates matrices"""
+    def update_matrices(self):
         self.clear_matrix(self.piece_matrix)
         self.clear_matrix(self.board_matrix)
+        for t in self.other_tetrominos:
+            for s in t.sqrs:
+                self.fill_matrix(self.board_matrix, s)
+        for s in self.current_tetromino.sqrs:
+            self.fill_matrix(self.piece_matrix, s)
+
+    def get_ghost_tetromino(self):
+        self.update_matrices()
+        ghost = copy.deepcopy(self.current_tetromino)
+        ghost.color = colors.ASH
+        for i in range(self.height):
+            ghost.offset(0, -1)
+            for s in ghost.sqrs:
+                if s.y < 0 or self.board_matrix[s.x][s.y] == 1:
+                    ghost.offset(0, 1)
+                    break
+        return ghost
+
+    def render_board(self):
+        """Renders the board to the screen and updates matrices"""
+        # Update matrices
+        self.update_matrices()
 
         # Render the background
         self.render_background()
@@ -36,16 +60,12 @@ class Board:
         # Render pieces except current one
         for t in self.other_tetrominos:
             t.render_tetromino()
-            for s in t.sqrs:
-                self.fill_matrix(self.board_matrix, s)
 
         # Render the ghost tetromino
-        self.render_ghost()
+        self.ghost_tetromino.render_tetromino()
 
         # Render current playable tetromino
         self.current_tetromino.render_tetromino()
-        for s in self.current_tetromino.sqrs:
-            self.fill_matrix(self.piece_matrix, s)
 
     def switch_piece(self):
         """Assigns a new current piece"""
@@ -55,23 +75,7 @@ class Board:
             Point(config.SPAWN[next_piece]),
             config.COLORS[next_piece]
         )
-
-    def render_ghost(self):
-        """Renders the ghost of the current tetromino"""
-        ghost = Tetromino(
-            self.current_tetromino.name,
-            self.current_tetromino.loc,
-            colors.ASH
-        )
-        for i in range(self.current_tetromino.state.value):
-            ghost.rotate_cw()
-        for i in range(self.height):
-            ghost.offset(0, -1)
-            for s in ghost.sqrs:
-                if s.y < 0 or self.board_matrix[s.x][s.y] == 1:
-                    ghost.offset(0, 1)
-                    break
-        ghost.render_tetromino()
+        self.ghost_tetromino = self.get_ghost_tetromino()
 
     def fill_matrix(self, matrix, square):
         """Fills the matrix at the given indices with a 1"""
@@ -128,6 +132,7 @@ class Board:
                 Point(config.SPAWN[tmp.name]),
                 config.COLORS[tmp.name]
             )
+            self.ghost_tetromino = self.get_ghost_tetromino()
 
     def print_matrix(self):
         """Prints the current matrix for debugging purposes"""

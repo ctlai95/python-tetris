@@ -15,6 +15,7 @@ class Movement:
                 break
         if moveable:
             self.board.current_tetromino.offset(-1, 0)
+            self.board.ghost_tetromino = self.board.get_ghost_tetromino()
 
     def move_right(self):
         """If the current tetromino is moveable, move 1 unit right"""
@@ -27,6 +28,7 @@ class Movement:
                 break
         if moveable:
             self.board.current_tetromino.offset(1, 0)
+            self.board.ghost_tetromino = self.board.get_ghost_tetromino()
 
     def move_down(self):
         """If the current tetromino is moveable, move 1 unit down"""
@@ -37,6 +39,7 @@ class Movement:
                 break
         if moveable:
             self.board.current_tetromino.offset(0, -1)
+            self.board.ghost_tetromino = self.board.get_ghost_tetromino()
 
     def move_up(self):
         moveable = True
@@ -46,6 +49,7 @@ class Movement:
                 break
         if moveable:
             self.board.current_tetromino.offset(0, 1)
+            self.board.ghost_tetromino = self.board.get_ghost_tetromino()
 
     def rotate_cw(self):
         """
@@ -69,6 +73,7 @@ class Movement:
             rotation = "3->0"
 
         self.board.current_tetromino.rotate_cw()
+        self.board.ghost_tetromino = self.board.get_ghost_tetromino()
         for p in wall_kick[rotation]:
             ok = self.wall_kick_test(p[0], p[1])
             if ok:
@@ -76,6 +81,7 @@ class Movement:
 
         # if it reaches here that means all tests have failed, so rotate back
         self.board.current_tetromino.rotate_ccw()
+        self.board.ghost_tetromino = self.board.get_ghost_tetromino()
 
     def rotate_ccw(self):
         """
@@ -100,6 +106,7 @@ class Movement:
             rotation = "3->2"
 
         self.board.current_tetromino.rotate_ccw()
+        self.board.ghost_tetromino = self.board.get_ghost_tetromino()
         for p in wall_kick[rotation]:
             ok = self.wall_kick_test(p[0], p[1])
             if ok:
@@ -107,6 +114,7 @@ class Movement:
 
         # if it reaches here that means all tests have failed, so rotate back
         self.board.current_tetromino.rotate_cw()
+        self.board.ghost_tetromino = self.board.get_ghost_tetromino()
 
     def wall_kick_test(self, x, y):
         self.board.current_tetromino.offset(x, y)
