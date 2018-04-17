@@ -1,6 +1,6 @@
 import logging
 
-from src import config
+from src.tetromino.constants import WALL_KICKS
 from src.tetromino.tetromino import State
 
 log = logging.getLogger(__name__)
@@ -68,9 +68,9 @@ class Movement:
             return
 
         if self.board.current_tetromino.name in ("J", "L", "S", "T", "Z"):
-            wall_kick = config.JLSTZ_WALL_KICK
+            wall_kick = WALL_KICKS["JLSTZ"]
         elif self.board.current_tetromino.name == "I":
-            wall_kick = config.I_WALL_KICK
+            wall_kick = WALL_KICKS["I"]
 
         if self.board.current_tetromino.state == State.ZERO:
             rotation = "0->1"
@@ -104,9 +104,9 @@ class Movement:
             return
 
         if self.board.current_tetromino.name in ("J", "L", "S", "T", "Z"):
-            wall_kick = config.JLSTZ_WALL_KICK
+            wall_kick = WALL_KICKS["JLSTZ"]
         elif self.board.current_tetromino.name == "I":
-            wall_kick = config.I_WALL_KICK
+            wall_kick = WALL_KICKS["I"]
 
         if self.board.current_tetromino.state == State.ZERO:
             rotation = "0->3"

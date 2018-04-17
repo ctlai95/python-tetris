@@ -1,11 +1,11 @@
 import copy
 import logging
 
-from src import config
 from src.colors import colors
 from src.point.point import Point
 from src.randomizer.randomizer import Randomizer
 from src.renderer.renderer import Renderer
+from src.tetromino.constants import COLORS, SPAWN
 from src.tetromino.tetromino import Tetromino
 
 log = logging.getLogger(__name__)
@@ -22,8 +22,8 @@ class Board:
         self.next_tetromino_name = self.random_list.next()
         self.current_tetromino = Tetromino(
             self.next_tetromino_name,
-            Point(config.SPAWN[self.next_tetromino_name]),
-            config.COLORS[self.next_tetromino_name]
+            Point(SPAWN[self.next_tetromino_name]),
+            COLORS[self.next_tetromino_name]
         )
         self.current_tetromino_matrix = [
             [0 for y in range(height)] for x in range(width)]
@@ -79,8 +79,8 @@ class Board:
         """Assigns a new current piece"""
         self.current_tetromino = Tetromino(
             self.next_tetromino_name,
-            Point(config.SPAWN[self.next_tetromino_name]),
-            config.COLORS[self.next_tetromino_name]
+            Point(SPAWN[self.next_tetromino_name]),
+            COLORS[self.next_tetromino_name]
         )
         self.ghost_tetromino = self.get_ghost_tetromino()
         self.next_tetromino_name = self.random_list.next()

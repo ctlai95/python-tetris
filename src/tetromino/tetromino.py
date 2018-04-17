@@ -2,9 +2,9 @@ import inspect
 import logging
 from enum import Enum
 
-from src import config
 from src.point.point import Point
 from src.square.square import Square
+from src.tetromino.constants import LAYOUTS, ROTATION_POINTS
 from src.utils.tuples import tuples
 
 log = logging.getLogger(__name__)
@@ -44,7 +44,7 @@ class Tetromino:
         for i in range(4):
             sqrs.append(
                 Square(Point(tuples.add(self.btm_left_pt.xy_tuple(),
-                                        config.LAYOUTS[self.name][i]))))
+                                        LAYOUTS[self.name][i]))))
         return sqrs
 
     def offset(self, x, y):
@@ -58,7 +58,7 @@ class Tetromino:
 
         # the point of rotation, relative to the board origin
         abs_rotation_pt = tuples.add(
-            self.btm_left_pt.xy_tuple(), config.ROTATION_POINTS[self.name])
+            self.btm_left_pt.xy_tuple(), ROTATION_POINTS[self.name])
         for i in range(len(self.sqrs)):
             # the square's position relative to the point of rotation
             current_square = tuples.subtract(
@@ -80,7 +80,7 @@ class Tetromino:
 
         # the point of rotation, relative to the board origin
         abs_rotation_pt = tuples.add(
-            self.btm_left_pt.xy_tuple(), config.ROTATION_POINTS[self.name])
+            self.btm_left_pt.xy_tuple(), ROTATION_POINTS[self.name])
         for i in range(len(self.sqrs)):
             # the square's position relative to the point of rotation
             current_square = tuples.subtract(
