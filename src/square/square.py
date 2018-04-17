@@ -1,12 +1,16 @@
+import logging
+
 from src.renderer.renderer import Renderer
+
+log = logging.getLogger(__name__)
 
 
 class Square:
     """The Square class renders a square with the given Coordinates"""
 
     def __init__(self, point):
-        self.x = point._x()
-        self.y = point._y()
+        self.x = point.x_value()
+        self.y = point.y_value()
 
     def tuple(self):
         return (self.x, self.y)

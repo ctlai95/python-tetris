@@ -1,5 +1,9 @@
+import logging
+
 import pyglet
 from pyglet.window import Window, key
+
+log = logging.getLogger(__name__)
 
 
 class Timer:
@@ -15,6 +19,7 @@ class Timer:
 
 class Keyboard:
     def __init__(self, window, board, movement, key_handler):
+        log.info("Initializing keyboard")
         self.window = window
         self.board = board
         self.movement = movement
@@ -44,7 +49,7 @@ class Keyboard:
         elif symbol == key.LSHIFT or \
                 symbol == key.RSHIFT or \
                 symbol == key.C:
-            self.board.hold_piece()
+            self.board.hold_current_tetromino()
         elif symbol == key.ESCAPE:
             pyglet.app.exit()
 

@@ -1,3 +1,5 @@
+import logging
+
 from pyglet.window import Window, key
 
 from src import config
@@ -5,9 +7,12 @@ from src.board.board import Board
 from src.keyboard.keyboard import Keyboard
 from src.movement.movement import Movement
 
+log = logging.getLogger(__name__)
+
 
 class Window(Window):
     def __init__(self, *args, **kwargs):
+        log.info("Initializing window {}".format(args))
         super().__init__(*args, **kwargs)
         self.board = Board(int(self.width / config.UNIT),
                            int(self.height / config.UNIT))
@@ -20,7 +25,6 @@ class Window(Window):
         self.on_key_release = self.keyboard.on_key_release
 
     def on_draw(self):
-        self.clear()
         self.board.render_board()
 
     def update(self, dt):

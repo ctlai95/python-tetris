@@ -1,9 +1,13 @@
+import inspect
+import logging
 from enum import Enum
 
 from src import config
 from src.point.point import Point
 from src.square.square import Square
 from src.utils.tuples import tuples
+
+log = logging.getLogger(__name__)
 
 
 class State(Enum):
@@ -25,9 +29,11 @@ class State(Enum):
 class Tetromino:
     """A tetromino is a piece which consists of exactly 4 squares"""
 
-    def __init__(self, name, location, color):
+    def __init__(self, name, btm_left_pt, color):
+        log.info("Initializing Tetromino (name={}, btm_left_pt={}, color={})".format(
+            name, btm_left_pt.xy_tuple(), color))
         self.name = name
-        self.loc = location  # of the bottomleft-most piece
+        self.btm_left_pt = btm_left_pt
         self.sqrs = self.populate_sqrs()
         self.state = State.ZERO
         self.color = color
@@ -37,12 +43,13 @@ class Tetromino:
         sqrs = []
         for i in range(4):
             sqrs.append(
-                Square(Point(tuples.add(self.loc._xy(),
+                Square(Point(tuples.add(self.btm_left_pt.xy_tuple(),
                                         config.LAYOUTS[self.name][i]))))
         return sqrs
 
     def offset(self, x, y):
-        self.loc = Point(tuples.add(self.loc._xy(), (x, y)))
+        self.btm_left_pt = Point(tuples.add(
+            self.btm_left_pt.xy_tuple(), (x, y)))
         for s in self.sqrs:
             s.offset(x, y)
 
@@ -51,7 +58,7 @@ class Tetromino:
 
         # the point of rotation, relative to the board origin
         abs_rotation_pt = tuples.add(
-            self.loc._xy(), config.ROTATION_POINTS[self.name])
+            self.btm_left_pt.xy_tuple(), config.ROTATION_POINTS[self.name])
         for i in range(len(self.sqrs)):
             # the square's position relative to the point of rotation
             current_square = tuples.subtract(
@@ -73,7 +80,7 @@ class Tetromino:
 
         # the point of rotation, relative to the board origin
         abs_rotation_pt = tuples.add(
-            self.loc._xy(), config.ROTATION_POINTS[self.name])
+            self.btm_left_pt.xy_tuple(), config.ROTATION_POINTS[self.name])
         for i in range(len(self.sqrs)):
             # the square's position relative to the point of rotation
             current_square = tuples.subtract(

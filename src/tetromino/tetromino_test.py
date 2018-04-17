@@ -21,7 +21,7 @@ def test_init():
             for j in range(22):
                 t = Tetromino(name, Point((i, j)), config.COLORS[name])
                 assert t.name == name
-                assert t.loc._xy() == (i, j)
+                assert t.btm_left_pt.xy_tuple() == (i, j)
                 assert t.state == State.ZERO
                 assert t.color == color
 
@@ -61,7 +61,7 @@ def test_offset():
                 for j in range(22):
                     t = Tetromino(name, Point((i, j)), config.COLORS[name])
                     t.offset(offset[0], offset[1])
-                    assert t.loc._xy() == tuples.add(
+                    assert t.btm_left_pt.xy_tuple() == tuples.add(
                         (i, j), (offset[0], offset[1]))
 
 
@@ -109,9 +109,9 @@ def test_rotate_cw():
         for i in range(10):
             for j in range(22):
                 t = Tetromino(name, Point((i, j)), config.COLORS[name])
-                old_position = t.loc
+                old_position = t.btm_left_pt
                 for num_rotations, layout in enumerate(layouts):
-                    assert t.loc._xy() == old_position._xy()
+                    assert t.btm_left_pt.xy_tuple() == old_position.xy_tuple()
                     squares_tuples = get_list_tuples(t.sqrs)
                     layout_offset = []
                     for l in layout:
@@ -126,9 +126,9 @@ def test_rotate_ccw():
         for i in range(10):
             for j in range(22):
                 t = Tetromino(name, Point((i, j)), config.COLORS[name])
-                old_position = t.loc
+                old_position = t.btm_left_pt
                 for num_rotations, layout in enumerate(reversed(layouts)):
-                    assert t.loc._xy() == old_position._xy()
+                    assert t.btm_left_pt.xy_tuple() == old_position.xy_tuple()
                     squares_tuples = get_list_tuples(t.sqrs)
                     layout_offset = []
                     for l in layout:

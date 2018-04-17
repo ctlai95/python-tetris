@@ -1,9 +1,5 @@
-import logging
-
 from src import config
 from src.tetromino.tetromino import State
-
-log = logging.getLogger(__name__)
 
 
 class Movement:
@@ -14,11 +10,10 @@ class Movement:
         """If the current tetromino is moveable, move 1 unit left"""
         moveable = True
         for s in self.board.current_tetromino.sqrs:
-            if s.x <= 0 or self.board.board_matrix[s.x - 1][s.y] != 0:
+            if s.x <= 0 or self.board.board_tetrominos_matrix[s.x - 1][s.y] != 0:
                 moveable = False
                 break
         if moveable:
-            log.debug("Moving current tetromino 1 unit left")
             self.board.current_tetromino.offset(-1, 0)
 
     def move_right(self):
@@ -27,22 +22,20 @@ class Movement:
 
         for s in self.board.current_tetromino.sqrs:
             if s.x + 1 >= self.board.width or \
-                    self.board.board_matrix[s.x + 1][s.y] != 0:
+                    self.board.board_tetrominos_matrix[s.x + 1][s.y] != 0:
                 moveable = False
                 break
         if moveable:
-            log.debug("Moving current tetromino 1 unit right")
             self.board.current_tetromino.offset(1, 0)
 
     def move_down(self):
         """If the current tetromino is moveable, move 1 unit down"""
         moveable = True
         for s in self.board.current_tetromino.sqrs:
-            if s.y <= 0 or self.board.board_matrix[s.x][s.y - 1] != 0:
+            if s.y <= 0 or self.board.board_tetrominos_matrix[s.x][s.y - 1] != 0:
                 moveable = False
                 break
         if moveable:
-            log.debug("Moving current tetromino 1 unit down")
             self.board.current_tetromino.offset(0, -1)
 
     def move_up(self):
@@ -52,7 +45,6 @@ class Movement:
                 moveable = False
                 break
         if moveable:
-            log.debug("Moving current tetromino 1 unit up")
             self.board.current_tetromino.offset(0, 1)
 
     def rotate_cw(self):
@@ -77,15 +69,12 @@ class Movement:
             rotation = "3->0"
 
         self.board.current_tetromino.rotate_cw()
-        for i, p in enumerate(wall_kick[rotation]):
+        for p in wall_kick[rotation]:
             ok = self.wall_kick_test(p[0], p[1])
             if ok:
-                log.debug(
-                    "Clockwise rotation wall kick passed at Test {} ({}, {})".format(i + 1, p[0], p[1]))
                 return
 
         # if it reaches here that means all tests have failed, so rotate back
-        log.debug("All clockwise rotation wall kicks failed, not rotating")
         self.board.current_tetromino.rotate_ccw()
 
     def rotate_ccw(self):
@@ -111,15 +100,12 @@ class Movement:
             rotation = "3->2"
 
         self.board.current_tetromino.rotate_ccw()
-        for i, p in enumerate(wall_kick[rotation]):
+        for p in wall_kick[rotation]:
             ok = self.wall_kick_test(p[0], p[1])
             if ok:
-                log.debug(
-                    "Counter-clockwise rotation wall kick passed at Test {} ({}, {})".format(i + 1, p[0], p[1]))
                 return
 
         # if it reaches here that means all tests have failed, so rotate back
-        log.debug("All counter-clockwise rotation wall kicks failed, not rotating")
         self.board.current_tetromino.rotate_cw()
 
     def wall_kick_test(self, x, y):
@@ -127,7 +113,7 @@ class Movement:
         for s in self.board.current_tetromino.sqrs:
             if s.x < 0 or s.x >= self.board.width or \
                 s.y < 0 or s.y >= self.board.height or \
-                    self.board.board_matrix[s.x][s.y] == 1:
+                    self.board.board_tetrominos_matrix[s.x][s.y] == 1:
                 self.board.current_tetromino.offset(-x, -y)
                 return False
         return True
@@ -137,9 +123,9 @@ class Movement:
         for i in range(self.board.height):
             self.board.current_tetromino.offset(0, -1)
             for s in self.board.current_tetromino.sqrs:
-                if s.y < 0 or self.board.board_matrix[s.x][s.y] == 1:
+                if s.y < 0 or self.board.board_tetrominos_matrix[s.x][s.y] == 1:
                     self.board.current_tetromino.offset(0, 1)
                     break
-        self.board.other_tetrominos.append(self.board.current_tetromino)
-        self.board.switch_piece()
+        self.board.board_tetrominos.append(self.board.current_tetromino)
+        self.board.switch_current_tetromino()
         self.board.holdable = True

@@ -9,22 +9,22 @@ def test_init():
             assert p.y == j
 
 
-def test_x():
+def test_x_value():
     for i in range(10):
         for j in range(22):
             p = Point((i, j))
-            assert p._x() == i
+            assert p.x_value() == i
 
 
 def test_y():
     for i in range(10):
         for j in range(22):
             p = Point((i, j))
-            assert p._y() == j
+            assert p.y_value() == j
 
 
 def test_xy():
     for i in range(10):
         for j in range(22):
             p = Point((i, j))
-            assert p._xy() == (i, j)
+            assert p.xy_tuple() == (i, j)
