@@ -4,7 +4,7 @@ UNIT = 40  # Length of a square in pixels
 GRAVITY_INTERVAL = 1
 DAS_INTERVAL = 3
 
-# Each tetromino's square's position relative to the bottomleft piece
+# Each tetromino's square's position relative to the bottomleft corner
 LAYOUTS = {
     'O': [(0, 0), (1, 0), (1, 1), (0, 1)],
     'I': [(0, 0), (1, 0), (2, 0), (3, 0)],

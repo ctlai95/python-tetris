@@ -13,9 +13,9 @@ log = logging.getLogger(__name__)
 class State(Enum):
     """State is used to keep track of the current Tetromino's rotation state"""
     ZERO = 0  # Initial spawn state
-    ONE = 1  # 1 clockwise or 3 counter-clockwise rotations from spawn state
+    ONE = 1  # 1 clockwise or 3 counterclockwise rotations from spawn state
     TWO = 2  # 2 rotations in either direction from spawn state
-    THREE = 3  # 3 clockwise or 1 counter-clockwise rotations from spawn state
+    THREE = 3  # 3 clockwise or 1 counterclockwise rotations from spawn state
 
     def next(self):
         v = (self.value + 1) % 4
@@ -76,7 +76,7 @@ class Tetromino:
         self.state = self.state.next()
 
     def rotate_ccw(self):
-        """Rotates the tetromino by 90 degrees, counter-clockwise"""
+        """Rotates the tetromino by 90 degrees, counterclockwise"""
 
         # the point of rotation, relative to the board origin
         abs_rotation_pt = tuples.add(

@@ -6,7 +6,7 @@ from src import config
 class Randomizer:
     """
     Randomizer generates a list of next tetrominos, making sure
-    every piece is used once before making another set
+    every tetromino is used once before making another set
     """
 
     def __init__(self):

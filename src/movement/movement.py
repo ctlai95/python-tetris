@@ -1,5 +1,9 @@
+import logging
+
 from src import config
 from src.tetromino.tetromino import State
+
+log = logging.getLogger(__name__)
 
 
 class Movement:
@@ -14,6 +18,7 @@ class Movement:
                 moveable = False
                 break
         if moveable:
+            log.debug("Moving current tetromino left")
             self.board.current_tetromino.offset(-1, 0)
             self.board.ghost_tetromino = self.board.get_ghost_tetromino()
 
@@ -27,6 +32,7 @@ class Movement:
                 moveable = False
                 break
         if moveable:
+            log.debug("Moving current tetromino right")
             self.board.current_tetromino.offset(1, 0)
             self.board.ghost_tetromino = self.board.get_ghost_tetromino()
 
@@ -38,6 +44,7 @@ class Movement:
                 moveable = False
                 break
         if moveable:
+            log.debug("Moving current tetromino down")
             self.board.current_tetromino.offset(0, -1)
             self.board.ghost_tetromino = self.board.get_ghost_tetromino()
 
@@ -48,6 +55,7 @@ class Movement:
                 moveable = False
                 break
         if moveable:
+            log.debug("Moving current tetromino up")
             self.board.current_tetromino.offset(0, 1)
             self.board.ghost_tetromino = self.board.get_ghost_tetromino()
 
@@ -56,6 +64,7 @@ class Movement:
         Rotates a tetromino clockwise, corrected to boundaries and other pieces
         """
         if self.board.current_tetromino.name == "O":
+            log.debug("Tetromino \"O\" detected, skipping")
             return
 
         if self.board.current_tetromino.name in ("J", "L", "S", "T", "Z"):
@@ -73,21 +82,25 @@ class Movement:
             rotation = "3->0"
 
         self.board.current_tetromino.rotate_cw()
-        for p in wall_kick[rotation]:
+        for i, p in enumerate(wall_kick[rotation]):
             ok = self.wall_kick_test(p[0], p[1])
             if ok:
+                log.debug("Clockwise rotation wall kick passed Test #{} with offset ({}, {})".format(
+                    i + 1, p[0], p[1]))
                 self.board.ghost_tetromino = self.board.get_ghost_tetromino()
                 return
 
         # if it reaches here that means all tests have failed, so rotate back
         self.board.current_tetromino.rotate_ccw()
+        log.debug("All clockwise rotation wall kicks failed, not rotating")
 
     def rotate_ccw(self):
         """
-        Rotates a tetromino counter-clockwise, corrected to boundaries and
+        Rotates a tetromino counterclockwise, corrected to boundaries and
         other pieces
         """
         if self.board.current_tetromino.name == "O":
+            log.debug("Tetromino \"O\" detected, skipping")
             return
 
         if self.board.current_tetromino.name in ("J", "L", "S", "T", "Z"):
@@ -105,14 +118,17 @@ class Movement:
             rotation = "3->2"
 
         self.board.current_tetromino.rotate_ccw()
-        for p in wall_kick[rotation]:
+        for i, p in enumerate(wall_kick[rotation]):
             ok = self.wall_kick_test(p[0], p[1])
             if ok:
+                log.debug("Counterclockwise rotation wall kick passed Test #{} with offset ({}, {})".format(
+                    i + 1, p[0], p[1]))
                 self.board.ghost_tetromino = self.board.get_ghost_tetromino()
                 return
 
         # if it reaches here that means all tests have failed, so rotate back
         self.board.current_tetromino.rotate_cw()
+        log.debug("All clockwise rotation wall kicks failed, not rotating")
 
     def wall_kick_test(self, x, y):
         self.board.current_tetromino.offset(x, y)
@@ -126,6 +142,7 @@ class Movement:
 
     def hard_drop(self):
         """Moves a tetromino down by the lowest difference"""
+        log.info("Hard dropping current tetromino")
         for i in range(self.board.height):
             self.board.current_tetromino.offset(0, -1)
             for s in self.board.current_tetromino.sqrs:

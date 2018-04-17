@@ -66,7 +66,7 @@ def test_hold_current_tetromino():
     # not dropped yet, so held tetromino should be unchanged
     b.hold_current_tetromino()
     assert b.held_tetromino.name == last_tetromino_name
-    # drop piece then hold, held piece should replace current
+    # drop tetromino then hold, held tetromino should replace current
     m.hard_drop()
     b.hold_current_tetromino()
     assert b.held_tetromino.name != last_tetromino_name

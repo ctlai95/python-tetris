@@ -28,7 +28,7 @@ class Board:
         self.current_tetromino_matrix = [
             [0 for y in range(height)] for x in range(width)]
         self.next_tetromino_name = self.random_list.next()
-        log.info("Next piece is {}".format(self.next_tetromino_name))
+        log.info("Next tetromino is \"{}\"".format(self.next_tetromino_name))
         self.board_tetrominos = []
         self.board_tetrominos_matrix = [
             [0 for y in range(height)] for x in range(width)]
@@ -84,7 +84,7 @@ class Board:
         )
         self.ghost_tetromino = self.get_ghost_tetromino()
         self.next_tetromino_name = self.random_list.next()
-        log.info("Next piece is {}".format(self.next_tetromino_name))
+        log.info("Next tetromino is \"{}\"".format(self.next_tetromino_name))
 
     def render_ghost(self):
         """Renders the ghost of the current tetromino"""
