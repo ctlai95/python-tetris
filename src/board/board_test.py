@@ -18,8 +18,6 @@ def test_init():
     assert len(b.current_tetromino_matrix) == width
     for column in b.current_tetromino_matrix:
         assert len(column) == height
-        for value in column:
-            assert value == 0
     assert b.random_list is not None
     assert b.current_tetromino.name in ["O", "I", "J", "L", "S", "Z", "T"]
     assert len(b.board_tetrominos) == 0
@@ -60,7 +58,7 @@ def test_clear_matrix():
 def test_hold_current_tetromino():
     b = Board(10, 22)
     m = Movement(b)
-    assert b.held_tetromino == None
+    assert b.held_tetromino is None
     last_tetromino_name = b.current_tetromino.name
     # should hold current tetromino
     b.hold_current_tetromino()
