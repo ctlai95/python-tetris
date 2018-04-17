@@ -1,7 +1,7 @@
-from src import config
 from src.colors import colors
 from src.point.point import Point
 from src.square.square import Square
+from src.tetromino.constants import COLORS
 from src.tetromino.tetromino import State, Tetromino
 from src.utils.tuples import tuples
 
@@ -19,7 +19,7 @@ def test_init():
     for name, color in names_colors.items():
         for i in range(10):
             for j in range(22):
-                t = Tetromino(name, Point((i, j)), config.COLORS[name])
+                t = Tetromino(name, Point((i, j)), COLORS[name])
                 assert t.name == name
                 assert t.btm_left_pt.xy_tuple() == (i, j)
                 assert t.state == State.ZERO
@@ -39,7 +39,7 @@ def test_populate_sqrs():
     for name, layout in expected_layouts.items():
         for i in range(10):
             for j in range(22):
-                t = Tetromino(name, Point((i, j)), config.COLORS[name])
+                t = Tetromino(name, Point((i, j)), COLORS[name])
                 squares_tuples = get_list_tuples(t.sqrs)
                 layout_offset = []
                 for l in layout:
@@ -59,7 +59,7 @@ def test_offset():
         for offset in offsets:
             for i in range(10):
                 for j in range(22):
-                    t = Tetromino(name, Point((i, j)), config.COLORS[name])
+                    t = Tetromino(name, Point((i, j)), COLORS[name])
                     t.offset(offset[0], offset[1])
                     assert t.btm_left_pt.xy_tuple() == tuples.add(
                         (i, j), (offset[0], offset[1]))
@@ -108,7 +108,7 @@ def test_rotate_cw():
     for name, layouts in expected_new_layouts.items():
         for i in range(10):
             for j in range(22):
-                t = Tetromino(name, Point((i, j)), config.COLORS[name])
+                t = Tetromino(name, Point((i, j)), COLORS[name])
                 old_position = t.btm_left_pt
                 for num_rotations, layout in enumerate(layouts):
                     assert t.btm_left_pt.xy_tuple() == old_position.xy_tuple()
@@ -125,7 +125,7 @@ def test_rotate_ccw():
     for name, layouts in expected_new_layouts.items():
         for i in range(10):
             for j in range(22):
-                t = Tetromino(name, Point((i, j)), config.COLORS[name])
+                t = Tetromino(name, Point((i, j)), COLORS[name])
                 old_position = t.btm_left_pt
                 for num_rotations, layout in enumerate(reversed(layouts)):
                     assert t.btm_left_pt.xy_tuple() == old_position.xy_tuple()
