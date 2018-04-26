@@ -103,7 +103,7 @@ class Board:
     def unfill_matrix(self, matrix, square):
         """Fills the given matrix at the given indices with a 0"""
         if square.x >= self.width or square.y >= self.height:
-            log.warning(
+            log.error(
                 "Position exceeds boundaries: {}".format(square.tuple()))
             return
         matrix[square.x][square.y] = 0
