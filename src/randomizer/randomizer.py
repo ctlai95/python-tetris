@@ -1,6 +1,8 @@
 from random import shuffle
 
-from src.tetromino.constants import LAYOUTS
+from src.point.point import Point
+from src.tetromino.constants import COLORS, LAYOUTS, SPAWN
+from src.tetromino.tetromino import Tetromino
 
 
 class Randomizer:
@@ -15,7 +17,12 @@ class Randomizer:
     def next(self):
         if len(self.list) == 0:
             self.new_list()
-        return self.list.pop()
+        next_tetromino_id = self.list.pop()
+        return Tetromino(
+            next_tetromino_id,
+            Point(SPAWN[next_tetromino_id]),
+            COLORS[next_tetromino_id],
+        )
 
     def new_list(self):
         self.list = []

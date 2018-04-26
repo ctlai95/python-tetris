@@ -18,17 +18,11 @@ class Board:
         log.info("Initializing board (width={}, height={})".format(width, height))
         self.width = width
         self.height = height
-        self.random_list = Randomizer()
-        self.next_tetromino_name = self.random_list.next()
-        self.current_tetromino = Tetromino(
-            self.next_tetromino_name,
-            Point(SPAWN[self.next_tetromino_name]),
-            COLORS[self.next_tetromino_name]
-        )
+        self.random_tetrominos = Randomizer()
+        self.current_tetromino = self.random_tetrominos.next()
         self.current_tetromino_matrix = [
             [0 for y in range(height)] for x in range(width)]
-        self.next_tetromino_name = self.random_list.next()
-        log.info("Next tetromino is \"{}\"".format(self.next_tetromino_name))
+        self.next_tetromino = self.random_tetrominos.next()
         self.board_tetrominos = []
         self.board_tetrominos_matrix = [
             [0 for y in range(height)] for x in range(width)]
@@ -77,20 +71,15 @@ class Board:
 
     def switch_current_tetromino(self):
         """Assigns a new current piece"""
-        self.current_tetromino = Tetromino(
-            self.next_tetromino_name,
-            Point(SPAWN[self.next_tetromino_name]),
-            COLORS[self.next_tetromino_name]
-        )
+        self.current_tetromino = self.next_tetromino
         self.ghost_tetromino = self.get_ghost_tetromino()
-        self.next_tetromino_name = self.random_list.next()
-        log.info("Next tetromino is \"{}\"".format(self.next_tetromino_name))
+        self.next_tetromino = self.random_tetrominos.next()
 
     def render_ghost(self):
         """Renders the ghost of the current tetromino"""
         ghost = Tetromino(
-            self.current_tetromino.name,
-            self.current_tetromino.btm_left_pt,
+            self.current_tetromino.id,
+            self.current_tetromino.origin,
             colors.ASH
         )
         for i in range(self.current_tetromino.state.value):
@@ -140,20 +129,20 @@ class Board:
         """Holds the current tetromino and switches to another one"""
         if self.holdable is False:
             log.info("Hold slot is already occupied by {}".format(
-                self.held_tetromino.name))
+                self.held_tetromino.id))
             return
         self.holdable = False
         if self.held_tetromino is None:
             log.info("Putting tetromino {} on hold".format(
-                self.current_tetromino.name))
+                self.current_tetromino.id))
             self.held_tetromino = copy.deepcopy(self.current_tetromino)
             self.switch_current_tetromino()
         else:
             log.info("Putting tetromino {} out of hold".format(
-                self.held_tetromino.name))
+                self.held_tetromino.id))
             tmp = self.current_tetromino
             self.current_tetromino = self.held_tetromino
-            log.info("Putting tetromino {} on hold".format(tmp.name))
+            log.info("Putting tetromino {} on hold".format(tmp.id))
             self.held_tetromino = copy.deepcopy(tmp)
         self.ghost_tetromino = self.get_ghost_tetromino()
 

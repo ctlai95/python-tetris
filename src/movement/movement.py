@@ -63,13 +63,13 @@ class Movement:
         """
         Rotates a tetromino clockwise, corrected to boundaries and other pieces
         """
-        if self.board.current_tetromino.name == "O":
+        if self.board.current_tetromino.id == "O":
             log.debug("Tetromino \"O\" detected, skipping")
             return
 
-        if self.board.current_tetromino.name in ("J", "L", "S", "T", "Z"):
+        if self.board.current_tetromino.id in ("J", "L", "S", "T", "Z"):
             wall_kick = WALL_KICKS["JLSTZ"]
-        elif self.board.current_tetromino.name == "I":
+        elif self.board.current_tetromino.id == "I":
             wall_kick = WALL_KICKS["I"]
 
         if self.board.current_tetromino.state == State.ZERO:
@@ -99,13 +99,13 @@ class Movement:
         Rotates a tetromino counterclockwise, corrected to boundaries and
         other pieces
         """
-        if self.board.current_tetromino.name == "O":
+        if self.board.current_tetromino.id == "O":
             log.debug("Tetromino \"O\" detected, skipping")
             return
 
-        if self.board.current_tetromino.name in ("J", "L", "S", "T", "Z"):
+        if self.board.current_tetromino.id in ("J", "L", "S", "T", "Z"):
             wall_kick = WALL_KICKS["JLSTZ"]
-        elif self.board.current_tetromino.name == "I":
+        elif self.board.current_tetromino.id == "I":
             wall_kick = WALL_KICKS["I"]
 
         if self.board.current_tetromino.state == State.ZERO:

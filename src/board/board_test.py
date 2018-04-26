@@ -18,18 +18,18 @@ def test_init():
     assert len(b.current_tetromino_matrix) == width
     for column in b.current_tetromino_matrix:
         assert len(column) == height
-    assert b.random_list is not None
-    assert b.current_tetromino.name in ["O", "I", "J", "L", "S", "Z", "T"]
+    assert b.random_tetrominos is not None
+    assert b.current_tetromino.id in ["O", "I", "J", "L", "S", "Z", "T"]
     assert len(b.board_tetrominos) == 0
 
 
 def test_switch_current_tetromino():
     b = Board(10, 22)
     for i in range(100):
-        last_tetromino_name = b.current_tetromino.name
+        last_tetromino_id = b.current_tetromino.id
         b.switch_current_tetromino()
         if not i + 1 % 7:
-            assert b.current_tetromino.name != last_tetromino_name
+            assert b.current_tetromino.id != last_tetromino_id
 
 
 def test_fill_unfill_matrix():
@@ -59,15 +59,15 @@ def test_hold_current_tetromino():
     b = Board(10, 22)
     m = Movement(b)
     assert b.held_tetromino is None
-    last_tetromino_name = b.current_tetromino.name
+    last_tetromino_id = b.current_tetromino.id
     # should hold current tetromino
     b.hold_current_tetromino()
-    assert b.held_tetromino.name == last_tetromino_name
+    assert b.held_tetromino.id == last_tetromino_id
     # not dropped yet, so held tetromino should be unchanged
     b.hold_current_tetromino()
-    assert b.held_tetromino.name == last_tetromino_name
+    assert b.held_tetromino.id == last_tetromino_id
     # drop tetromino then hold, held tetromino should replace current
     m.hard_drop()
     b.hold_current_tetromino()
-    assert b.held_tetromino.name != last_tetromino_name
-    assert b.current_tetromino.name == last_tetromino_name
+    assert b.held_tetromino.id != last_tetromino_id
+    assert b.current_tetromino.id == last_tetromino_id

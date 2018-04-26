@@ -29,27 +29,34 @@ class State(Enum):
 class Tetromino:
     """A tetromino is a piece which consists of exactly 4 squares"""
 
-    def __init__(self, name, btm_left_pt, color):
-        log.info("Initializing Tetromino (name={}, btm_left_pt={}, color={})".format(
-            name, btm_left_pt.xy_tuple(), color))
-        self.name = name
-        self.btm_left_pt = btm_left_pt
+    def __init__(self, id, origin, color):
+        """
+        Initializes a Tetromino object
+        Arguments:
+            id (string): the identifier of the tetromino (O, I, J, L, S, Z, T)
+            origin (Point): the position of the bottom left point used as a reference for the "LAYOUTS" values
+            color (list): the color of the tetromino in [R, G, B] format
+        """
+        log.info("Initializing Tetromino (id={}, origin={}, color={})".format(
+            id, origin.xy_tuple(), color))
+        self.id = id
+        self.origin = origin
         self.sqrs = self.populate_sqrs()
         self.state = State.ZERO
         self.color = color
 
     def populate_sqrs(self):
-        """Returns the 4 squares as a list, according to name"""
+        """Returns the 4 squares as a list, according to id"""
         sqrs = []
         for i in range(4):
             sqrs.append(
-                Square(Point(tuples.add(self.btm_left_pt.xy_tuple(),
-                                        LAYOUTS[self.name][i]))))
+                Square(Point(tuples.add(self.origin.xy_tuple(),
+                                        LAYOUTS[self.id][i]))))
         return sqrs
 
     def offset(self, x, y):
-        self.btm_left_pt = Point(tuples.add(
-            self.btm_left_pt.xy_tuple(), (x, y)))
+        self.origin = Point(tuples.add(
+            self.origin.xy_tuple(), (x, y)))
         for s in self.sqrs:
             s.offset(x, y)
 
@@ -58,7 +65,7 @@ class Tetromino:
 
         # the point of rotation, relative to the board origin
         abs_rotation_pt = tuples.add(
-            self.btm_left_pt.xy_tuple(), ROTATION_POINTS[self.name])
+            self.origin.xy_tuple(), ROTATION_POINTS[self.id])
         for i in range(len(self.sqrs)):
             # the square's position relative to the point of rotation
             current_square = tuples.subtract(
@@ -80,7 +87,7 @@ class Tetromino:
 
         # the point of rotation, relative to the board origin
         abs_rotation_pt = tuples.add(
-            self.btm_left_pt.xy_tuple(), ROTATION_POINTS[self.name])
+            self.origin.xy_tuple(), ROTATION_POINTS[self.id])
         for i in range(len(self.sqrs)):
             # the square's position relative to the point of rotation
             current_square = tuples.subtract(
