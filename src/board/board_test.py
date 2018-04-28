@@ -10,66 +10,64 @@ def test_init():
     b = Board(width, height)
     assert b.width == width
     assert b.height == height
-    assert len(b.board_matrix) == width
-    for column in b.board_matrix:
+    assert len(b.board_tetrominos_matrix) == width
+    for column in b.board_tetrominos_matrix:
         assert len(column) == height
         for value in column:
             assert value == 0
-    assert len(b.piece_matrix) == width
-    for column in b.piece_matrix:
+    assert len(b.current_tetromino_matrix) == width
+    for column in b.current_tetromino_matrix:
         assert len(column) == height
-        for value in column:
-            assert value == 0
-    assert b.random_list is not None
-    assert b.current_tetromino.name in ["O", "I", "J", "L", "S", "Z", "T"]
-    assert len(b.other_tetrominos) == 0
+    assert b.random_tetrominos is not None
+    assert b.current_tetromino.id in ["O", "I", "J", "L", "S", "Z", "T"]
+    assert len(b.board_tetrominos) == 0
 
 
-def test_switch_piece():
+def test_switch_current_tetromino():
     b = Board(10, 22)
     for i in range(100):
-        last_tetromino_name = b.current_tetromino.name
-        b.switch_piece()
+        last_tetromino_id = b.current_tetromino.id
+        b.switch_current_tetromino()
         if not i + 1 % 7:
-            assert b.current_tetromino.name != last_tetromino_name
+            assert b.current_tetromino.id != last_tetromino_id
 
 
 def test_fill_unfill_matrix():
     b = Board(10, 22)
     for i in range(10):
         for j in range(22):
-            b.fill_matrix(b.board_matrix, Square(Point((i, j))))
-            assert b.board_matrix[i][j] == 1
+            b.fill_matrix(b.board_tetrominos_matrix, Square(Point((i, j))))
+            assert b.board_tetrominos_matrix[i][j] == 1
     for i in range(10):
         for j in range(22):
-            b.unfill_matrix(b.board_matrix, Square(Point((i, j))))
-            assert b.board_matrix[i][j] == 0
+            b.unfill_matrix(b.board_tetrominos_matrix, Square(Point((i, j))))
+            assert b.board_tetrominos_matrix[i][j] == 0
 
 
 def test_clear_matrix():
     b = Board(10, 22)
     for i in range(10):
         for j in range(22):
-            b.fill_matrix(b.board_matrix, Square(Point((i, j))))
-    b.clear_matrix(b.board_matrix)
+            b.fill_matrix(b.board_tetrominos_matrix, Square(Point((i, j))))
+    b.clear_matrix(b.board_tetrominos_matrix)
     for i in range(10):
         for j in range(22):
-            assert b.board_matrix[i][j] == 0
+            assert b.board_tetrominos_matrix[i][j] == 0
 
 
-def test_hold_piece():
+def test_hold_current_tetromino():
     b = Board(10, 22)
     m = Movement(b)
-    assert b.held_tetromino == None
-    last_tetromino_name = b.current_tetromino.name
+    assert b.held_tetromino is None
+    last_tetromino_id = b.current_tetromino.id
     # should hold current tetromino
-    b.hold_piece()
-    assert b.held_tetromino.name == last_tetromino_name
+    b.hold_current_tetromino()
+    assert b.held_tetromino.id == last_tetromino_id
     # not dropped yet, so held tetromino should be unchanged
-    b.hold_piece()
-    assert b.held_tetromino.name == last_tetromino_name
-    # drop piece then hold, held piece should replace current
+    b.hold_current_tetromino()
+    assert b.held_tetromino.id == last_tetromino_id
+    # drop tetromino then hold, held tetromino should replace current
     m.hard_drop()
-    b.hold_piece()
-    assert b.held_tetromino.name != last_tetromino_name
-    assert b.current_tetromino.name == last_tetromino_name
+    b.hold_current_tetromino()
+    assert b.held_tetromino.id != last_tetromino_id
+    assert b.current_tetromino.id == last_tetromino_id

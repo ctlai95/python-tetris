@@ -1,13 +1,13 @@
-from src import config
 from src.colors import colors
 from src.point.point import Point
 from src.square.square import Square
+from src.tetromino.constants import COLORS
 from src.tetromino.tetromino import State, Tetromino
 from src.utils.tuples import tuples
 
 
 def test_init():
-    names_colors = {
+    ids_colors = {
         "O": colors.YELLOW,
         "I": colors.TEAL,
         "J": colors.BLUE,
@@ -16,12 +16,12 @@ def test_init():
         "Z": colors.RED,
         "T": colors.PURPLE,
     }
-    for name, color in names_colors.items():
+    for id, color in ids_colors.items():
         for i in range(10):
             for j in range(22):
-                t = Tetromino(name, Point((i, j)), config.COLORS[name])
-                assert t.name == name
-                assert t.loc._xy() == (i, j)
+                t = Tetromino(id, Point((i, j)), COLORS[id])
+                assert t.id == id
+                assert t.origin.xy_tuple() == (i, j)
                 assert t.state == State.ZERO
                 assert t.color == color
 
@@ -36,10 +36,10 @@ def test_populate_sqrs():
         "Z": [(0, 1), (1, 1), (1, 0), (2, 0)],
         "T": [(0, 0), (1, 0), (2, 0), (1, 1)]
     }
-    for name, layout in expected_layouts.items():
+    for id, layout in expected_layouts.items():
         for i in range(10):
             for j in range(22):
-                t = Tetromino(name, Point((i, j)), config.COLORS[name])
+                t = Tetromino(id, Point((i, j)), COLORS[id])
                 squares_tuples = get_list_tuples(t.sqrs)
                 layout_offset = []
                 for l in layout:
@@ -54,14 +54,14 @@ def test_offset():
         (0, 1),
         (0, -1)
     ]
-    names = ["O", "I", "J", "L", "S", "Z", "T"]
-    for name in names:
+    ids = ["O", "I", "J", "L", "S", "Z", "T"]
+    for id in ids:
         for offset in offsets:
             for i in range(10):
                 for j in range(22):
-                    t = Tetromino(name, Point((i, j)), config.COLORS[name])
+                    t = Tetromino(id, Point((i, j)), COLORS[id])
                     t.offset(offset[0], offset[1])
-                    assert t.loc._xy() == tuples.add(
+                    assert t.origin.xy_tuple() == tuples.add(
                         (i, j), (offset[0], offset[1]))
 
 
@@ -105,13 +105,13 @@ expected_new_layouts = {
 
 
 def test_rotate_cw():
-    for name, layouts in expected_new_layouts.items():
+    for id, layouts in expected_new_layouts.items():
         for i in range(10):
             for j in range(22):
-                t = Tetromino(name, Point((i, j)), config.COLORS[name])
-                old_position = t.loc
+                t = Tetromino(id, Point((i, j)), COLORS[id])
+                old_position = t.origin
                 for num_rotations, layout in enumerate(layouts):
-                    assert t.loc._xy() == old_position._xy()
+                    assert t.origin.xy_tuple() == old_position.xy_tuple()
                     squares_tuples = get_list_tuples(t.sqrs)
                     layout_offset = []
                     for l in layout:
@@ -122,13 +122,13 @@ def test_rotate_cw():
 
 
 def test_rotate_ccw():
-    for name, layouts in expected_new_layouts.items():
+    for id, layouts in expected_new_layouts.items():
         for i in range(10):
             for j in range(22):
-                t = Tetromino(name, Point((i, j)), config.COLORS[name])
-                old_position = t.loc
+                t = Tetromino(id, Point((i, j)), COLORS[id])
+                old_position = t.origin
                 for num_rotations, layout in enumerate(reversed(layouts)):
-                    assert t.loc._xy() == old_position._xy()
+                    assert t.origin.xy_tuple() == old_position.xy_tuple()
                     squares_tuples = get_list_tuples(t.sqrs)
                     layout_offset = []
                     for l in layout:

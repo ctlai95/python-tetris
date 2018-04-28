@@ -8,4 +8,6 @@ install:
   - pip3 install pyglet
   - pip3 install pytest
 # command to run tests
-script:         pytest -v
+script:
+  - cp src/config.py.example src/config.py
+  - pytest -v
