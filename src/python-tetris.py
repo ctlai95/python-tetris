@@ -14,7 +14,6 @@ if __name__ == '__main__':
     log.info("Starting python-tetris")
     log.info("Log level: {}".format(LOG_LEVEL))
     window = Window(400, 880, "Python Tetris")
-    # pyglet.clock.schedule_interval(window.update, 1 / 5.0)
     log.info("Entering main loop")
     pyglet.app.run()
     log.info("Exiting main loop")
