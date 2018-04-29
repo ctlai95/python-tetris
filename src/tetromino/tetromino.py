@@ -1,4 +1,3 @@
-import inspect
 import logging
 from enum import Enum
 
@@ -41,17 +40,16 @@ class Tetromino:
             id, origin.xy_tuple(), color))
         self.id = id
         self.origin = origin
+        self.color = color
         self.sqrs = self.populate_sqrs()
         self.state = State.ZERO
-        self.color = color
 
     def populate_sqrs(self):
         """Returns the 4 squares as a list, according to id"""
         sqrs = []
         for i in range(4):
-            sqrs.append(
-                Square(Point(tuples.add(self.origin.xy_tuple(),
-                                        LAYOUTS[self.id][i]))))
+            point = Point(tuples.add(self.origin.xy_tuple(), LAYOUTS[self.id][i]))
+            sqrs.append(Square(point, self.color))
         return sqrs
 
     def offset(self, x, y):
@@ -78,8 +76,8 @@ class Tetromino:
             new_point = tuples.add(
                 (btm_right[1], -btm_right[0]), abs_rotation_pt)
             # replace the old square with the new square
-            self.sqrs[i] = Square(
-                Point((int(new_point[0]), int(new_point[1]))))
+            point = Point((int(new_point[0]), int(new_point[1])))
+            self.sqrs[i] = Square(point, self.color)
         self.state = self.state.next()
 
     def rotate_ccw(self):
@@ -101,11 +99,11 @@ class Tetromino:
                 (-top_left[1], top_left[0]), abs_rotation_pt)
 
             # replace the old square with the new square
-            self.sqrs[i] = Square(
-                Point((int(new_point[0]), int(new_point[1]))))
+            point = Point((int(new_point[0]), int(new_point[1])))
+            self.sqrs[i] = Square(point, self.color)
         self.state = self.state.prev()
 
     def render_tetromino(self):
         """Renders the tetromino to the screen"""
         for s in self.sqrs:
-            s.render_square(self.color)
+            s.render_square()

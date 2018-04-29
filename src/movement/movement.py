@@ -149,6 +149,11 @@ class Movement:
                 if s.y < 0 or self.board.board_tetrominos_matrix[s.x][s.y] == 1:
                     self.board.current_tetromino.offset(0, 1)
                     break
-        self.board.board_tetrominos.append(self.board.current_tetromino)
+
+        for square in self.board.current_tetromino.sqrs:
+            self.board.board_tetrominos_squares.append(square)
+
         self.board.switch_current_tetromino()
         self.board.holdable = True
+        filled_indices = self.board.get_filled_indices()
+        self.board.clear_lines(filled_indices)

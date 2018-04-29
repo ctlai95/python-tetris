@@ -2,10 +2,8 @@ import copy
 import logging
 
 from src.colors import colors
-from src.point.point import Point
 from src.randomizer.randomizer import Randomizer
 from src.renderer.renderer import Renderer
-from src.tetromino.constants import COLORS, SPAWN
 from src.tetromino.tetromino import Tetromino
 
 log = logging.getLogger(__name__)
@@ -23,7 +21,7 @@ class Board:
         self.current_tetromino_matrix = [
             [0 for y in range(height)] for x in range(width)]
         self.next_tetromino = self.random_tetrominos.next()
-        self.board_tetrominos = []
+        self.board_tetrominos_squares = []
         self.board_tetrominos_matrix = [
             [0 for y in range(height)] for x in range(width)]
         self.ghost_tetromino = self.get_ghost_tetromino()
@@ -38,8 +36,8 @@ class Board:
         self.render_background()
 
         # Render pieces except current one
-        for t in self.board_tetrominos:
-            t.render_tetromino()
+        for s in self.board_tetrominos_squares:
+            s.render_square()
 
         # Render the ghost tetromino
         self.ghost_tetromino.render_tetromino()
@@ -47,12 +45,38 @@ class Board:
         # Render current playable tetromino
         self.current_tetromino.render_tetromino()
 
+        log.info(self.get_filled_indices())
+
+    def get_filled_indices(self):
+        """Returns the number of lines filled"""
+        filled_indices = []
+        for j in range(self.height):
+            is_filled = True
+            for i in range(self.width):
+                if self.board_tetrominos_matrix[i][j] == 0:
+                    is_filled = False
+            if is_filled:
+                filled_indices.append(j)
+        return filled_indices
+
+    def clear_lines(self, indices):
+        """Takes in a list of indices that are full and removes all the
+        squares in the row"""
+
+        #  Needs a copy of the list so it doesn't mutate the original list
+        board_tetrominos_squares_copy = self.board_tetrominos_squares[:]
+        for index in indices:
+            for sqr in self.board_tetrominos_squares:
+                if sqr.y == index:
+                    board_tetrominos_squares_copy.remove(sqr)
+
+        self.board_tetrominos_squares = board_tetrominos_squares_copy
+
     def update_matrices(self):
         self.clear_matrix(self.current_tetromino_matrix)
         self.clear_matrix(self.board_tetrominos_matrix)
-        for t in self.board_tetrominos:
-            for s in t.sqrs:
-                self.fill_matrix(self.board_tetrominos_matrix, s)
+        for s in self.board_tetrominos_squares:
+            self.fill_matrix(self.board_tetrominos_matrix, s)
         for s in self.current_tetromino.sqrs:
             self.fill_matrix(self.current_tetromino_matrix, s)
 
@@ -60,13 +84,13 @@ class Board:
         """Returns a gray clone of the current tetromino and moves it down by the maximum amount"""
         self.update_matrices()
         ghost = copy.deepcopy(self.current_tetromino)
-        ghost.color = colors.ASH
         for i in range(self.height):
             ghost.offset(0, -1)
             for s in ghost.sqrs:
                 if s.y < 0 or self.board_tetrominos_matrix[s.x][s.y] == 1:
                     ghost.offset(0, 1)
                     break
+                s.color = colors.ASH
         return ghost
 
     def switch_current_tetromino(self):
@@ -74,23 +98,6 @@ class Board:
         self.current_tetromino = self.next_tetromino
         self.ghost_tetromino = self.get_ghost_tetromino()
         self.next_tetromino = self.random_tetrominos.next()
-
-    def render_ghost(self):
-        """Renders the ghost of the current tetromino"""
-        ghost = Tetromino(
-            self.current_tetromino.id,
-            self.current_tetromino.origin,
-            colors.ASH
-        )
-        for i in range(self.current_tetromino.state.value):
-            ghost.rotate_cw()
-        for i in range(self.height):
-            ghost.offset(0, -1)
-            for s in ghost.sqrs:
-                if s.y < 0 or self.board_tetrominos_matrix[s.x][s.y] == 1:
-                    ghost.offset(0, 1)
-                    break
-        ghost.render_tetromino()
 
     def fill_matrix(self, matrix, square):
         """Fills the given matrix at the given indices with a 1"""
@@ -151,7 +158,7 @@ class Board:
         combined_matrix = "Matrix:\n"
         for j in reversed(range(self.height)):
             for i in range(self.width):
-                combined_matrix += str(self.board_tetrominos_matrix[i]
-                                       [j] or self.current_tetromino_matrix[i][j]) + " "
+                combined_matrix += str(self.board_tetrominos_matrix[i][j] or
+                                       self.current_tetromino_matrix[i][j]) + " "
             combined_matrix += "\n"
         return combined_matrix

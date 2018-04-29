@@ -8,9 +8,10 @@ log = logging.getLogger(__name__)
 class Square:
     """The Square class renders a square with the given Coordinates"""
 
-    def __init__(self, point):
+    def __init__(self, point, color):
         self.x = point.x_value()
         self.y = point.y_value()
+        self.color = color
 
     def tuple(self):
         return (self.x, self.y)
@@ -19,7 +20,7 @@ class Square:
         self.x += x
         self.y += y
 
-    def render_square(self, color):
+    def render_square(self):
         """Renders the square to the screen"""
-        r = Renderer(self.x, self.y, color)
+        r = Renderer(self.x, self.y, self.color)
         r.draw()
