@@ -157,3 +157,4 @@ class Movement:
         self.board.holdable = True
         filled_indices = self.board.get_filled_indices()
         self.board.clear_lines(filled_indices)
+        self.board.drop_lines(filled_indices)

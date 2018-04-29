@@ -4,7 +4,6 @@ import logging
 from src.colors import colors
 from src.randomizer.randomizer import Randomizer
 from src.renderer.renderer import Renderer
-from src.tetromino.tetromino import Tetromino
 
 log = logging.getLogger(__name__)
 
@@ -45,8 +44,6 @@ class Board:
         # Render current playable tetromino
         self.current_tetromino.render_tetromino()
 
-        log.info(self.get_filled_indices())
-
     def get_filled_indices(self):
         """Returns the number of lines filled"""
         filled_indices = []
@@ -71,6 +68,18 @@ class Board:
                     board_tetrominos_squares_copy.remove(sqr)
 
         self.board_tetrominos_squares = board_tetrominos_squares_copy
+
+    def drop_lines(self, indices):
+        lines_dropped = 0
+        cond = False
+        for index in indices:
+            log.debug("Current loop index: {}".format(index))
+            for square in self.board_tetrominos_squares:
+                if square.y > index - lines_dropped:
+                    square.y = square.y - 1
+                    cond = True
+            if cond:
+                lines_dropped += 1
 
     def update_matrices(self):
         self.clear_matrix(self.current_tetromino_matrix)
