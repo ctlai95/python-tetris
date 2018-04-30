@@ -4,20 +4,25 @@ log = logging.getLogger(__name__)
 
 
 class Point:
-    """A point is a coordinate on the board with an x and y position"""
+    """A point is a coordinate on the board with an x and y position."""
 
-    def __init__(self, xy):  # xy is a tuple
-        self.x = xy[0]
-        self.y = xy[1]
+    def __init__(self, x, y):
+        """
+        Initialize a Point object.
 
-    def x_value(self):
-        """Returns the x position"""
-        return self.x
+        Args:
+            x (int): The x coordinate
+            y (int): The y coorindate
+        """
+        self.x = x
+        self.y = y
 
-    def y_value(self):
-        """Returns the y position"""
-        return self.y
+    def tuple(self):
+        """
+        Return the x and y positions as a tuple.
 
-    def xy_tuple(self):
-        """Returns the x and y positions as a tuple"""
+        Returns:
+            int tuple: The x and y coordinates.
+
+        """
         return (self.x, self.y)

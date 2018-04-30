@@ -1,71 +1,68 @@
-import inspect
 import logging
-from enum import Enum
 
 from src.point.point import Point
 from src.square.square import Square
 from src.tetromino.constants import LAYOUTS, ROTATION_POINTS
+from src.tetromino.state import State
 from src.utils.tuples import tuples
 
 log = logging.getLogger(__name__)
 
 
-class State(Enum):
-    """State is used to keep track of the current Tetromino's rotation state"""
-    ZERO = 0  # Initial spawn state
-    ONE = 1  # 1 clockwise or 3 counterclockwise rotations from spawn state
-    TWO = 2  # 2 rotations in either direction from spawn state
-    THREE = 3  # 3 clockwise or 1 counterclockwise rotations from spawn state
-
-    def next(self):
-        v = (self.value + 1) % 4
-        return State(v)
-
-    def prev(self):
-        v = (self.value - 1) % 4
-        return State(v)
-
-
 class Tetromino:
-    """A tetromino is a piece which consists of exactly 4 squares"""
+    """A tetromino is a piece which consists of exactly four squares."""
 
     def __init__(self, id, origin, color):
         """
-        Initializes a Tetromino object
-        Arguments:
-            id (string): the identifier of the tetromino (O, I, J, L, S, Z, T)
-            origin (Point): the position of the bottom left point used as a reference for the "LAYOUTS" values
-            color (list): the color of the tetromino in [R, G, B] format
+        Initialize a Tetromino object.
+
+        Args:
+            id (string): The identifier of the tetromino (O, I, J, L, S, Z, T)
+            origin (Point): The position of the bottom left point used as a reference for the "LAYOUTS" values
+            color (list): The color of the tetromino in [R, G, B] format
         """
         log.info("Initializing Tetromino (id={}, origin={}, color={})".format(
-            id, origin.xy_tuple(), color))
+            id, origin.tuple(), color))
         self.id = id
         self.origin = origin
-        self.sqrs = self.populate_sqrs()
+        self.sqrs = self.get_sqrs()
         self.state = State.ZERO
         self.color = color
 
-    def populate_sqrs(self):
-        """Returns the 4 squares as a list, according to id"""
+    def get_sqrs(self):
+        """
+        Get the four squares that make up the tetromino.
+
+        Returns:
+            sqrs ([]Square): the four squares as a list.
+
+        """
         sqrs = []
         for i in range(4):
-            sqrs.append(
-                Square(Point(tuples.add(self.origin.xy_tuple(),
-                                        LAYOUTS[self.id][i]))))
+            square_position = tuples.add(
+                self.origin.tuple(), LAYOUTS[self.id][i])
+            sqrs.append(Square(Point(square_position[0], square_position[1])))
+
         return sqrs
 
     def offset(self, x, y):
-        self.origin = Point(tuples.add(
-            self.origin.xy_tuple(), (x, y)))
+        """
+        Move the tetromino by the given horizontal and vertical values.
+
+        Args:
+            x (int): The number of horizontal units to move (pos = right, neg = left).
+            y (int): The number of vertical units to move (pos = up, neg = down).
+        """
+        new_position = tuples.add(self.origin.tuple(), (x, y))
+        self.origin = Point(new_position[0], new_position[1])
         for s in self.sqrs:
             s.offset(x, y)
 
     def rotate_cw(self):
-        """Rotates the tetromino by 90 degrees, clockwise"""
-
+        """Rotate the tetromino by 90 degrees, clockwise."""
         # the point of rotation, relative to the board origin
         abs_rotation_pt = tuples.add(
-            self.origin.xy_tuple(), ROTATION_POINTS[self.id])
+            self.origin.tuple(), ROTATION_POINTS[self.id])
         for i in range(len(self.sqrs)):
             # the square's position relative to the point of rotation
             current_square = tuples.subtract(
@@ -79,15 +76,14 @@ class Tetromino:
                 (btm_right[1], -btm_right[0]), abs_rotation_pt)
             # replace the old square with the new square
             self.sqrs[i] = Square(
-                Point((int(new_point[0]), int(new_point[1]))))
+                Point(int(new_point[0]), int(new_point[1])))
         self.state = self.state.next()
 
     def rotate_ccw(self):
-        """Rotates the tetromino by 90 degrees, counterclockwise"""
-
+        """Rotate the tetromino by 90 degrees, counterclockwise."""
         # the point of rotation, relative to the board origin
         abs_rotation_pt = tuples.add(
-            self.origin.xy_tuple(), ROTATION_POINTS[self.id])
+            self.origin.tuple(), ROTATION_POINTS[self.id])
         for i in range(len(self.sqrs)):
             # the square's position relative to the point of rotation
             current_square = tuples.subtract(
@@ -102,10 +98,10 @@ class Tetromino:
 
             # replace the old square with the new square
             self.sqrs[i] = Square(
-                Point((int(new_point[0]), int(new_point[1]))))
+                Point(int(new_point[0]), int(new_point[1])))
         self.state = self.state.prev()
 
     def render_tetromino(self):
-        """Renders the tetromino to the screen"""
+        """Render the square to the screen."""
         for s in self.sqrs:
             s.render_square(self.color)

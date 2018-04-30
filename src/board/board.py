@@ -12,10 +12,19 @@ log = logging.getLogger(__name__)
 
 
 class Board:
-    """Board contains all the tetrominos in the current game"""
+    """Board contains all the tetrominos in the current game."""
 
     def __init__(self, width, height):
-        log.info("Initializing board (width={}, height={})".format(width, height))
+        """
+        Initialize a Board object.
+
+        Args:
+            width (int): The board's width in number of units.
+            height (int): The board's height in number of units.
+        """
+        log.info(
+            "Initializing board (width={}, height={})".format(width, height)
+        )
         self.width = width
         self.height = height
         self.random_tetrominos = Randomizer()
@@ -31,7 +40,7 @@ class Board:
         self.held_tetromino = None
 
     def render_board(self):
-        """Renders the board to the screen and updates matrices"""
+        """Render the contents of the board to the screen."""
         self.update_matrices()
 
         # Render the background
@@ -48,6 +57,7 @@ class Board:
         self.current_tetromino.render_tetromino()
 
     def update_matrices(self):
+        """Update the matrices to match the tetrominos in the board."""
         self.clear_matrix(self.current_tetromino_matrix)
         self.clear_matrix(self.board_tetrominos_matrix)
         for t in self.board_tetrominos:
@@ -57,7 +67,13 @@ class Board:
             self.fill_matrix(self.current_tetromino_matrix, s)
 
     def get_ghost_tetromino(self):
-        """Returns a gray clone of the current tetromino and moves it down by the maximum amount"""
+        """
+        Return a gray clone of the current tetromino and moves it down by the maximum amount.
+
+        Returns:
+            Tetromino: The ghost tetromino
+
+        """
         self.update_matrices()
         ghost = copy.deepcopy(self.current_tetromino)
         ghost.color = colors.ASH
@@ -70,13 +86,13 @@ class Board:
         return ghost
 
     def switch_current_tetromino(self):
-        """Assigns a new current piece"""
+        """Replace the current tetromino with the next tetromino."""
         self.current_tetromino = self.next_tetromino
         self.ghost_tetromino = self.get_ghost_tetromino()
         self.next_tetromino = self.random_tetrominos.next()
 
     def render_ghost(self):
-        """Renders the ghost of the current tetromino"""
+        """Render the ghost of the current tetromino."""
         ghost = Tetromino(
             self.current_tetromino.id,
             self.current_tetromino.origin,
@@ -93,7 +109,13 @@ class Board:
         ghost.render_tetromino()
 
     def fill_matrix(self, matrix, square):
-        """Fills the given matrix at the given indices with a 1"""
+        """
+        Fill the given matrix at the given square's indices with a 1.
+
+        Args:
+            matrix ([][]int): The matrix with the index to be filled.
+            square (Square): The square with the coordinates to fill the matrix.
+        """
         if square.x >= self.width or square.y >= self.height:
             log.warning(
                 "Position exceeds boundaries: {}".format(square.tuple()))
@@ -101,7 +123,13 @@ class Board:
         matrix[square.x][square.y] = 1
 
     def unfill_matrix(self, matrix, square):
-        """Fills the given matrix at the given indices with a 0"""
+        """
+        Fill the given matrix at the given square's indices with a 0.
+
+        Args:
+            matrix ([][]int): The matrix with the index to be unfilled.
+            square (Square): The square with the coordinates to unfill the matrix.
+        """
         if square.x >= self.width or square.y >= self.height:
             log.error(
                 "Position exceeds boundaries: {}".format(square.tuple()))
@@ -109,13 +137,18 @@ class Board:
         matrix[square.x][square.y] = 0
 
     def clear_matrix(self, matrix):
-        """Sets every element of the given matrix to 0"""
+        """
+        Set every element of the given matrix to 0.
+
+        Args:
+            matrix ([][]int): The matrix to be cleared.
+        """
         for i in range(self.width):
             for j in range(self.height):
                 matrix[i][j] = 0
 
     def render_background(self):
-        """Renders the background squares"""
+        """Render the background squares."""
         for i in range(self.width):
             for j in range(self.height):
                 if (i % 2 is 0 and j % 2 is 0) or \
@@ -126,7 +159,7 @@ class Board:
                 s.draw()
 
     def hold_current_tetromino(self):
-        """Holds the current tetromino and switches to another one"""
+        """Put the current tetromino on hold to be retrieved later."""
         if self.holdable is False:
             log.info("Hold slot is already occupied by {}".format(
                 self.held_tetromino.id))
@@ -147,7 +180,13 @@ class Board:
         self.ghost_tetromino = self.get_ghost_tetromino()
 
     def get_combined_matrix_string(self):
-        """Combines the board and piece matrices as a string for debugging"""
+        """
+        Combine the board and piece matrices as a string for debugging.
+
+        Returns:
+            string: The combined matrix.
+
+        """
         combined_matrix = "Matrix:\n"
         for j in reversed(range(self.height)):
             for i in range(self.width):
