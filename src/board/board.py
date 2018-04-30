@@ -136,6 +136,7 @@ class Board:
             log.info("Putting tetromino {} on hold".format(
                 self.current_tetromino.id))
             self.held_tetromino = copy.deepcopy(self.current_tetromino)
+            self.held_tetromino.reset_position()
             self.switch_current_tetromino()
         else:
             log.info("Putting tetromino {} out of hold".format(
@@ -144,6 +145,7 @@ class Board:
             self.current_tetromino = self.held_tetromino
             log.info("Putting tetromino {} on hold".format(tmp.id))
             self.held_tetromino = copy.deepcopy(tmp)
+            self.held_tetromino.reset_position()
         self.ghost_tetromino = self.get_ghost_tetromino()
 
     def get_combined_matrix_string(self):
