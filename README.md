@@ -9,7 +9,6 @@ Before starting Python Tetris, ensure that a configuration file exists at `src/c
 If it doesn't, you can copy the example configuration file at `src/config.py.example`.
 
 To start Python Tetris, run the `python-tetris.py` script located in the `src` directory.
-For example,
 
     src/python-tetris.py
 
