@@ -2,5 +2,5 @@ __pycache__
 *.pyc
 */.DS_Store
 .cache
-.swp
+*.swp
 src/config.py
