@@ -108,7 +108,7 @@ class Tetromino:
     def reset_position(self):
         """Resets the tetromino to its original spawn position"""
         self.origin = Point((SPAWN[self.id][0], SPAWN[self.id][1]))
-        self.sqrs = self.populate_sqrs()
+        self.squares = self.populate_squares()
 
     def render_tetromino(self):
         """Renders the tetromino to the screen"""
