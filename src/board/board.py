@@ -38,8 +38,8 @@ class Board:
         self.render_background()
 
         # Render pieces except current one
-        for t in self.board_tetrominos:
-            t.render_tetromino()
+        for tetromino in self.board_tetrominos:
+            tetromino.render_tetromino()
 
         # Render the ghost tetromino
         self.ghost_tetromino.render_tetromino()
@@ -50,11 +50,11 @@ class Board:
     def update_matrices(self):
         self.clear_matrix(self.current_tetromino_matrix)
         self.clear_matrix(self.board_tetrominos_matrix)
-        for t in self.board_tetrominos:
-            for s in t.sqrs:
-                self.fill_matrix(self.board_tetrominos_matrix, s)
-        for s in self.current_tetromino.sqrs:
-            self.fill_matrix(self.current_tetromino_matrix, s)
+        for tetromino in self.board_tetrominos:
+            for square in tetromino.squares:
+                self.fill_matrix(self.board_tetrominos_matrix, square)
+        for square in self.current_tetromino.squares:
+            self.fill_matrix(self.current_tetromino_matrix, square)
 
     def get_ghost_tetromino(self):
         """Returns a gray clone of the current tetromino and moves it down by the maximum amount"""
@@ -63,8 +63,8 @@ class Board:
         ghost.color = colors.ASH
         for i in range(self.height):
             ghost.offset(0, -1)
-            for s in ghost.sqrs:
-                if s.y < 0 or self.board_tetrominos_matrix[s.x][s.y] == 1:
+            for square in ghost.squares:
+                if square.y < 0 or self.board_tetrominos_matrix[square.x][square.y] == 1:
                     ghost.offset(0, 1)
                     break
         return ghost
@@ -86,8 +86,8 @@ class Board:
             ghost.rotate_cw()
         for i in range(self.height):
             ghost.offset(0, -1)
-            for s in ghost.sqrs:
-                if s.y < 0 or self.board_tetrominos_matrix[s.x][s.y] == 1:
+            for square in ghost.squares:
+                if square.y < 0 or self.board_tetrominos_matrix[square.x][square.y] == 1:
                     ghost.offset(0, 1)
                     break
         ghost.render_tetromino()

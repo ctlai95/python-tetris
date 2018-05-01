@@ -26,7 +26,7 @@ def test_init():
                 assert t.color == color
 
 
-def test_populate_sqrs():
+def test_populate_squares():
     expected_layouts = {
         "O": [(0, 0), (1, 0), (1, 1), (0, 1)],
         "I": [(0, 0), (1, 0), (2, 0), (3, 0)],
@@ -40,7 +40,7 @@ def test_populate_sqrs():
         for i in range(10):
             for j in range(22):
                 t = Tetromino(id, Point((i, j)), COLORS[id])
-                squares_tuples = get_list_tuples(t.sqrs)
+                squares_tuples = get_list_tuples(t.squares)
                 layout_offset = []
                 for l in layout:
                     layout_offset.append(tuples.add(l, (i, j)))
@@ -112,7 +112,7 @@ def test_rotate_cw():
                 old_position = t.origin
                 for num_rotations, layout in enumerate(layouts):
                     assert t.origin.xy_tuple() == old_position.xy_tuple()
-                    squares_tuples = get_list_tuples(t.sqrs)
+                    squares_tuples = get_list_tuples(t.squares)
                     layout_offset = []
                     for l in layout:
                         layout_offset.append(tuples.add(l, (i, j)))
@@ -129,7 +129,7 @@ def test_rotate_ccw():
                 old_position = t.origin
                 for num_rotations, layout in enumerate(reversed(layouts)):
                     assert t.origin.xy_tuple() == old_position.xy_tuple()
-                    squares_tuples = get_list_tuples(t.sqrs)
+                    squares_tuples = get_list_tuples(t.squares)
                     layout_offset = []
                     for l in layout:
                         layout_offset.append(tuples.add(l, (i, j)))
@@ -140,6 +140,6 @@ def test_rotate_ccw():
 
 def get_list_tuples(tetromino_squares):
     result = []
-    for s in tetromino_squares:
-        result.append(s.tuple())
+    for square in tetromino_squares:
+        result.append(square.tuple())
     return result
