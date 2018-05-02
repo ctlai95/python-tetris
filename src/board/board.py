@@ -12,7 +12,8 @@ class Board:
     """Board contains all the tetrominos in the current game"""
 
     def __init__(self, width, height):
-        log.info("Initializing board (width={}, height={})".format(width, height))
+        log.info("Initializing board (width={}, height={})"
+                 .format(width, height))
         self.width = width
         self.height = height
         self.random_tetrominos = Randomizer()
@@ -63,13 +64,14 @@ class Board:
         #  Needs a copy of the list so it doesn't mutate the original list
         board_tetrominos_squares_copy = self.board_tetrominos_squares[:]
         for index in indices:
-            for sqr in self.board_tetrominos_squares:
-                if sqr.y == index:
-                    board_tetrominos_squares_copy.remove(sqr)
+            for square in self.board_tetrominos_squares:
+                if square.y == index:
+                    board_tetrominos_squares_copy.remove(square)
 
         self.board_tetrominos_squares = board_tetrominos_squares_copy
 
     def drop_lines(self, indices):
+        """Drops the lines based on the given indices"""
         lines_dropped = 0
         cond = False
         for index in indices:
@@ -82,6 +84,7 @@ class Board:
                 lines_dropped += 1
 
     def update_matrices(self):
+        """Updates the tetromino matrices"""
         self.clear_matrix(self.current_tetromino_matrix)
         self.clear_matrix(self.board_tetrominos_matrix)
         for square in self.board_tetrominos_squares:
@@ -90,7 +93,8 @@ class Board:
             self.fill_matrix(self.current_tetromino_matrix, square)
 
     def get_ghost_tetromino(self):
-        """Returns a gray clone of the current tetromino and moves it down by the maximum amount"""
+        """Returns a gray clone of the current tetromino and
+        moves it down by the maximum amount"""
         self.update_matrices()
         ghost = copy.deepcopy(self.current_tetromino)
         for i in range(self.height):
@@ -111,7 +115,7 @@ class Board:
     def fill_matrix(self, matrix, square):
         """Fills the given matrix at the given indices with a 1"""
         if square.x >= self.width or square.y >= self.height:
-            log.warning(
+            log.error(
                 "Position exceeds boundaries: {}".format(square.tuple()))
             return
         matrix[square.x][square.y] = 1
