@@ -13,8 +13,8 @@ class Movement:
     def move_left(self):
         """If the current tetromino is moveable, move 1 unit left"""
         moveable = True
-        for s in self.board.current_tetromino.sqrs:
-            if s.x <= 0 or self.board.board_tetrominos_matrix[s.x - 1][s.y] != 0:
+        for square in self.board.current_tetromino.squares:
+            if square.x <= 0 or self.board.board_tetrominos_matrix[square.x - 1][square.y] != 0:
                 moveable = False
                 break
         if moveable:
@@ -26,9 +26,9 @@ class Movement:
         """If the current tetromino is moveable, move 1 unit right"""
         moveable = True
 
-        for s in self.board.current_tetromino.sqrs:
-            if s.x + 1 >= self.board.width or \
-                    self.board.board_tetrominos_matrix[s.x + 1][s.y] != 0:
+        for square in self.board.current_tetromino.squares:
+            if square.x + 1 >= self.board.width or \
+                    self.board.board_tetrominos_matrix[square.x + 1][square.y] != 0:
                 moveable = False
                 break
         if moveable:
@@ -39,8 +39,8 @@ class Movement:
     def move_down(self):
         """If the current tetromino is moveable, move 1 unit down"""
         moveable = True
-        for s in self.board.current_tetromino.sqrs:
-            if s.y <= 0 or self.board.board_tetrominos_matrix[s.x][s.y - 1] != 0:
+        for square in self.board.current_tetromino.squares:
+            if square.y <= 0 or self.board.board_tetrominos_matrix[square.x][square.y - 1] != 0:
                 moveable = False
                 break
         if moveable:
@@ -50,8 +50,8 @@ class Movement:
 
     def move_up(self):
         moveable = True
-        for s in self.board.current_tetromino.sqrs:
-            if s.y < self.board.height or self.board.matrix[s.x][s.y + 1] != 0:
+        for square in self.board.current_tetromino.squares:
+            if square.y < self.board.height or self.board.matrix[square.x][square.y + 1] != 0:
                 moveable = False
                 break
         if moveable:
@@ -132,10 +132,10 @@ class Movement:
 
     def wall_kick_test(self, x, y):
         self.board.current_tetromino.offset(x, y)
-        for s in self.board.current_tetromino.sqrs:
-            if s.x < 0 or s.x >= self.board.width or \
-                s.y < 0 or s.y >= self.board.height or \
-                    self.board.board_tetrominos_matrix[s.x][s.y] == 1:
+        for square in self.board.current_tetromino.squares:
+            if square.x < 0 or square.x >= self.board.width or \
+                square.y < 0 or square.y >= self.board.height or \
+                    self.board.board_tetrominos_matrix[square.x][square.y] == 1:
                 self.board.current_tetromino.offset(-x, -y)
                 return False
         return True
@@ -145,8 +145,8 @@ class Movement:
         log.info("Hard dropping current tetromino")
         for i in range(self.board.height):
             self.board.current_tetromino.offset(0, -1)
-            for s in self.board.current_tetromino.sqrs:
-                if s.y < 0 or self.board.board_tetrominos_matrix[s.x][s.y] == 1:
+            for square in self.board.current_tetromino.squares:
+                if square.y < 0 or self.board.board_tetrominos_matrix[square.x][square.y] == 1:
                     self.board.current_tetromino.offset(0, 1)
                     break
 

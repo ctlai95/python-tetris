@@ -35,8 +35,8 @@ class Board:
         self.render_background()
 
         # Render pieces except current one
-        for s in self.board_tetrominos_squares:
-            s.render_square()
+        for square in self.board_tetrominos_squares:
+            square.render_square()
 
         # Render the ghost tetromino
         self.ghost_tetromino.render_tetromino()
@@ -84,10 +84,10 @@ class Board:
     def update_matrices(self):
         self.clear_matrix(self.current_tetromino_matrix)
         self.clear_matrix(self.board_tetrominos_matrix)
-        for s in self.board_tetrominos_squares:
-            self.fill_matrix(self.board_tetrominos_matrix, s)
-        for s in self.current_tetromino.sqrs:
-            self.fill_matrix(self.current_tetromino_matrix, s)
+        for square in self.board_tetrominos_squares:
+            self.fill_matrix(self.board_tetrominos_matrix, square)
+        for sqaure in self.current_tetromino.squares:
+            self.fill_matrix(self.current_tetromino_matrix, square)
 
     def get_ghost_tetromino(self):
         """Returns a gray clone of the current tetromino and moves it down by the maximum amount"""
@@ -95,11 +95,11 @@ class Board:
         ghost = copy.deepcopy(self.current_tetromino)
         for i in range(self.height):
             ghost.offset(0, -1)
-            for s in ghost.sqrs:
-                if s.y < 0 or self.board_tetrominos_matrix[s.x][s.y] == 1:
+            for square in ghost.squares:
+                if square.y < 0 or self.board_tetrominos_matrix[square.x][square.y] == 1:
                     ghost.offset(0, 1)
                     break
-                s.color = colors.ASH
+                square.color = colors.ASH
         return ghost
 
     def switch_current_tetromino(self):
