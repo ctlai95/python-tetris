@@ -3,6 +3,7 @@ from src.movement.movement import Movement
 from src.point.point import Point
 from src.square.square import Square
 from src.colors import colors
+from src.tetromino.constants import SPAWN
 
 
 def test_init():
@@ -158,3 +159,12 @@ def test_hold_current_tetromino():
     b.hold_current_tetromino()
     assert b.held_tetromino.id != last_tetromino_id
     assert b.current_tetromino.id == last_tetromino_id
+    # test held tetromino position gets reset if moved before holding
+    b.current_tetromino.offset(-1, 0)
+    assert b.current_tetromino.origin.xy_tuple() != (
+        SPAWN[b.current_tetromino.id][0], SPAWN[b.current_tetromino.id][1])
+    b.hold_current_tetromino()
+    m.hard_drop()
+    b.hold_current_tetromino()
+    assert b.current_tetromino.origin.xy_tuple() == (
+        SPAWN[b.current_tetromino.id][0], SPAWN[b.current_tetromino.id][1])
