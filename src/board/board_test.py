@@ -2,6 +2,7 @@ from src.board.board import Board
 from src.movement.movement import Movement
 from src.point.point import Point
 from src.square.square import Square
+from src.colors import colors
 
 
 def test_init():
@@ -20,7 +21,7 @@ def test_init():
         assert len(column) == height
     assert b.random_tetrominos is not None
     assert b.current_tetromino.id in ["O", "I", "J", "L", "S", "Z", "T"]
-    assert len(b.board_tetrominos) == 0
+    assert len(b.board_tetrominos_squares) == 0
 
 
 def test_switch_current_tetromino():
@@ -36,11 +37,13 @@ def test_fill_unfill_matrix():
     b = Board(10, 22)
     for i in range(10):
         for j in range(22):
-            b.fill_matrix(b.board_tetrominos_matrix, Square(Point((i, j))))
+            b.fill_matrix(b.board_tetrominos_matrix,
+                          Square(Point((i, j)), colors.ASH))
             assert b.board_tetrominos_matrix[i][j] == 1
     for i in range(10):
         for j in range(22):
-            b.unfill_matrix(b.board_tetrominos_matrix, Square(Point((i, j))))
+            b.unfill_matrix(b.board_tetrominos_matrix,
+                            Square(Point((i, j)), colors.ASH))
             assert b.board_tetrominos_matrix[i][j] == 0
 
 
@@ -48,7 +51,8 @@ def test_clear_matrix():
     b = Board(10, 22)
     for i in range(10):
         for j in range(22):
-            b.fill_matrix(b.board_tetrominos_matrix, Square(Point((i, j))))
+            b.fill_matrix(b.board_tetrominos_matrix,
+                          Square(Point((i, j)), colors.ASH))
     b.clear_matrix(b.board_tetrominos_matrix)
     for i in range(10):
         for j in range(22):
