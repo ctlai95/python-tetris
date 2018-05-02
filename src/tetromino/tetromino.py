@@ -33,7 +33,8 @@ class Tetromino:
         Initializes a Tetromino object
         Arguments:
             id (string): the identifier of the tetromino (O, I, J, L, S, Z, T)
-            origin (Point): the position of the bottom left point used as a reference for the "LAYOUTS" values
+            origin (Point): the position of the bottom left point used as a 
+            reference for the "LAYOUTS" values
             color (list): the color of the tetromino in [R, G, B] format
         """
         log.info("Initializing Tetromino (id={}, origin={}, color={})".format(
@@ -41,6 +42,7 @@ class Tetromino:
         self.id = id
         self.origin = origin
         self.color = color
+        self.squares = self.populate_squares()
         self.state = State.ZERO
 
     def populate_squares(self):

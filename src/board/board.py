@@ -86,7 +86,7 @@ class Board:
         self.clear_matrix(self.board_tetrominos_matrix)
         for square in self.board_tetrominos_squares:
             self.fill_matrix(self.board_tetrominos_matrix, square)
-        for sqaure in self.current_tetromino.squares:
+        for square in self.current_tetromino.squares:
             self.fill_matrix(self.current_tetromino_matrix, square)
 
     def get_ghost_tetromino(self):

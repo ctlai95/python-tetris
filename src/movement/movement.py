@@ -150,7 +150,7 @@ class Movement:
                     self.board.current_tetromino.offset(0, 1)
                     break
 
-        for square in self.board.current_tetromino.sqrs:
+        for square in self.board.current_tetromino.squares:
             self.board.board_tetrominos_squares.append(square)
 
         self.board.switch_current_tetromino()
