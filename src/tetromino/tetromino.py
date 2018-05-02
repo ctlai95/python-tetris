@@ -4,7 +4,7 @@ from enum import Enum
 
 from src.point.point import Point
 from src.square.square import Square
-from src.tetromino.constants import LAYOUTS, ROTATION_POINTS
+from src.tetromino.constants import LAYOUTS, ROTATION_POINTS, SPAWN
 from src.utils.tuples import tuples
 
 log = logging.getLogger(__name__)
@@ -104,6 +104,11 @@ class Tetromino:
             self.squares[i] = Square(
                 Point((int(new_point[0]), int(new_point[1]))))
         self.state = self.state.prev()
+
+    def reset_position(self):
+        """Resets the tetromino to its original spawn position"""
+        self.origin = Point((SPAWN[self.id][0], SPAWN[self.id][1]))
+        self.squares = self.populate_squares()
 
     def render_tetromino(self):
         """Renders the tetromino to the screen"""
