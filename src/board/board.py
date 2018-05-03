@@ -69,7 +69,7 @@ class Board:
         Return a gray clone of the current tetromino and moves it down by the maximum amount.
 
         Returns:
-            Tetromino: The ghost tetromino
+            Tetromino: The ghost tetromino.
 
         """
         self.update_matrices()

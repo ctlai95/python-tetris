@@ -11,8 +11,8 @@ class Point:
         Initialize a Point object.
 
         Args:
-            x (int): The x coordinate
-            y (int): The y coorindate
+            x (int): The x coordinate.
+            y (int): The y coorindate.
         """
         self.x = x
         self.y = y

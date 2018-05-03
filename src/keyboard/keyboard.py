@@ -14,9 +14,9 @@ class Keyboard:
         Initialize a Keyboard object.
 
         Args:
-            window (Window): The game's window object
-            board (Board): The game's board object
-            movement (Movement): The game's movement handler
+            window (Window): The game's window object.
+            board (Board): The game's board object.
+            movement (Movement): The game's movement handler.
         """
         log.info("Initializing keyboard")
         self.window = window
@@ -28,8 +28,8 @@ class Keyboard:
         Override pyglet's on_key_press function with tetromino movements.
 
         Args:
-            symbol (int): A virtual key code, constants defined in pyglet.window.key
-            modifier (int): A modifer key, constants defined in pyglet.window.key
+            symbol (int): A virtual key code, constants defined in `pyglet.window.key`.
+            modifier (int): A modifer key, constants defined in `pyglet.window.key`.
         """
         if symbol == key.LEFT:
             self.movement.move_left()
