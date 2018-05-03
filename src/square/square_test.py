@@ -14,7 +14,7 @@ def test_init():
 def test_tuple():
     for i in range(10):
         for j in range(22):
-            s = Square(Point((i, j)), colors.ASH)
+            s = Square(Point(i, j), colors.ASH)
             assert s.tuple() == (i, j)
 
 

@@ -38,21 +38,13 @@ def test_fill_unfill_matrix():
     b = Board(10, 22)
     for i in range(10):
         for j in range(22):
-<<<<<<< HEAD
             b.fill_matrix(b.board_tetrominos_matrix,
-                          Square(Point((i, j)), colors.ASH))
+                          Square(Point(i, j), colors.ASH))
             assert b.board_tetrominos_matrix[i][j] == 1
     for i in range(10):
         for j in range(22):
             b.unfill_matrix(b.board_tetrominos_matrix,
-                            Square(Point((i, j)), colors.ASH))
-=======
-            b.fill_matrix(b.board_tetrominos_matrix, Square(Point(i, j)))
-            assert b.board_tetrominos_matrix[i][j] == 1
-    for i in range(10):
-        for j in range(22):
-            b.unfill_matrix(b.board_tetrominos_matrix, Square(Point(i, j)))
->>>>>>> origin/master
+                            Square(Point(i, j), colors.ASH))
             assert b.board_tetrominos_matrix[i][j] == 0
 
 
@@ -60,12 +52,8 @@ def test_clear_matrix():
     b = Board(10, 22)
     for i in range(10):
         for j in range(22):
-<<<<<<< HEAD
             b.fill_matrix(b.board_tetrominos_matrix,
-                          Square(Point((i, j)), colors.ASH))
-=======
-            b.fill_matrix(b.board_tetrominos_matrix, Square(Point(i, j)))
->>>>>>> origin/master
+                          Square(Point(i, j), colors.ASH))
     b.clear_matrix(b.board_tetrominos_matrix)
     for i in range(10):
         for j in range(22):
@@ -83,7 +71,7 @@ def test_get_filled_indices_should_be_seven():
     for i in range(10):
         for j in range(7):
             b.fill_matrix(b.board_tetrominos_matrix,
-                          Square(Point((i, j)), colors.ASH))
+                          Square(Point(i, j), colors.ASH))
     assert b.get_filled_indices() == filled_indices
 
 
@@ -91,8 +79,8 @@ def test_clear_lines():
     b = Board(10, 22)
     # Set up lines that should be cleared
     for i in range(10):
-        b.board_tetrominos_squares.append(Square(Point((i, 3)), colors.ASH))
-        b.board_tetrominos_squares.append(Square(Point((i, 8)), colors.ASH))
+        b.board_tetrominos_squares.append(Square(Point(i, 3), colors.ASH))
+        b.board_tetrominos_squares.append(Square(Point(i, 8), colors.ASH))
 
     b.update_matrices()
     filled_indices = b.get_filled_indices()
@@ -110,10 +98,10 @@ def test_clear_lines():
 def test_drop_lines_single():
     b = Board(10, 22)
     for i in range(10):
-        b.board_tetrominos_squares.append(Square(Point((i, 0)), colors.ASH))
-    b.board_tetrominos_squares.append(Square(Point((0, 1)), colors.ASH))
-    b.board_tetrominos_squares.append(Square(Point((1, 1)), colors.ASH))
-    b.board_tetrominos_squares.append(Square(Point((2, 1)), colors.ASH))
+        b.board_tetrominos_squares.append(Square(Point(i, 0), colors.ASH))
+    b.board_tetrominos_squares.append(Square(Point(0, 1), colors.ASH))
+    b.board_tetrominos_squares.append(Square(Point(1, 1), colors.ASH))
+    b.board_tetrominos_squares.append(Square(Point(2, 1), colors.ASH))
 
     b.update_matrices()
     filled_indices = b.get_filled_indices()
@@ -130,13 +118,13 @@ def test_drop_lines_single():
 def test_drop_lines_multiple():
     b = Board(10, 22)
     for i in range(10):
-        b.board_tetrominos_squares.append(Square(Point((i, 0)), colors.ASH))
-        b.board_tetrominos_squares.append(Square(Point((i, 2)), colors.ASH))
-    b.board_tetrominos_squares.append(Square(Point((0, 1)), colors.ASH))
-    b.board_tetrominos_squares.append(Square(Point((1, 1)), colors.ASH))
-    b.board_tetrominos_squares.append(Square(Point((2, 1)), colors.ASH))
-    b.board_tetrominos_squares.append(Square(Point((0, 3)), colors.ASH))
-    b.board_tetrominos_squares.append(Square(Point((1, 3)), colors.ASH))
+        b.board_tetrominos_squares.append(Square(Point(i, 0), colors.ASH))
+        b.board_tetrominos_squares.append(Square(Point(i, 2), colors.ASH))
+    b.board_tetrominos_squares.append(Square(Point(0, 1), colors.ASH))
+    b.board_tetrominos_squares.append(Square(Point(1, 1), colors.ASH))
+    b.board_tetrominos_squares.append(Square(Point(2, 1), colors.ASH))
+    b.board_tetrominos_squares.append(Square(Point(0, 3), colors.ASH))
+    b.board_tetrominos_squares.append(Square(Point(1, 3), colors.ASH))
 
     b.update_matrices()
     filled_indices = b.get_filled_indices()
@@ -164,7 +152,7 @@ def test_hold_current_tetromino():
     b.hold_current_tetromino()
     assert b.held_tetromino.id == last_tetromino_id
     # not dropped yet, so held tetromino should be unchanged
-    b.hold_current_tetromino()
+    b.hold_current_tetromino() 
     assert b.held_tetromino.id == last_tetromino_id
     # drop tetromino then hold, held tetromino should replace current
     m.hard_drop()
