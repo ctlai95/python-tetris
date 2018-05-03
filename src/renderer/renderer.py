@@ -1,19 +1,26 @@
+"""Game object renderer."""
 import pyglet
 
 from src import config
 
 
 class Renderer:
-    """Renderer handles drawing of colored squares at a given position"""
+    """Renderer handles drawing of colored squares at a given position."""
 
     def __init__(self, x_pos, y_pos, color):
+        """
+        Initialize a Renderer object.
+
+        Args:
+            x_pos (int): The x coordinate of the square to be rendered.
+            y_pos (int): The y coorindate of the square to be rendered.
+        """
         self.x = x_pos * config.UNIT
         self.y = y_pos * config.UNIT
         self.color = color
 
     def draw(self):
-        """Creates a vertex list with the square's position
-        and color and draws it to the screen"""
+        """Create a vertex list with the square's position and color and draws it to the screen."""
         vertex_list = pyglet.graphics.vertex_list(4, 'v2i', 'c3B')
         vertex_list.vertices = [self.x, self.y,
                                 self.x + config.UNIT, self.y,

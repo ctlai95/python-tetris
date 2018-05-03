@@ -38,6 +38,7 @@ def test_fill_unfill_matrix():
     b = Board(10, 22)
     for i in range(10):
         for j in range(22):
+<<<<<<< HEAD
             b.fill_matrix(b.board_tetrominos_matrix,
                           Square(Point((i, j)), colors.ASH))
             assert b.board_tetrominos_matrix[i][j] == 1
@@ -45,6 +46,13 @@ def test_fill_unfill_matrix():
         for j in range(22):
             b.unfill_matrix(b.board_tetrominos_matrix,
                             Square(Point((i, j)), colors.ASH))
+=======
+            b.fill_matrix(b.board_tetrominos_matrix, Square(Point(i, j)))
+            assert b.board_tetrominos_matrix[i][j] == 1
+    for i in range(10):
+        for j in range(22):
+            b.unfill_matrix(b.board_tetrominos_matrix, Square(Point(i, j)))
+>>>>>>> origin/master
             assert b.board_tetrominos_matrix[i][j] == 0
 
 
@@ -52,8 +60,12 @@ def test_clear_matrix():
     b = Board(10, 22)
     for i in range(10):
         for j in range(22):
+<<<<<<< HEAD
             b.fill_matrix(b.board_tetrominos_matrix,
                           Square(Point((i, j)), colors.ASH))
+=======
+            b.fill_matrix(b.board_tetrominos_matrix, Square(Point(i, j)))
+>>>>>>> origin/master
     b.clear_matrix(b.board_tetrominos_matrix)
     for i in range(10):
         for j in range(22):
@@ -161,10 +173,10 @@ def test_hold_current_tetromino():
     assert b.current_tetromino.id == last_tetromino_id
     # test held tetromino position gets reset if moved before holding
     b.current_tetromino.offset(-1, 0)
-    assert b.current_tetromino.origin.xy_tuple() != (
-        SPAWN[b.current_tetromino.id][0], SPAWN[b.current_tetromino.id][1])
+    assert (b.current_tetromino.origin.x,
+            b.current_tetromino.origin.y) != SPAWN[b.current_tetromino.id]
     b.hold_current_tetromino()
     m.hard_drop()
     b.hold_current_tetromino()
-    assert b.current_tetromino.origin.xy_tuple() == (
-        SPAWN[b.current_tetromino.id][0], SPAWN[b.current_tetromino.id][1])
+    assert (b.current_tetromino.origin.x,
+            b.current_tetromino.origin.y) == SPAWN[b.current_tetromino.id]
