@@ -2,7 +2,7 @@ import logging
 
 from src.point.point import Point
 from src.square.square import Square
-from src.tetromino.constants import LAYOUTS, ROTATION_POINTS
+from src.tetromino.constants import LAYOUTS, ROTATION_POINTS, SPAWN
 from src.tetromino.state import State
 from src.utils.tuples import tuples
 
@@ -25,11 +25,11 @@ class Tetromino:
             id, origin.tuple(), color))
         self.id = id
         self.origin = origin
-        self.sqrs = self.get_sqrs()
+        self.squares = self.get_squares()
         self.state = State.ZERO
         self.color = color
 
-    def get_sqrs(self):
+    def get_squares(self):
         """
         Get the four squares that make up the tetromino.
 
@@ -37,13 +37,13 @@ class Tetromino:
             sqrs ([]Square): the four squares as a list.
 
         """
-        sqrs = []
+        squares = []
         for i in range(4):
             square_position = tuples.add(
                 self.origin.tuple(), LAYOUTS[self.id][i])
-            sqrs.append(Square(Point(square_position[0], square_position[1])))
-
-        return sqrs
+            squares.append(
+                Square(Point(square_position[0], square_position[1])))
+        return squares
 
     def offset(self, x, y):
         """
@@ -55,18 +55,18 @@ class Tetromino:
         """
         new_position = tuples.add(self.origin.tuple(), (x, y))
         self.origin = Point(new_position[0], new_position[1])
-        for s in self.sqrs:
-            s.offset(x, y)
+        for square in self.squares:
+            square.offset(x, y)
 
     def rotate_cw(self):
         """Rotate the tetromino by 90 degrees, clockwise."""
         # the point of rotation, relative to the board origin
         abs_rotation_pt = tuples.add(
             self.origin.tuple(), ROTATION_POINTS[self.id])
-        for i in range(len(self.sqrs)):
+        for i in range(len(self.squares)):
             # the square's position relative to the point of rotation
             current_square = tuples.subtract(
-                self.sqrs[i].tuple(), abs_rotation_pt)
+                self.squares[i].tuple(), abs_rotation_pt)
             # the square's bottom right point, which will be the new
             # square origin after the rotation
             btm_right = tuples.add(
@@ -75,7 +75,7 @@ class Tetromino:
             new_point = tuples.add(
                 (btm_right[1], -btm_right[0]), abs_rotation_pt)
             # replace the old square with the new square
-            self.sqrs[i] = Square(
+            self.squares[i] = Square(
                 Point(int(new_point[0]), int(new_point[1])))
         self.state = self.state.next()
 
@@ -84,10 +84,10 @@ class Tetromino:
         # the point of rotation, relative to the board origin
         abs_rotation_pt = tuples.add(
             self.origin.tuple(), ROTATION_POINTS[self.id])
-        for i in range(len(self.sqrs)):
+        for i in range(len(self.squares)):
             # the square's position relative to the point of rotation
             current_square = tuples.subtract(
-                self.sqrs[i].tuple(), abs_rotation_pt)
+                self.squares[i].tuple(), abs_rotation_pt)
             # the square's bottom right point, which will be the new
             # square origin after the rotation
             top_left = tuples.add(
@@ -97,11 +97,16 @@ class Tetromino:
                 (-top_left[1], top_left[0]), abs_rotation_pt)
 
             # replace the old square with the new square
-            self.sqrs[i] = Square(
+            self.squares[i] = Square(
                 Point(int(new_point[0]), int(new_point[1])))
         self.state = self.state.prev()
 
+    def reset_position(self):
+        """Reset the tetromino to its original spawn position."""
+        self.origin = Point(SPAWN[self.id][0], SPAWN[self.id][1])
+        self.squares = self.get_squares()
+
     def render_tetromino(self):
-        """Render the square to the screen."""
-        for s in self.sqrs:
-            s.render_square(self.color)
+        """Render the tetromino to the screen."""
+        for square in self.squares:
+            square.render_square(self.color)

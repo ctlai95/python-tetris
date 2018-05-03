@@ -47,8 +47,8 @@ class Board:
         self.render_background()
 
         # Render pieces except current one
-        for t in self.board_tetrominos:
-            t.render_tetromino()
+        for tetromino in self.board_tetrominos:
+            tetromino.render_tetromino()
 
         # Render the ghost tetromino
         self.ghost_tetromino.render_tetromino()
@@ -60,11 +60,11 @@ class Board:
         """Update the matrices to match the tetrominos in the board."""
         self.clear_matrix(self.current_tetromino_matrix)
         self.clear_matrix(self.board_tetrominos_matrix)
-        for t in self.board_tetrominos:
-            for s in t.sqrs:
-                self.fill_matrix(self.board_tetrominos_matrix, s)
-        for s in self.current_tetromino.sqrs:
-            self.fill_matrix(self.current_tetromino_matrix, s)
+        for tetromino in self.board_tetrominos:
+            for square in tetromino.squares:
+                self.fill_matrix(self.board_tetrominos_matrix, square)
+        for square in self.current_tetromino.squares:
+            self.fill_matrix(self.current_tetromino_matrix, square)
 
     def get_ghost_tetromino(self):
         """
@@ -79,8 +79,8 @@ class Board:
         ghost.color = colors.ASH
         for i in range(self.height):
             ghost.offset(0, -1)
-            for s in ghost.sqrs:
-                if s.y < 0 or self.board_tetrominos_matrix[s.x][s.y] == 1:
+            for square in ghost.squares:
+                if square.y < 0 or self.board_tetrominos_matrix[square.x][square.y] == 1:
                     ghost.offset(0, 1)
                     break
         return ghost
@@ -102,8 +102,8 @@ class Board:
             ghost.rotate_cw()
         for i in range(self.height):
             ghost.offset(0, -1)
-            for s in ghost.sqrs:
-                if s.y < 0 or self.board_tetrominos_matrix[s.x][s.y] == 1:
+            for square in ghost.squares:
+                if square.y < 0 or self.board_tetrominos_matrix[square.x][square.y] == 1:
                     ghost.offset(0, 1)
                     break
         ghost.render_tetromino()
@@ -169,6 +169,7 @@ class Board:
             log.info("Putting tetromino {} on hold".format(
                 self.current_tetromino.id))
             self.held_tetromino = copy.deepcopy(self.current_tetromino)
+            self.held_tetromino.reset_position()
             self.switch_current_tetromino()
         else:
             log.info("Putting tetromino {} out of hold".format(
@@ -177,6 +178,7 @@ class Board:
             self.current_tetromino = self.held_tetromino
             log.info("Putting tetromino {} on hold".format(tmp.id))
             self.held_tetromino = copy.deepcopy(tmp)
+            self.held_tetromino.reset_position()
         self.ghost_tetromino = self.get_ghost_tetromino()
 
     def get_combined_matrix_string(self):
