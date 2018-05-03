@@ -1,6 +1,4 @@
 import logging
 
 UNIT = 40  # Length of a square in pixels
-GRAVITY_INTERVAL = 1
-DAS_INTERVAL = 3
 LOG_LEVEL = logging.INFO
