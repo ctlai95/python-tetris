@@ -1,3 +1,4 @@
+"""Tetromino movement handler."""
 import logging
 
 from src.tetromino.constants import WALL_KICKS

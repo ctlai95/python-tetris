@@ -1,3 +1,4 @@
+"""Keyboard press handler"""
 import logging
 
 import pyglet

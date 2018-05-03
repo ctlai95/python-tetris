@@ -1,3 +1,4 @@
+"""Game's playing area."""
 import copy
 import logging
 

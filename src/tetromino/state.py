@@ -1,3 +1,4 @@
+"""Tetromino rotation state."""
 from enum import Enum
 
 

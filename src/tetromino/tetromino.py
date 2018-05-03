@@ -1,3 +1,4 @@
+"""The playable piece in the game."""
 import logging
 
 from src.point.point import Point
@@ -92,7 +93,7 @@ class Tetromino:
         self.state = self.state.prev()
 
     def reset_position(self):
-        """Reset the tetromino to its original spawn position"""
+        """Reset the tetromino to its original spawn position."""
         self.origin = Point(SPAWN[self.id][0], SPAWN[self.id][1])
         self.squares = self.get_squares()
 

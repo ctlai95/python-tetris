@@ -1,3 +1,4 @@
+"""Square object in the game."""
 import logging
 
 from src.renderer.renderer import Renderer

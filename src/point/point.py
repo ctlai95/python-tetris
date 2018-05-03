@@ -1,3 +1,4 @@
+"""Position in the game."""
 import logging
 
 log = logging.getLogger(__name__)

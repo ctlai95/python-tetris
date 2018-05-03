@@ -1,3 +1,4 @@
+"""List of pre-defined colors"""
 YELLOW = [244, 197, 36]
 TEAL = [70, 194, 255]
 BLUE = [54, 99, 246]

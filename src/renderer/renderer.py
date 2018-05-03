@@ -1,3 +1,4 @@
+"""Game object renderer."""
 import pyglet
 
 from src import config

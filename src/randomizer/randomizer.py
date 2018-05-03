@@ -1,3 +1,4 @@
+"""Random tetromino generator."""
 from random import shuffle
 
 from src.point.point import Point

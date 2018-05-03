@@ -1,3 +1,4 @@
+"""The game's window."""
 import logging
 
 from pyglet.window import Window
@@ -24,5 +25,5 @@ class Window(Window):
         self.on_key_press = self.keyboard.on_key_press
 
     def on_draw(self):
-        """Override the pyglet on_draw function"""
+        """Override the pyglet on_draw function."""
         self.board.render_board()
