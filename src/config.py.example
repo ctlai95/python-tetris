@@ -1,3 +1,4 @@
+"""Game configurations."""
 import logging
 
 UNIT = 40  # Length of a square in pixels

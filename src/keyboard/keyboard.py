@@ -1,45 +1,43 @@
+"""Keyboard press handler"""
 import logging
 
 import pyglet
-from pyglet.window import Window, key
+from pyglet.window import key
 
 log = logging.getLogger(__name__)
 
 
-class Timer:
-    def __init__(self):
-        self.value = 0
-
-    def increment(self):
-        self.value += 1
-
-    def reset(self):
-        self.value = 0
-
-
 class Keyboard:
-    def __init__(self, window, board, movement, key_handler):
+    """Keyboard handles all the key presses in the game."""
+
+    def __init__(self, window, board, movement):
+        """
+        Initialize a Keyboard object.
+
+        Args:
+            window (Window): The game's window object.
+            board (Board): The game's board object.
+            movement (Movement): The game's movement handler.
+        """
         log.info("Initializing keyboard")
         self.window = window
         self.board = board
         self.movement = movement
-        self.key_handler = key_handler
-        self.timers = {
-            key.LEFT: Timer(),
-            key.RIGHT: Timer(),
-            key.DOWN: Timer(),
-        }
 
     def on_key_press(self, symbol, modifier):
+        """
+        Override pyglet's on_key_press function with tetromino movements.
+
+        Args:
+            symbol (int): A virtual key code, constants defined in `pyglet.window.key`.
+            modifier (int): A modifer key, constants defined in `pyglet.window.key`.
+        """
         if symbol == key.LEFT:
             self.movement.move_left()
-            self.key_handler[key.LEFT] = True
         elif symbol == key.RIGHT:
             self.movement.move_right()
-            self.key_handler[key.RIGHT] = True
         elif symbol == key.DOWN:
             self.movement.move_down()
-            self.key_handler[key.DOWN] = True
         elif symbol == key.UP:
             self.movement.rotate_cw()
         elif symbol == key.Z:
@@ -52,14 +50,3 @@ class Keyboard:
             self.board.hold_current_tetromino()
         elif symbol == key.ESCAPE:
             pyglet.app.exit()
-
-    def on_key_release(self, symbol, modifier):
-        if symbol == key.LEFT:
-            self.key_handler[key.LEFT] = False
-            self.timers[key.LEFT].reset()
-        elif symbol == key.RIGHT:
-            self.key_handler[key.RIGHT] = False
-            self.timers[key.RIGHT].reset()
-        elif symbol == key.DOWN:
-            self.key_handler[key.DOWN] = False
-            self.timers[key.DOWN].reset()

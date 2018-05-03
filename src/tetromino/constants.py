@@ -1,3 +1,4 @@
+"""Tetromino constants definition."""
 from src.colors import colors
 
 # Each tetromino's square's position relative to the bottomleft corner
