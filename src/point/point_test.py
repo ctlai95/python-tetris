@@ -13,4 +13,5 @@ def test_xy():
     for i in range(10):
         for j in range(22):
             p = Point(i, j)
-            assert p.tuple() == (i, j)
+            assert p.x == i
+            assert p.y == j

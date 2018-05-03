@@ -17,12 +17,28 @@ class Point:
         self.x = x
         self.y = y
 
-    def tuple(self):
+    def add(self, point):
         """
-        Return the x and y positions as a tuple.
+        Calculate the addition of two points.
+
+        Args:
+            point (Point): The point to be added to the current point.
 
         Returns:
-            int tuple: The x and y coordinates.
+            Point: The resulting point.
 
         """
-        return (self.x, self.y)
+        return Point(self.x + point.x, self.y + point.y)
+
+    def subtract(self, point):
+        """
+        Calculate the subtraction of two points.
+
+        Args:
+            point (Point): The point to be subtracted to the current point.
+
+        Returns:
+            Point: The resulting point.
+
+        """
+        return Point(self.x - point.x, self.y - point.y)

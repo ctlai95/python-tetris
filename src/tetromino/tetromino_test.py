@@ -1,9 +1,9 @@
+import operator
+
 from src.colors import colors
 from src.point.point import Point
-from src.square.square import Square
 from src.tetromino.constants import COLORS
 from src.tetromino.tetromino import State, Tetromino
-from src.utils.tuples import tuples
 
 
 def test_init():
@@ -21,7 +21,8 @@ def test_init():
             for j in range(22):
                 t = Tetromino(id, Point(i, j), COLORS[id])
                 assert t.id == id
-                assert t.origin.tuple() == (i, j)
+                assert t.origin.x == i
+                assert t.origin.y == j
                 assert t.state == State.ZERO
                 assert t.color == color
 
@@ -43,7 +44,7 @@ def test_populate_squares():
                 squares_tuples = get_list_tuples(t.squares)
                 layout_offset = []
                 for l in layout:
-                    layout_offset.append(tuples.add(l, (i, j)))
+                    layout_offset.append(tuple(map(operator.add, l, (i, j))))
                 assert sorted(squares_tuples) == sorted(layout_offset)
 
 
@@ -61,8 +62,8 @@ def test_offset():
                 for j in range(22):
                     t = Tetromino(id, Point(i, j), COLORS[id])
                     t.offset(offset[0], offset[1])
-                    assert t.origin.tuple() == tuples.add(
-                        (i, j), (offset[0], offset[1]))
+                    assert t.origin.x == i + offset[0]
+                    assert t.origin.y == j + offset[1]
 
 
 expected_new_layouts = {
@@ -111,11 +112,13 @@ def test_rotate_cw():
                 t = Tetromino(id, Point(i, j), COLORS[id])
                 old_position = t.origin
                 for num_rotations, layout in enumerate(layouts):
-                    assert t.origin.tuple() == old_position.tuple()
+                    assert t.origin.x == old_position.x
+                    assert t.origin.y == old_position.y
                     squares_tuples = get_list_tuples(t.squares)
                     layout_offset = []
                     for l in layout:
-                        layout_offset.append(tuples.add(l, (i, j)))
+                        layout_offset.append(
+                            tuple(map(operator.add, l, (i, j))))
                     assert sorted(squares_tuples) == sorted(layout_offset)
                     assert t.state == State(num_rotations % 4)
                     t.rotate_cw()
@@ -128,11 +131,13 @@ def test_rotate_ccw():
                 t = Tetromino(id, Point(i, j), COLORS[id])
                 old_position = t.origin
                 for num_rotations, layout in enumerate(reversed(layouts)):
-                    assert t.origin.tuple() == old_position.tuple()
+                    assert t.origin.x == old_position.x
+                    assert t.origin.y == old_position.y
                     squares_tuples = get_list_tuples(t.squares)
                     layout_offset = []
                     for l in layout:
-                        layout_offset.append(tuples.add(l, (i, j)))
+                        layout_offset.append(
+                            tuple(map(operator.add, l, (i, j))))
                     assert sorted(squares_tuples) == sorted(layout_offset)
                     assert t.state == State((4 - num_rotations) % 4)
                     t.rotate_ccw()
@@ -141,5 +146,5 @@ def test_rotate_ccw():
 def get_list_tuples(tetromino_squares):
     result = []
     for square in tetromino_squares:
-        result.append(square.tuple())
+        result.append((square.x, square.y))
     return result

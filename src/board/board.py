@@ -2,10 +2,8 @@ import copy
 import logging
 
 from src.colors import colors
-from src.point.point import Point
 from src.randomizer.randomizer import Randomizer
 from src.renderer.renderer import Renderer
-from src.tetromino.constants import COLORS, SPAWN
 from src.tetromino.tetromino import Tetromino
 
 log = logging.getLogger(__name__)
@@ -118,7 +116,7 @@ class Board:
         """
         if square.x >= self.width or square.y >= self.height:
             log.warning(
-                "Position exceeds boundaries: {}".format(square.tuple()))
+                "Position exceeds boundaries: [{}][{}]".format(square.x, square.y))
             return
         matrix[square.x][square.y] = 1
 
@@ -132,7 +130,7 @@ class Board:
         """
         if square.x >= self.width or square.y >= self.height:
             log.error(
-                "Position exceeds boundaries: {}".format(square.tuple()))
+                "Position exceeds boundaries: [{}][{}]".format(square.x, square.y))
             return
         matrix[square.x][square.y] = 0
 

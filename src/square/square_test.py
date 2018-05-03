@@ -1,6 +1,5 @@
 from src.point.point import Point
 from src.square.square import Square
-from src.utils.tuples import tuples
 
 
 def test_init():
@@ -9,13 +8,6 @@ def test_init():
             s = Square(Point(i, j))
             assert s.x == i
             assert s.y == j
-
-
-def test_tuple():
-    for i in range(10):
-        for j in range(22):
-            s = Square(Point(i, j))
-            assert s.tuple() == (i, j)
 
 
 def test_offset():
@@ -30,4 +22,5 @@ def test_offset():
             for j in range(22):
                 s = Square(Point(i, j))
                 s.offset(offset[0], offset[1])
-                assert s.tuple() == tuples.add((i, j), offset)
+                assert s.x == i + offset[0]
+                assert s.y == j + offset[1]

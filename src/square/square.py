@@ -18,16 +18,6 @@ class Square:
         self.x = point.x
         self.y = point.y
 
-    def tuple(self):
-        """
-        Get the square's bottom left corner as a tuple.
-
-        Returns:
-            int tuple: The bottom left corner.
-
-        """
-        return (self.x, self.y)
-
     def offset(self, x, y):
         """
         Move the square by the given horizontal and vertical values.
