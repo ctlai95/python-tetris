@@ -24,7 +24,13 @@ class Keyboard:
         self.movement = movement
 
     def on_key_press(self, symbol, modifier):
-        """Override pyglet's on_key_press function with tetromino movements."""
+        """
+        Override pyglet's on_key_press function with tetromino movements.
+
+        Args:
+            symbol (int): A virtual key code, constants defined in pyglet.window.key
+            modifier (int): A modifer key, constants defined in pyglet.window.key
+        """
         if symbol == key.LEFT:
             self.movement.move_left()
         elif symbol == key.RIGHT:
