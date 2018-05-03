@@ -1,4 +1,3 @@
-"""The main game file."""
 #!/usr/bin/env python3
 import logging
 
