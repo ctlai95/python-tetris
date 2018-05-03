@@ -11,13 +11,6 @@ def test_init():
             assert s.y == j
 
 
-def test_tuple():
-    for i in range(10):
-        for j in range(22):
-            s = Square(Point(i, j), colors.ASH)
-            assert s.tuple() == (i, j)
-
-
 def test_offset():
     offsets = [
         (1, 0),  # right
