@@ -26,7 +26,7 @@ class Tetromino:
         self.id = id
         self.origin = origin
         self.color = color
-        self.squares = self.populate_squares()
+        self.squares = self.get_squares()
         self.state = State.ZERO
 
     def get_squares(self):

@@ -65,11 +65,11 @@ class Board:
         """
         filled_indices = []
         for j in range(self.height):
-            is_filled = True
+            filled = True
             for i in range(self.width):
                 if self.board_tetrominos_matrix[i][j] == 0:
-                    is_filled = False
-            if is_filled:
+                    filled = False
+            if filled:
                 filled_indices.append(j)
         return filled_indices
 
@@ -99,15 +99,11 @@ class Board:
             indices (list int): The list of filled indices.
         """
         lines_dropped = 0
-        cond = False
         for index in indices:
-            log.debug("Current loop index: {}".format(index))
             for square in self.board_tetrominos_squares:
                 if square.y > index - lines_dropped:
                     square.y = square.y - 1
-                    cond = True
-            if cond:
-                lines_dropped += 1
+            lines_dropped += 1
 
     def update_matrices(self):
         """Update the matrices to match the tetrominos in the board."""
