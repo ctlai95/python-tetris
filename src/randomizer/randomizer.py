@@ -20,7 +20,7 @@ class Randomizer:
         next_tetromino_id = self.list.pop()
         return Tetromino(
             next_tetromino_id,
-            Point(SPAWN[next_tetromino_id]),
+            Point(SPAWN[next_tetromino_id][0], SPAWN[next_tetromino_id][1]),
             COLORS[next_tetromino_id],
         )
 

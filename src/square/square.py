@@ -9,11 +9,8 @@ class Square:
     """The Square class renders a square with the given Coordinates"""
 
     def __init__(self, point):
-        self.x = point.x_value()
-        self.y = point.y_value()
-
-    def tuple(self):
-        return (self.x, self.y)
+        self.x = point.x
+        self.y = point.y
 
     def offset(self, x, y):
         self.x += x
