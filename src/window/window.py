@@ -20,8 +20,7 @@ class Window(Window):
         super().__init__(*args, **kwargs)
         self.board = Board(int(self.width / config.UNIT),
                            int(self.height / config.UNIT))
-        self.movement = Movement(self.board)
-        self.keyboard = Keyboard(self, self.board, self.movement)
+        self.keyboard = Keyboard(Movement(self.board))
         self.on_key_press = self.keyboard.on_key_press
 
     def on_draw(self):

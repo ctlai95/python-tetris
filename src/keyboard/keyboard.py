@@ -10,18 +10,14 @@ log = logging.getLogger(__name__)
 class Keyboard:
     """Keyboard handles all the key presses in the game."""
 
-    def __init__(self, window, board, movement):
+    def __init__(self, movement):
         """
         Initialize a Keyboard object.
 
         Args:
-            window (Window): The game's window object.
-            board (Board): The game's board object.
             movement (Movement): The game's movement handler.
         """
         log.info("Initializing keyboard")
-        self.window = window
-        self.board = board
         self.movement = movement
 
     def on_key_press(self, symbol, modifier):
@@ -47,6 +43,6 @@ class Keyboard:
         elif symbol == key.LSHIFT or \
                 symbol == key.RSHIFT or \
                 symbol == key.C:
-            self.board.hold_current_tetromino()
+            self.movement.board.hold_current_tetromino()
         elif symbol == key.ESCAPE:
             pyglet.app.exit()
