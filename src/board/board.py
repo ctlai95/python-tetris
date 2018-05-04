@@ -5,7 +5,6 @@ import logging
 from src.colors import colors
 from src.randomizer.randomizer import Randomizer
 from src.renderer.renderer import Renderer
-from src.tetromino.tetromino import Tetromino
 
 log = logging.getLogger(__name__)
 
@@ -104,6 +103,8 @@ class Board:
                 if square.y > index - lines_dropped:
                     square.y = square.y - 1
             lines_dropped += 1
+
+        self.ghost_tetromino = self.get_ghost_tetromino()
 
     def update_matrices(self):
         """Update the matrices to match the tetrominos in the board."""
