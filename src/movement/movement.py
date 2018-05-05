@@ -92,8 +92,8 @@ class Movement:
         self.board.current_tetromino.rotate_cw()
         for i, p in enumerate(wall_kick[rotation]):
             if self.wall_kick_test_pass(p[0], p[1]):
-                log.debug("Clockwise rotation wall kick passed Test #{} with offset ({}, {})".format(
-                    i + 1, p[0], p[1]))
+                log.debug("Clockwise rotation wall kick passed Test #{} "
+                          "with offset ({}, {})".format(i + 1, p[0], p[1]))
                 self.board.ghost_tetromino = self.board.get_ghost_tetromino()
                 return
 
@@ -102,7 +102,8 @@ class Movement:
         log.debug("All clockwise rotation wall kicks failed, not rotating")
 
     def rotate_ccw(self):
-        """Rotate a tetromino counterclockwise, corrected to boundaries and other tetrominos."""
+        """Rotate a tetromino counterclockwise,
+           corrected to boundaries and other tetrominos."""
         if self.board.current_tetromino.id == "O":
             log.debug("Tetromino \"O\" detected, skipping")
             return
@@ -124,8 +125,8 @@ class Movement:
         self.board.current_tetromino.rotate_ccw()
         for i, p in enumerate(wall_kick[rotation]):
             if self.wall_kick_test_pass(p[0], p[1]):
-                log.debug("Counterclockwise rotation wall kick passed Test #{} with offset ({}, {})".format(
-                    i + 1, p[0], p[1]))
+                log.debug("Counterclockwise rotation wall kick passed Test "
+                          "#{} with offset ({}, {})".format(i + 1, p[0], p[1]))
                 self.board.ghost_tetromino = self.board.get_ghost_tetromino()
                 return
 
@@ -135,7 +136,8 @@ class Movement:
 
     def wall_kick_test_pass(self, x, y):
         """
-        Perform a wall kick test to determine the resulting position after a rotation.
+        Perform a wall kick test to determine the resulting position
+        after a rotation.
 
         Args:
             x (int): The x coordinate of the position being tested.
@@ -160,7 +162,8 @@ class Movement:
         for i in range(self.board.height):
             self.board.current_tetromino.offset(0, -1)
             for square in self.board.current_tetromino.squares:
-                if square.y < 0 or self.board.board_tetrominos_matrix[square.x][square.y] == 1:
+                if (square.y < 0 or self.board.board_tetrominos_matrix
+                        [square.x][square.y] == 1):
                     self.board.current_tetromino.offset(0, 1)
                     break
 
@@ -172,3 +175,4 @@ class Movement:
         filled_indices = self.board.get_filled_indices()
         self.board.clear_lines(filled_indices)
         self.board.drop_lines(filled_indices)
+        self.board.ghost_tetromino = self.board.get_ghost_tetromino()

@@ -152,7 +152,7 @@ def test_hold_current_tetromino():
     b.hold_current_tetromino()
     assert b.held_tetromino.id == last_tetromino_id
     # not dropped yet, so held tetromino should be unchanged
-    b.hold_current_tetromino() 
+    b.hold_current_tetromino()
     assert b.held_tetromino.id == last_tetromino_id
     # drop tetromino then hold, held tetromino should replace current
     m.hard_drop()

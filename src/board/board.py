@@ -97,14 +97,10 @@ class Board:
         Args:
             indices (list int): The list of filled indices.
         """
-        lines_dropped = 0
-        for index in indices:
+        for lines_dropped, index in enumerate(indices):
             for square in self.board_tetrominos_squares:
                 if square.y > index - lines_dropped:
                     square.y = square.y - 1
-            lines_dropped += 1
-
-        self.ghost_tetromino = self.get_ghost_tetromino()
 
     def update_matrices(self):
         """Update the matrices to match the tetrominos in the board."""
@@ -117,7 +113,8 @@ class Board:
 
     def get_ghost_tetromino(self):
         """
-        Return a gray clone of the current tetromino and moves it down by the maximum amount.
+        Return a gray clone of the current tetromino and
+        moves it down by the maximum amount.
 
         Returns:
             Tetromino: The ghost tetromino.
