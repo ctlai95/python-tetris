@@ -61,9 +61,10 @@ class Board:
         self.clear_matrix(self.board_tetrominos_matrix)
         for tetromino in self.board_tetrominos:
             for square in tetromino.squares:
-                self.fill_matrix(self.board_tetrominos_matrix, square)
+                self.fill_matrix(self.board_tetrominos_matrix,
+                                 square.x, square.y)
         for square in self.current_tetromino.squares:
-            self.fill_matrix(self.current_tetromino_matrix, square)
+            self.fill_matrix(self.current_tetromino_matrix, square.x, square.y)
 
     def get_ghost_tetromino(self):
         """
@@ -107,33 +108,35 @@ class Board:
                     break
         ghost.render_tetromino()
 
-    def fill_matrix(self, matrix, square):
+    def fill_matrix(self, matrix, x, y):
         """
-        Fill the given matrix at the given square's indices with a 1.
+        Fill the given matrix at the given x and y position.
 
         Args:
             matrix ([][]int): The matrix with the index to be filled.
-            square (Square): The square with the coordinates to fill the matrix.
+            x (int): The x coordinate of the position to be filled.
+            y (int): The y coordinate of the position to be filled.
         """
-        if square.x >= self.width or square.y >= self.height:
-            log.warning(
-                "Position exceeds boundaries: [{}][{}]".format(square.x, square.y))
+        if x >= self.width or y >= self.height:
+            log.error(
+                "Position exceeds boundaries: [{}][{}]".format(x, y))
             return
-        matrix[square.x][square.y] = 1
+        matrix[x][y] = 1
 
-    def unfill_matrix(self, matrix, square):
+    def unfill_matrix(self, matrix, x, y):
         """
         Fill the given matrix at the given square's indices with a 0.
 
         Args:
             matrix ([][]int): The matrix with the index to be unfilled.
-            square (Square): The square with the coordinates to unfill the matrix.
+            x (int): The x coordinate of the position to be unfilled.
+            y (int): The y coordinate of the position to be unfilled.
         """
-        if square.x >= self.width or square.y >= self.height:
+        if x >= self.width or y >= self.height:
             log.error(
-                "Position exceeds boundaries: [{}][{}]".format(square.x, square.y))
+                "Position exceeds boundaries: [{}][{}]".format(x, y))
             return
-        matrix[square.x][square.y] = 0
+        matrix[x][y] = 0
 
     def clear_matrix(self, matrix):
         """
