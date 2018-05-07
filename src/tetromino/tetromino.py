@@ -39,8 +39,7 @@ class Tetromino:
         """
         squares = []
         for i in range(4):
-            square_position = self.origin.add(
-                Point(LAYOUTS[self.id][i][0], LAYOUTS[self.id][i][1]))
+            square_position = self.origin.add(LAYOUTS[self.id][i])
             squares.append(Square(square_position))
         return squares
 
@@ -59,8 +58,7 @@ class Tetromino:
     def rotate_cw(self):
         """Rotate the tetromino by 90 degrees, clockwise."""
         # the point of rotation, relative to the board origin
-        abs_rotation_pt = self.origin.add(
-            Point(ROTATION_POINTS[self.id][0], ROTATION_POINTS[self.id][1]))
+        abs_rotation_pt = self.origin.add(ROTATION_POINTS[self.id])
         for i in range(len(self.squares)):
             # the square's position relative to the point of rotation
             current_square = Point(
@@ -77,8 +75,7 @@ class Tetromino:
     def rotate_ccw(self):
         """Rotate the tetromino by 90 degrees, counterclockwise."""
         # the point of rotation, relative to the board origin
-        abs_rotation_pt = self.origin.add(
-            Point(ROTATION_POINTS[self.id][0], ROTATION_POINTS[self.id][1]))
+        abs_rotation_pt = self.origin.add(ROTATION_POINTS[self.id])
         for i in range(len(self.squares)):
             # the square's position relative to the point of rotation
             current_square = Point(
@@ -94,7 +91,7 @@ class Tetromino:
 
     def reset_position(self):
         """Reset the tetromino to its original spawn position."""
-        self.origin = Point(SPAWN[self.id][0], SPAWN[self.id][1])
+        self.origin = SPAWN[self.id]
         self.squares = self.get_squares()
 
     def render_tetromino(self):

@@ -74,10 +74,10 @@ def test_hold_current_tetromino():
     assert b.current_tetromino.id == last_tetromino_id
     # test held tetromino position gets reset if moved before holding
     b.current_tetromino.offset(-1, 0)
-    assert (b.current_tetromino.origin.x,
-            b.current_tetromino.origin.y) != SPAWN[b.current_tetromino.id]
+    assert (b.current_tetromino.origin.x, b.current_tetromino.origin.y) != \
+        (SPAWN[b.current_tetromino.id].x, SPAWN[b.current_tetromino.id].y)
     b.hold_current_tetromino()
     m.hard_drop()
     b.hold_current_tetromino()
-    assert (b.current_tetromino.origin.x,
-            b.current_tetromino.origin.y) == SPAWN[b.current_tetromino.id]
+    assert (b.current_tetromino.origin.x, b.current_tetromino.origin.y) == \
+        (SPAWN[b.current_tetromino.id].x, SPAWN[b.current_tetromino.id].y)
