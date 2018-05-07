@@ -1,8 +1,7 @@
 """Tetromino movement handler."""
 import logging
 
-from src.tetromino.constants import WALL_KICKS
-from src.tetromino.state import State
+from src.tetromino.constants import WALL_KICKS_CCW, WALL_KICKS_CW
 
 log = logging.getLogger(__name__)
 
