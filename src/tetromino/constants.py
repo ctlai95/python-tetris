@@ -37,6 +37,7 @@ ROTATION_POINTS = {
 # Wall kicks are based on the Super Rotation System (SRS)
 # http://tetris.wikia.com/wiki/SRS
 WALL_KICKS_CW = {
+    # index position corresponds to initial rotation state
     ('J', 'L', 'S', 'T', 'Z'): [
         [(0, 0), (-1, 0), (-1, +1), (0, -2), (-1, -2)],
         [(0, 0), (+1, 0), (+1, -1), (0, +2), (+1, +2)],
