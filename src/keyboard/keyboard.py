@@ -4,6 +4,8 @@ import logging
 import pyglet
 from pyglet.window import key
 
+from src.config import AUTO_SHIFT_DELAY
+
 log = logging.getLogger(__name__)
 
 
@@ -33,11 +35,17 @@ class Keyboard:
             modifier (int): A modifer key, constants defined in `pyglet.window.key`.
         """
         if symbol == key.LEFT:
-            self.movement.move_left()
+            self.movement.move_left(1)
+            pyglet.clock.schedule_once(self.schedule_delayed_interval,
+                                       AUTO_SHIFT_DELAY, self.movement.move_left, 1 / 60.0)
         elif symbol == key.RIGHT:
-            self.movement.move_right()
+            self.movement.move_right(1)
+            pyglet.clock.schedule_once(self.schedule_delayed_interval,
+                                       AUTO_SHIFT_DELAY, self.movement.move_right, 1 / 60.0)
         elif symbol == key.DOWN:
-            self.movement.move_down()
+            self.movement.move_down(1)
+            pyglet.clock.schedule_once(self.schedule_delayed_interval,
+                                       AUTO_SHIFT_DELAY, self.movement.move_down, 1 / 60.0)
         elif symbol == key.UP:
             self.movement.rotate_cw()
         elif symbol == key.Z:
@@ -50,3 +58,17 @@ class Keyboard:
             self.board.hold_current_tetromino()
         elif symbol == key.ESCAPE:
             pyglet.app.exit()
+
+    def on_key_release(self, symbol, modifier):
+        if symbol == key.LEFT:
+            pyglet.clock.unschedule(self.movement.move_left)
+            pyglet.clock.unschedule(self.schedule_delayed_interval)
+        elif symbol == key.RIGHT:
+            pyglet.clock.unschedule(self.movement.move_right)
+            pyglet.clock.unschedule(self.schedule_delayed_interval)
+        elif symbol == key.DOWN:
+            pyglet.clock.unschedule(self.movement.move_down)
+            pyglet.clock.unschedule(self.schedule_delayed_interval)
+
+    def schedule_delayed_interval(self, delay, movement, fps):
+        pyglet.clock.schedule_interval(movement, fps)

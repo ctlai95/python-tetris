@@ -3,3 +3,4 @@ import logging
 
 UNIT = 40  # Length of a square in pixels
 LOG_LEVEL = logging.INFO
+AUTO_SHIFT_DELAY = 0.2
