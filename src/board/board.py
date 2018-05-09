@@ -5,7 +5,6 @@ import logging
 from src.colors import colors
 from src.randomizer.randomizer import Randomizer
 from src.renderer.renderer import Renderer
-from src.tetromino.tetromino import Tetromino
 
 log = logging.getLogger(__name__)
 
@@ -31,7 +30,7 @@ class Board:
         self.current_tetromino_matrix = [
             [0 for y in range(height)] for x in range(width)]
         self.next_tetromino = self.random_tetrominos.next()
-        self.board_tetrominos = []
+        self.board_tetrominos_squares = []
         self.board_tetrominos_matrix = [
             [0 for y in range(height)] for x in range(width)]
         self.ghost_tetromino = self.get_ghost_tetromino()
@@ -46,8 +45,8 @@ class Board:
         self.render_background()
 
         # Render pieces except current one
-        for tetromino in self.board_tetrominos:
-            tetromino.render_tetromino()
+        for square in self.board_tetrominos_squares:
+            square.render_square()
 
         # Render the ghost tetromino
         self.ghost_tetromino.render_tetromino()
@@ -55,19 +54,67 @@ class Board:
         # Render current playable tetromino
         self.current_tetromino.render_tetromino()
 
+    def get_filled_indices(self):
+        """
+        Returns the number of lines filled.
+
+        Returns:
+            list (int): The indices filled.
+
+        """
+        filled_indices = []
+        for j in range(self.height):
+            filled = True
+            for i in range(self.width):
+                if self.board_tetrominos_matrix[i][j] == 0:
+                    filled = False
+            if filled:
+                filled_indices.append(j)
+        return filled_indices
+
+    def clear_lines(self, indices):
+        """
+        Takes in a list of indices that are full and removes all the
+        squares in the row.
+
+        Args:
+            indices (list int): The list of filled indices.
+        """
+
+        #  Needs a copy of the list so it doesn't mutate the original list
+        board_tetrominos_squares_copy = self.board_tetrominos_squares[:]
+        for index in indices:
+            for square in self.board_tetrominos_squares:
+                if square.y == index:
+                    board_tetrominos_squares_copy.remove(square)
+
+        self.board_tetrominos_squares = board_tetrominos_squares_copy
+
+    def drop_lines(self, indices):
+        """
+        Drops the lines based on the given indices.
+
+        Args:
+            indices (list int): The list of filled indices.
+        """
+        for lines_dropped, index in enumerate(indices):
+            for square in self.board_tetrominos_squares:
+                if square.y > index - lines_dropped:
+                    square.y = square.y - 1
+
     def update_matrices(self):
         """Update the matrices to match the tetrominos in the board."""
         self.clear_matrix(self.current_tetromino_matrix)
         self.clear_matrix(self.board_tetrominos_matrix)
-        for tetromino in self.board_tetrominos:
-            for square in tetromino.squares:
-                self.fill_matrix(self.board_tetrominos_matrix, square)
+        for square in self.board_tetrominos_squares:
+            self.fill_matrix(self.board_tetrominos_matrix, square)
         for square in self.current_tetromino.squares:
             self.fill_matrix(self.current_tetromino_matrix, square)
 
     def get_ghost_tetromino(self):
         """
-        Return a gray clone of the current tetromino and moves it down by the maximum amount.
+        Return a gray clone of the current tetromino and
+        moves it down by the maximum amount.
 
         Returns:
             Tetromino: The ghost tetromino.
@@ -75,13 +122,13 @@ class Board:
         """
         self.update_matrices()
         ghost = copy.deepcopy(self.current_tetromino)
-        ghost.color = colors.ASH
         for i in range(self.height):
             ghost.offset(0, -1)
             for square in ghost.squares:
                 if square.y < 0 or self.board_tetrominos_matrix[square.x][square.y] == 1:
                     ghost.offset(0, 1)
                     break
+                square.color = colors.ASH
         return ghost
 
     def switch_current_tetromino(self):
@@ -89,23 +136,6 @@ class Board:
         self.current_tetromino = self.next_tetromino
         self.ghost_tetromino = self.get_ghost_tetromino()
         self.next_tetromino = self.random_tetrominos.next()
-
-    def render_ghost(self):
-        """Render the ghost of the current tetromino."""
-        ghost = Tetromino(
-            self.current_tetromino.id,
-            self.current_tetromino.origin,
-            colors.ASH
-        )
-        for i in range(self.current_tetromino.state.value):
-            ghost.rotate_cw()
-        for i in range(self.height):
-            ghost.offset(0, -1)
-            for square in ghost.squares:
-                if square.y < 0 or self.board_tetrominos_matrix[square.x][square.y] == 1:
-                    ghost.offset(0, 1)
-                    break
-        ghost.render_tetromino()
 
     def fill_matrix(self, matrix, square):
         """
@@ -191,7 +221,7 @@ class Board:
         combined_matrix = "Matrix:\n"
         for j in reversed(range(self.height)):
             for i in range(self.width):
-                combined_matrix += str(self.board_tetrominos_matrix[i]
-                                       [j] or self.current_tetromino_matrix[i][j]) + " "
+                combined_matrix += str(self.board_tetrominos_matrix[i][j] or
+                                       self.current_tetromino_matrix[i][j]) + " "
             combined_matrix += "\n"
         return combined_matrix
