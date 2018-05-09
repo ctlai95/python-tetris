@@ -33,10 +33,6 @@ class Square:
         self.y += y
 
     def render_square(self):
-        """Renders the square to the screen
-
-        Args:
-            color (int list): The color to render the square in [R, G, B]
-        """
+        """Renders the square to the screen"""
         r = Renderer(self.x, self.y, self.color)
         r.draw()
