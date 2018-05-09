@@ -15,6 +15,7 @@ class Square:
 
         Args:
             point (Point): The point representing the square's bottom left corner.
+            color (int list): The color to render the square in [R, G, B]
         """
         self.x = point.x
         self.y = point.y

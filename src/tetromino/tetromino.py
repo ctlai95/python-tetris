@@ -34,7 +34,7 @@ class Tetromino:
         Get the four squares that make up the tetromino.
 
         Returns:
-            sqrs ([]Square): the four squares as a list.
+            squares ([]Square): the four squares as a list.
 
         """
         squares = []

@@ -3,6 +3,8 @@ from src.movement.movement import Movement
 from src.point.point import Point
 from src.square.square import Square
 from src.colors import colors
+from src.tetromino.tetromino import Tetromino
+from src.tetromino.constants import COLORS
 from src.tetromino.constants import SPAWN
 
 
@@ -97,6 +99,9 @@ def test_clear_lines():
 
 def test_drop_lines_single():
     b = Board(10, 22)
+    b.current_tetromino = Tetromino("O", Point(SPAWN["O"][0], SPAWN["O"][1]),
+                                    COLORS["O"])
+    b.ghost_tetromino = b.get_ghost_tetromino()
     for i in range(10):
         b.board_tetrominos_squares.append(Square(Point(i, 0), colors.ASH))
     b.board_tetrominos_squares.append(Square(Point(0, 1), colors.ASH))
@@ -108,6 +113,18 @@ def test_drop_lines_single():
     b.clear_lines(filled_indices)
     b.drop_lines(filled_indices)
     b.update_matrices()
+
+    ghost_squares = b.ghost_tetromino.squares
+
+    assert ghost_squares[0].x == 4
+    assert ghost_squares[0].x == 4
+    assert ghost_squares[0].y == 0
+    assert ghost_squares[1].x == 5
+    assert ghost_squares[1].y == 0
+    assert ghost_squares[2].x == 5
+    assert ghost_squares[2].y == 1
+    assert ghost_squares[3].x == 4
+    assert ghost_squares[3].y == 1
 
     for i in range(3):
         assert b.board_tetrominos_matrix[i][0] == 1
