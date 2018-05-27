@@ -1,11 +1,12 @@
 from src.point.point import Point
 from src.square.square import Square
+from src.colors import colors
 
 
 def test_init():
     for i in range(10):
         for j in range(22):
-            s = Square(Point(i, j))
+            s = Square(Point(i, j), colors.ASH)
             assert s.x == i
             assert s.y == j
 
@@ -20,7 +21,7 @@ def test_offset():
     for offset in offsets:
         for i in range(10):
             for j in range(22):
-                s = Square(Point(i, j))
+                s = Square(Point(i, j), colors.ASH)
                 s.offset(offset[0], offset[1])
                 assert s.x == i + offset[0]
                 assert s.y == j + offset[1]
