@@ -9,15 +9,17 @@ log = logging.getLogger(__name__)
 class Square:
     """A square object represents four sided shape in the game."""
 
-    def __init__(self, point):
+    def __init__(self, point, color):
         """
         Initialize a Square object.
 
         Args:
             point (Point): The point representing the square's bottom left corner.
+            color (int list): The color to render the square in [R, G, B]
         """
         self.x = point.x
         self.y = point.y
+        self.color = color
 
     def offset(self, x, y):
         """
@@ -30,12 +32,7 @@ class Square:
         self.x += x
         self.y += y
 
-    def render_square(self, color):
-        """
-        Render the square to the screen.
-
-        Args:
-            color (int list): The color to render the square in [R, G, B]
-        """
-        r = Renderer(self.x, self.y, color)
+    def render_square(self):
+        """Renders the square to the screen"""
+        r = Renderer(self.x, self.y, self.color)
         r.draw()

@@ -25,22 +25,22 @@ class Tetromino:
             id, origin.x, origin.y, color))
         self.id = id
         self.origin = origin
+        self.color = color
         self.squares = self.get_squares()
         self.state = State.ZERO
-        self.color = color
 
     def get_squares(self):
         """
         Get the four squares that make up the tetromino.
 
         Returns:
-            sqrs ([]Square): the four squares as a list.
+            squares ([]Square): the four squares as a list.
 
         """
         squares = []
         for i in range(4):
             square_position = self.origin.add(LAYOUTS[self.id][i])
-            squares.append(Square(square_position))
+            squares.append(Square(square_position, self.color))
         return squares
 
     def offset(self, x, y):
@@ -69,7 +69,8 @@ class Tetromino:
             # x -> y and y -> -x for rotation about the origin
             new_point = Point(btm_right.y, -btm_right.x).add(abs_rotation_pt)
             # replace the old square with the new square
-            self.squares[i] = Square(Point(int(new_point.x), int(new_point.y)))
+            point = Point(int(new_point.x), int(new_point.y))
+            self.squares[i] = Square(point, self.color)
         self.state = self.state.next()
 
     def rotate_ccw(self):
@@ -86,7 +87,8 @@ class Tetromino:
             # x -> y and y -> -x for rotation about the origin
             new_point = Point(-top_left.y, top_left.x).add(abs_rotation_pt)
             # replace the old square with the new square
-            self.squares[i] = Square(Point(int(new_point.x), int(new_point.y)))
+            point = Point(int(new_point.x), int(new_point.y))
+            self.squares[i] = Square(point, self.color)
         self.state = self.state.prev()
 
     def reset_position(self):
@@ -97,4 +99,4 @@ class Tetromino:
     def render_tetromino(self):
         """Render the tetromino to the screen."""
         for square in self.squares:
-            square.render_square(self.color)
+            square.render_square()
