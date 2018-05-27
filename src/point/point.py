@@ -43,3 +43,15 @@ class Point:
 
         """
         return Point(self.x - point.x, self.y - point.y)
+
+    def equals(self, point):
+        """
+        Determine whether two points have the same x and y value.
+
+        Args:
+            point (Point): The point to be compared to.
+
+        Returns:
+            bool: True for equals, False otherwise.
+        """
+        return (self.x, self.y) == (point.x, point.y)
