@@ -207,13 +207,13 @@ def test_wall_kick_test_pass_offset_tetromino_barrier():
 
 # http://tetris.wikia.com/wiki/List_of_twists
 class Twist_Test:
-    def __init__(self, tetromino_id, initial_position, initial_rotation, initial_offset, initial_state, square_positions, rotation, final_position, final_state):
+    def __init__(self, tetromino_id, initial_position, initial_rotation, initial_offset, initial_state, boundary_positions, rotation, final_position, final_state):
         self.tetromino_id = tetromino_id
         self.initial_position = initial_position
         self.initial_rotation = initial_rotation
         self.initial_offset = initial_offset
         self.initial_state = initial_state
-        self.square_positions = square_positions
+        self.boundary_positions = boundary_positions
         self.rotation = rotation
         self.final_position = final_position
         self.final_state = final_state
@@ -226,7 +226,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_ccw,
         initial_offset=None,
         initial_state=State.THREE,
-        square_positions=[
+        boundary_positions=[
             Point(3, 0),
             Point(3, 1),
             Point(4, 0),
@@ -243,7 +243,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_cw,
         initial_offset=None,
         initial_state=State.ONE,
-        square_positions=[
+        boundary_positions=[
             Point(3, 0),
             Point(3, 1),
             Point(3, 2),
@@ -264,7 +264,7 @@ twist_test_list = [
         initial_rotation=None,
         initial_offset=None,
         initial_state=State.ZERO,
-        square_positions=[
+        boundary_positions=[
             Point(5, 0),
             Point(5, 1),
             Point(5, 2),
@@ -281,7 +281,7 @@ twist_test_list = [
         initial_rotation=None,
         initial_offset=None,
         initial_state=State.ZERO,
-        square_positions=[
+        boundary_positions=[
             Point(1, 0),
             Point(2, 0),
             Point(3, 0),
@@ -297,7 +297,7 @@ twist_test_list = [
         initial_rotation=None,
         initial_offset=None,
         initial_state=State.ZERO,
-        square_positions=[
+        boundary_positions=[
             Point(2, 0),
             Point(2, 1),
             Point(2, 2),
@@ -320,7 +320,7 @@ twist_test_list = [
         initial_rotation=None,
         initial_offset=None,
         initial_state=State.ZERO,
-        square_positions=[
+        boundary_positions=[
             Point(3, 0),
             Point(3, 1),
             Point(3, 2),
@@ -340,7 +340,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_ccw,
         initial_offset=None,
         initial_state=State.THREE,
-        square_positions=[
+        boundary_positions=[
             Point(3, 0),
             Point(3, 1),
             Point(3, 2),
@@ -360,7 +360,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_cw,
         initial_offset=None,
         initial_state=State.ONE,
-        square_positions=[
+        boundary_positions=[
             Point(0, 0),
             Point(0, 1),
             Point(1, 1),
@@ -384,7 +384,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_cw,
         initial_offset=None,
         initial_state=State.ONE,
-        square_positions=[
+        boundary_positions=[
             Point(0, 0),
             Point(0, 1),
             Point(1, 1),
@@ -409,7 +409,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_ccw,
         initial_offset=None,
         initial_state=State.THREE,
-        square_positions=[
+        boundary_positions=[
             Point(0, 0),
             Point(0, 1),
             Point(1, 1),
@@ -434,7 +434,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_ccw,
         initial_offset=movement.move_down,
         initial_state=State.THREE,
-        square_positions=[
+        boundary_positions=[
             Point(2, 0),
             Point(2, 1),
             Point(5, 0),
@@ -453,7 +453,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_cw,
         initial_offset=movement.move_down,
         initial_state=State.ONE,
-        square_positions=[
+        boundary_positions=[
             Point(3, 0),
             Point(3, 1),
             Point(3, 2),
@@ -472,7 +472,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_cw,
         initial_offset=None,
         initial_state=State.ONE,
-        square_positions=[
+        boundary_positions=[
             Point(2, 0),
             Point(2, 1),
             Point(3, 1),
@@ -490,7 +490,7 @@ twist_test_list = [
         initial_rotation=None,
         initial_offset=None,
         initial_state=State.ZERO,
-        square_positions=[
+        boundary_positions=[
             Point(3, 0),
             Point(3, 1),
             Point(3, 2),
@@ -513,7 +513,7 @@ twist_test_list = [
         initial_rotation=None,
         initial_offset=None,
         initial_state=State.ZERO,
-        square_positions=[
+        boundary_positions=[
             Point(3, 0),
             Point(3, 1),
             Point(3, 2),
@@ -536,7 +536,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_cw,
         initial_offset=None,
         initial_state=State.ONE,
-        square_positions=[
+        boundary_positions=[
             Point(2, 0),
             Point(2, 1),
             Point(5, 2),
@@ -554,7 +554,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_cw,
         initial_offset=None,
         initial_state=State.ONE,
-        square_positions=[
+        boundary_positions=[
             Point(2, 0),
             Point(2, 1),
             Point(4, 1),
@@ -572,7 +572,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_ccw,
         initial_offset=None,
         initial_state=State.THREE,
-        square_positions=[
+        boundary_positions=[
             Point(2, 0),
             Point(2, 1),
             Point(3, 1),
@@ -590,7 +590,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_cw,
         initial_offset=None,
         initial_state=State.ONE,
-        square_positions=[
+        boundary_positions=[
             Point(3, 1),
             Point(3, 2),
             Point(4, 2),
@@ -608,7 +608,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_ccw,
         initial_offset=None,
         initial_state=State.THREE,
-        square_positions=[
+        boundary_positions=[
             Point(4, 0),
             Point(4, 1),
             Point(4, 2),
@@ -626,7 +626,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_ccw,
         initial_offset=None,
         initial_state=State.THREE,
-        square_positions=[
+        boundary_positions=[
             Point(3, 0),
             Point(3, 1),
             Point(3, 2),
@@ -646,7 +646,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_cw,
         initial_offset=None,
         initial_state=State.ONE,
-        square_positions=[
+        boundary_positions=[
             Point(3, 0),
             Point(4, 0),
             Point(4, 2),
@@ -665,7 +665,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_ccw,
         initial_offset=None,
         initial_state=State.THREE,
-        square_positions=[
+        boundary_positions=[
             Point(3, 0),
             Point(3, 1),
             Point(3, 2),
@@ -682,7 +682,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_cw,
         initial_offset=None,
         initial_state=State.ONE,
-        square_positions=[
+        boundary_positions=[
             Point(4, 0),
             Point(5, 2),
             Point(6, 0),
@@ -699,7 +699,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_ccw,
         initial_offset=None,
         initial_state=State.THREE,
-        square_positions=[
+        boundary_positions=[
             Point(2, 0),
             Point(2, 1),
             Point(2, 2),
@@ -720,7 +720,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_cw,
         initial_offset=None,
         initial_state=State.ONE,
-        square_positions=[
+        boundary_positions=[
             Point(2, 0),
             Point(2, 1),
             Point(2, 2),
@@ -741,7 +741,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_cw,
         initial_offset=None,
         initial_state=State.ONE,
-        square_positions=[
+        boundary_positions=[
             Point(2, 0),
             Point(2, 1),
             Point(4, 0),
@@ -761,7 +761,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_ccw,
         initial_offset=None,
         initial_state=State.THREE,
-        square_positions=[
+        boundary_positions=[
             Point(2, 0),
             Point(2, 1),
             Point(2, 2),
@@ -781,7 +781,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_cw,
         initial_offset=None,
         initial_state=State.ONE,
-        square_positions=[
+        boundary_positions=[
             Point(4, 0),
             Point(6, 0),
             Point(6, 2),
@@ -801,7 +801,7 @@ twist_test_list = [
         initial_rotation=movement.rotate_ccw,
         initial_offset=None,
         initial_state=State.THREE,
-        square_positions=[
+        boundary_positions=[
             Point(2, 0),
             Point(2, 1),
             Point(2, 2),
@@ -829,7 +829,7 @@ def test_rotation_twists():
         assert (movement.board.current_tetromino.origin.x,
                 movement.board.current_tetromino.origin.y) == (twist_test.initial_position.x, twist_test.initial_position.y)
         assert movement.board.current_tetromino.state == twist_test.initial_state
-        for board_square_position in twist_test.square_positions:
+        for board_square_position in twist_test.boundary_positions:
             movement.board.fill_matrix(
                 movement.board.board_tetrominos_matrix, Square(board_square_position))
         twist_test.rotation()
