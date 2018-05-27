@@ -1,11 +1,10 @@
 from src.board.board import Board
+from src.colors import colors
 from src.movement.movement import Movement
 from src.point.point import Point
 from src.square.square import Square
-from src.colors import colors
+from src.tetromino.constants import COLORS, SPAWN
 from src.tetromino.tetromino import Tetromino
-from src.tetromino.constants import COLORS
-from src.tetromino.constants import SPAWN
 
 
 def test_init():
@@ -99,8 +98,7 @@ def test_clear_lines():
 
 def test_drop_lines_single():
     b = Board(10, 22)
-    b.current_tetromino = Tetromino("O", Point(SPAWN["O"][0], SPAWN["O"][1]),
-                                    COLORS["O"])
+    b.current_tetromino = Tetromino("O", SPAWN["O"], COLORS["O"])
     b.ghost_tetromino = b.get_ghost_tetromino()
     for i in range(10):
         b.board_tetrominos_squares.append(Square(Point(i, 0), colors.ASH))
@@ -178,10 +176,10 @@ def test_hold_current_tetromino():
     assert b.current_tetromino.id == last_tetromino_id
     # test held tetromino position gets reset if moved before holding
     b.current_tetromino.offset(-1, 0)
-    assert (b.current_tetromino.origin.x,
-            b.current_tetromino.origin.y) != SPAWN[b.current_tetromino.id]
+    assert (b.current_tetromino.origin.x, b.current_tetromino.origin.y) != \
+        (SPAWN[b.current_tetromino.id].x, SPAWN[b.current_tetromino.id].y)
     b.hold_current_tetromino()
     m.hard_drop()
     b.hold_current_tetromino()
-    assert (b.current_tetromino.origin.x,
-            b.current_tetromino.origin.y) == SPAWN[b.current_tetromino.id]
+    assert (b.current_tetromino.origin.x, b.current_tetromino.origin.y) == \
+        (SPAWN[b.current_tetromino.id].x, SPAWN[b.current_tetromino.id].y)
