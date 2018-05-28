@@ -16,10 +16,10 @@ def get_tetromino_width(tetromino_id):
     leftmost = movement.board.width
     rightmost = 0
     for layout in LAYOUTS[tetromino_id]:
-        if layout[0] < leftmost:
-            leftmost = layout[0]
-        if layout[0] > rightmost:
-            rightmost = layout[0]
+        if layout.x < leftmost:
+            leftmost = layout.x
+        if layout.x > rightmost:
+            rightmost = layout.x
     return rightmost - leftmost
 
 
@@ -27,20 +27,21 @@ def get_tetromino_height(tetromino_id):
     lowest = movement.board.height
     highest = 0
     for layout in LAYOUTS[tetromino_id]:
-        if layout[1] < lowest:
-            lowest = layout[1]
-        if layout[1] > highest:
-            highest = layout[1]
+        if layout.y < lowest:
+            lowest = layout.y
+        if layout.y > highest:
+            highest = layout.y
     return highest - lowest
 
 
 def set_up_barrier_tetromino():
-    movement.board.board_tetrominos.append(barrier_tetromino)
+    for square in barrier_tetromino.squares:
+        movement.board.board_tetrominos_squares.append(square)
     movement.board.update_matrices()
 
 
 def clean_up_barrier_tetromino():
-    movement.board.board_tetrominos = []
+    movement.board.board_tetrominos_squares = []
     movement.board.update_matrices()
 
 
@@ -51,10 +52,10 @@ def test_init():
 
 def test_move_left_wall_barrier():
     for tetromino_id in tetrominos_id_list:
-        movement.board.current_tetromino = Tetromino(tetromino_id, Point(
-            SPAWN[tetromino_id][0], SPAWN[tetromino_id][1]), colors.ASH)
+        movement.board.current_tetromino = Tetromino(
+            tetromino_id, SPAWN[tetromino_id], colors.ASH)
         position_before_move = movement.board.current_tetromino.origin
-        for i in range(SPAWN[tetromino_id][0]):
+        for i in range(SPAWN[tetromino_id].x):
             movement.move_left()
             assert (movement.board.current_tetromino.origin.x,
                     movement.board.current_tetromino.origin.y) == (position_before_move.x - (i + 1), position_before_move.y)
@@ -67,11 +68,11 @@ def test_move_left_wall_barrier():
 
 def test_move_right_wall_barrier():
     for tetromino_id in tetrominos_id_list:
-        movement.board.current_tetromino = Tetromino(tetromino_id, Point(
-            SPAWN[tetromino_id][0], SPAWN[tetromino_id][1]), colors.ASH)
+        movement.board.current_tetromino = Tetromino(
+            tetromino_id, SPAWN[tetromino_id], colors.ASH)
         position_before_move = movement.board.current_tetromino.origin
         tetromino_width = get_tetromino_width(tetromino_id)
-        for i in range((movement.board.width - 1) - SPAWN[movement.board.current_tetromino.id][0] - tetromino_width):
+        for i in range((movement.board.width - 1) - SPAWN[movement.board.current_tetromino.id].x - tetromino_width):
             movement.move_right()
             assert (movement.board.current_tetromino.origin.x,
                     movement.board.current_tetromino.origin.y) == (position_before_move.x + (i + 1), position_before_move.y)
@@ -84,10 +85,10 @@ def test_move_right_wall_barrier():
 
 def test_move_down_wall_barrier():
     for tetromino_id in tetrominos_id_list:
-        movement.board.current_tetromino = Tetromino(tetromino_id, Point(
-            SPAWN[tetromino_id][0], SPAWN[tetromino_id][1]), colors.ASH)
+        movement.board.current_tetromino = Tetromino(
+            tetromino_id, SPAWN[tetromino_id], colors.ASH)
         position_before_move = movement.board.current_tetromino.origin
-        for i in range(SPAWN[tetromino_id][1]):
+        for i in range(SPAWN[tetromino_id].y):
             movement.move_down()
             assert (movement.board.current_tetromino.origin.x,
                     movement.board.current_tetromino.origin.y) == (position_before_move.x, position_before_move.y - (i + 1))
@@ -100,11 +101,11 @@ def test_move_down_wall_barrier():
 
 def test_move_up_wall_barrier():
     for tetromino_id in tetrominos_id_list:
-        movement.board.current_tetromino = Tetromino(tetromino_id, Point(
-            SPAWN[tetromino_id][0], SPAWN[tetromino_id][1]), colors.ASH)
+        movement.board.current_tetromino = Tetromino(
+            tetromino_id, SPAWN[tetromino_id], colors.ASH)
         position_before_move = movement.board.current_tetromino.origin
         tetromino_height = get_tetromino_height(tetromino_id)
-        for i in range((movement.board.height - 1) - SPAWN[tetromino_id][1] - tetromino_height):
+        for i in range((movement.board.height - 1) - SPAWN[tetromino_id].y - tetromino_height):
             movement.move_up()
             assert (movement.board.current_tetromino.origin.x,
                     movement.board.current_tetromino.origin.y) == (position_before_move.x, position_before_move.y + (i + 1))
@@ -831,7 +832,7 @@ def test_rotation_twists():
         assert movement.board.current_tetromino.state == twist_test.initial_state
         for board_square_position in twist_test.boundary_positions:
             movement.board.fill_matrix(
-                movement.board.board_tetrominos_matrix, Square(board_square_position))
+                movement.board.board_tetrominos_matrix, Square(board_square_position, colors.ASH))
         twist_test.rotation()
         assert (movement.board.current_tetromino.origin.x, movement.board.current_tetromino.origin.y) == (
             twist_test.final_position.x, twist_test.final_position.y)
@@ -846,9 +847,17 @@ def test_hard_drop():
                 movement.board.current_tetromino = Tetromino(
                     tetromino_id, Point(i, j), colors.ASH)
                 position_before_move = movement.board.current_tetromino.origin
+                print(movement.board.get_combined_matrix_string())
                 movement.hard_drop()
-                assert (movement.board.board_tetrominos[0].origin.x, movement.board.board_tetrominos[0].origin.y) == (
+                leftmost_square = movement.board.board_tetrominos_squares[0]
+                lowest_square = movement.board.board_tetrominos_squares[0]
+                for square in movement.board.board_tetrominos_squares:
+                    if square.x < leftmost_square.x:
+                        leftmost_square = square
+                    if square.y < lowest_square.y:
+                        lowest_square = square
+                assert (leftmost_square.x, lowest_square.y) == (
                     position_before_move.x, 0)
                 assert movement.board.holdable is True
-                movement.board.board_tetrominos = []
+                movement.board.board_tetrominos_squares = []
                 movement.board.update_matrices()
