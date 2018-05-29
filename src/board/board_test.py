@@ -35,17 +35,19 @@ def test_switch_current_tetromino():
             assert b.current_tetromino.id != last_tetromino_id
 
 
-def test_fill_unfill_matrix():
+def test_fill_matrix():
     b = Board(10, 22)
     for i in range(10):
         for j in range(22):
-            b.fill_matrix(b.board_tetrominos_matrix,
-                          Square(Point(i, j), colors.ASH))
+            b.fill_matrix(b.board_tetrominos_matrix, i, j)
             assert b.board_tetrominos_matrix[i][j] == 1
+
+
+def test_unfill_matrix():
+    b = Board(10, 22)
     for i in range(10):
         for j in range(22):
-            b.unfill_matrix(b.board_tetrominos_matrix,
-                            Square(Point(i, j), colors.ASH))
+            b.unfill_matrix(b.board_tetrominos_matrix, i, j)
             assert b.board_tetrominos_matrix[i][j] == 0
 
 
@@ -53,8 +55,7 @@ def test_clear_matrix():
     b = Board(10, 22)
     for i in range(10):
         for j in range(22):
-            b.fill_matrix(b.board_tetrominos_matrix,
-                          Square(Point(i, j), colors.ASH))
+            b.fill_matrix(b.board_tetrominos_matrix, i, j)
     b.clear_matrix(b.board_tetrominos_matrix)
     for i in range(10):
         for j in range(22):
@@ -71,8 +72,7 @@ def test_get_filled_indices_should_be_seven():
     filled_indices = [0, 1, 2, 3, 4, 5, 6]
     for i in range(10):
         for j in range(7):
-            b.fill_matrix(b.board_tetrominos_matrix,
-                          Square(Point(i, j), colors.ASH))
+            b.fill_matrix(b.board_tetrominos_matrix, i, j)
     assert b.get_filled_indices() == filled_indices
 
 
