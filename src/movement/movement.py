@@ -75,8 +75,9 @@ class Movement:
             return
 
         self.board.current_tetromino.rotate_cw()
-        # https://stackoverflow.com/questions/2974022/is-it-possible-to-assign-the-same-value-to-multiple-keys-in-a-dict-object-at-onc
-        for i, p in enumerate(next(v for k, v in WALL_KICKS_CW.items() if self.board.current_tetromino.id in k)[self.board.current_tetromino.state.value]):
+        # https://stackoverflow.com/questions/2974022
+        for i, p in enumerate(next(v for k, v in WALL_KICKS_CW.items() if self.board.current_tetromino.id in k)
+                              [self.board.current_tetromino.state.value]):
             if self.wall_kick_test_pass(p[0], p[1]):
                 log.debug("Clockwise rotation wall kick passed Test #{} with offset ({}, {})".format(
                     i + 1, p[0], p[1]))
@@ -94,8 +95,9 @@ class Movement:
             return
 
         self.board.current_tetromino.rotate_ccw()
-        # https://stackoverflow.com/questions/2974022/is-it-possible-to-assign-the-same-value-to-multiple-keys-in-a-dict-object-at-onc
-        for i, p in enumerate(next(v for k, v in WALL_KICKS_CCW.items() if self.board.current_tetromino.id in k)[self.board.current_tetromino.state.value]):
+        # https://stackoverflow.com/questions/2974022
+        for i, p in enumerate(next(v for k, v in WALL_KICKS_CCW.items() if self.board.current_tetromino.id in k)
+                              [self.board.current_tetromino.state.value]):
             if self.wall_kick_test_pass(p[0], p[1]):
                 log.debug("Counterclockwise rotation wall kick passed Test #{} with offset ({}, {})".format(
                     i + 1, p[0], p[1]))
