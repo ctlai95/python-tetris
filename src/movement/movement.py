@@ -60,7 +60,7 @@ class Movement:
         """Move the current tetromino one unit up if it is moveable."""
         moveable = True
         for square in self.board.current_tetromino.squares:
-            if square.y < self.board.height or self.board.matrix[square.x][square.y + 1] != 0:
+            if square.y + 1 >= self.board.height or self.board.board_tetrominos_matrix[square.x][square.y + 1] != 0:
                 moveable = False
                 break
         if moveable:
