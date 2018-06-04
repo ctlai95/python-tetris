@@ -827,15 +827,13 @@ def test_rotation_twists():
             twist_test.initial_rotation()
         if twist_test.initial_offset is not None:
             twist_test.initial_offset()
-        assert (movement.board.current_tetromino.origin.x,
-                movement.board.current_tetromino.origin.y) == (twist_test.initial_position.x, twist_test.initial_position.y)
+        assert movement.board.current_tetromino.origin.equals(twist_test.initial_position)
         assert movement.board.current_tetromino.state == twist_test.initial_state
-        for board_square_position in twist_test.boundary_positions:
+        for boundary_position in twist_test.boundary_positions:
             movement.board.fill_matrix(
-                movement.board.board_tetrominos_matrix, Square(board_square_position, colors.ASH))
+                movement.board.board_tetrominos_matrix, Square(boundary_position, colors.ASH))
         twist_test.rotation()
-        assert (movement.board.current_tetromino.origin.x, movement.board.current_tetromino.origin.y) == (
-            twist_test.final_position.x, twist_test.final_position.y)
+        assert movement.board.current_tetromino.origin.equals(movement.board.current_tetromino.origin)
         assert movement.board.current_tetromino.state == twist_test.final_state
         movement.board.clear_matrix(movement.board.board_tetrominos_matrix)
 
@@ -847,7 +845,6 @@ def test_hard_drop():
                 movement.board.current_tetromino = Tetromino(
                     tetromino_id, Point(i, j), colors.ASH)
                 position_before_move = movement.board.current_tetromino.origin
-                print(movement.board.get_combined_matrix_string())
                 movement.hard_drop()
                 leftmost_square = movement.board.board_tetrominos_squares[0]
                 lowest_square = movement.board.board_tetrominos_squares[0]
