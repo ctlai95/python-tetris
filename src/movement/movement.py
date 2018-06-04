@@ -1,8 +1,7 @@
 """Tetromino movement handler."""
 import logging
 
-from src.tetromino.constants import WALL_KICKS
-from src.tetromino.state import State
+from src.tetromino.constants import WALL_KICKS_CCW, WALL_KICKS_CW
 
 log = logging.getLogger(__name__)
 
@@ -75,22 +74,10 @@ class Movement:
             log.debug("Tetromino \"O\" detected, skipping")
             return
 
-        if self.board.current_tetromino.id in ("J", "L", "S", "T", "Z"):
-            wall_kick = WALL_KICKS["JLSTZ"]
-        elif self.board.current_tetromino.id == "I":
-            wall_kick = WALL_KICKS["I"]
-
-        if self.board.current_tetromino.state == State.ZERO:
-            rotation = "0->1"
-        elif self.board.current_tetromino.state == State.ONE:
-            rotation = "1->2"
-        elif self.board.current_tetromino.state == State.TWO:
-            rotation = "2->3"
-        elif self.board.current_tetromino.state == State.THREE:
-            rotation = "3->0"
-
         self.board.current_tetromino.rotate_cw()
-        for i, p in enumerate(wall_kick[rotation]):
+        # https://stackoverflow.com/questions/2974022
+        for i, p in enumerate(next(v for k, v in WALL_KICKS_CW.items() if self.board.current_tetromino.id in k)
+                              [self.board.current_tetromino.state.value]):
             if self.wall_kick_test_pass(p[0], p[1]):
                 log.debug("Clockwise rotation wall kick passed Test #{} "
                           "with offset ({}, {})".format(i + 1, p[0], p[1]))
@@ -108,22 +95,10 @@ class Movement:
             log.debug("Tetromino \"O\" detected, skipping")
             return
 
-        if self.board.current_tetromino.id in ("J", "L", "S", "T", "Z"):
-            wall_kick = WALL_KICKS["JLSTZ"]
-        elif self.board.current_tetromino.id == "I":
-            wall_kick = WALL_KICKS["I"]
-
-        if self.board.current_tetromino.state == State.ZERO:
-            rotation = "0->3"
-        elif self.board.current_tetromino.state == State.ONE:
-            rotation = "1->0"
-        elif self.board.current_tetromino.state == State.TWO:
-            rotation = "2->1"
-        elif self.board.current_tetromino.state == State.THREE:
-            rotation = "3->2"
-
         self.board.current_tetromino.rotate_ccw()
-        for i, p in enumerate(wall_kick[rotation]):
+        # https://stackoverflow.com/questions/2974022
+        for i, p in enumerate(next(v for k, v in WALL_KICKS_CCW.items() if self.board.current_tetromino.id in k)
+                              [self.board.current_tetromino.state.value]):
             if self.wall_kick_test_pass(p[0], p[1]):
                 log.debug("Counterclockwise rotation wall kick passed Test "
                           "#{} with offset ({}, {})".format(i + 1, p[0], p[1]))
