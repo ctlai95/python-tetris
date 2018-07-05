@@ -26,6 +26,15 @@ class Keyboard:
         self.board = board
         self.movement = movement
 
+
+    def on_text_motion(self, motion):
+        if motion == key.MOTION_LEFT:
+            self.movement.move_left(1)
+        if motion == key.MOTION_RIGHT:
+            self.movement.move_right(1)
+        if motion == key.MOTION_DOWN:
+            self.movement.move_down(1)
+
     def on_key_press(self, symbol, modifier):
         """
         Override pyglet's on_key_press function with tetromino movements.
@@ -34,19 +43,19 @@ class Keyboard:
             symbol (int): A virtual key code, constants defined in `pyglet.window.key`.
             modifier (int): A modifer key, constants defined in `pyglet.window.key`.
         """
-        if symbol == key.LEFT:
-            self.movement.move_left(1)
-            pyglet.clock.schedule_once(self.schedule_delayed_interval,
-                                       AUTO_SHIFT_DELAY, self.movement.move_left, 1 / 60.0)
-        elif symbol == key.RIGHT:
-            self.movement.move_right(1)
-            pyglet.clock.schedule_once(self.schedule_delayed_interval,
-                                       AUTO_SHIFT_DELAY, self.movement.move_right, 1 / 60.0)
-        elif symbol == key.DOWN:
-            self.movement.move_down(1)
-            pyglet.clock.schedule_once(self.schedule_delayed_interval,
-                                       AUTO_SHIFT_DELAY, self.movement.move_down, 1 / 60.0)
-        elif symbol == key.UP:
+        #  if symbol == key.LEFT:
+            #  self.movement.move_left(1)
+            #  #  pyglet.clock.schedule_once(self.schedule_delayed_interval,
+                                       #  #  AUTO_SHIFT_DELAY, self.movement.move_left, 1 / 60.0)
+        #  elif symbol == key.RIGHT:
+            #  self.movement.move_right(1)
+            #  #  pyglet.clock.schedule_once(self.schedule_delayed_interval,
+                                       #  #  AUTO_SHIFT_DELAY, self.movement.move_right, 1 / 60.0)
+        #  elif symbol == key.DOWN:
+            #  self.movement.move_down(1)
+            #  #  pyglet.clock.schedule_once(self.schedule_delayed_interval,
+                                       #  #  AUTO_SHIFT_DELAY, self.movement.move_down, 1 / 60.0)
+        if symbol == key.UP:
             self.movement.rotate_cw()
         elif symbol == key.Z:
             self.movement.rotate_ccw()
@@ -59,16 +68,16 @@ class Keyboard:
         elif symbol == key.ESCAPE:
             pyglet.app.exit()
 
-    def on_key_release(self, symbol, modifier):
-        if symbol == key.LEFT:
-            pyglet.clock.unschedule(self.movement.move_left)
-            pyglet.clock.unschedule(self.schedule_delayed_interval)
-        elif symbol == key.RIGHT:
-            pyglet.clock.unschedule(self.movement.move_right)
-            pyglet.clock.unschedule(self.schedule_delayed_interval)
-        elif symbol == key.DOWN:
-            pyglet.clock.unschedule(self.movement.move_down)
-            pyglet.clock.unschedule(self.schedule_delayed_interval)
+    #  def on_key_release(self, symbol, modifier):
+        #  if symbol == key.LEFT:
+            #  pyglet.clock.unschedule(self.movement.move_left)
+            #  pyglet.clock.unschedule(self.schedule_delayed_interval)
+        #  elif symbol == key.RIGHT:
+            #  pyglet.clock.unschedule(self.movement.move_right)
+            #  pyglet.clock.unschedule(self.schedule_delayed_interval)
+        #  elif symbol == key.DOWN:
+            #  pyglet.clock.unschedule(self.movement.move_down)
+            #  pyglet.clock.unschedule(self.schedule_delayed_interval)
 
-    def schedule_delayed_interval(self, delay, movement, fps):
-        pyglet.clock.schedule_interval(movement, fps)
+    #  def schedule_delayed_interval(self, delay, movement, fps):
+        #  pyglet.clock.schedule_interval(movement, fps)
