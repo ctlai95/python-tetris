@@ -19,7 +19,7 @@ class Movement:
         """
         self.board = board
 
-    def move_left(self, dt):
+    def move_left(self):
         """Move the current tetromino one unit left if it is moveable."""
         moveable = True
         for square in self.board.current_tetromino.squares:
@@ -31,7 +31,7 @@ class Movement:
             self.board.current_tetromino.offset(-1, 0)
             self.board.ghost_tetromino = self.board.get_ghost_tetromino()
 
-    def move_right(self, dt):
+    def move_right(self):
         """Move the current tetromino one unit right if it is moveable."""
         moveable = True
 
@@ -45,7 +45,7 @@ class Movement:
             self.board.current_tetromino.offset(1, 0)
             self.board.ghost_tetromino = self.board.get_ghost_tetromino()
 
-    def move_down(self, dt):
+    def move_down(self):
         """Move the current tetromino one unit down if it is moveable."""
         moveable = True
         for square in self.board.current_tetromino.squares:

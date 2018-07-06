@@ -24,7 +24,6 @@ class Window(Window):
         self.keyboard = Keyboard(self, self.board, self.movement)
         self.on_text_motion = self.keyboard.on_text_motion
         self.on_key_press = self.keyboard.on_key_press
-        #  self.on_key_release = self.keyboard.on_key_release
 
     def on_draw(self):
         """Override the pyglet on_draw function."""
