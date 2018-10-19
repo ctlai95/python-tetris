@@ -1,4 +1,4 @@
-This project has been moved to github.com/henrytran28/i-love-tetris.
+This project has been replaced by [i-love-tetris](https://github.com/henrytran28/i-love-tetris).
 
 # Python Tetris
 A Tetris clone written entirely in `python`.
